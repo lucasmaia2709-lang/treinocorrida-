@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ExpliQ - Plataforma de Corrida</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #5E5CE6; --dark: #1C1C1E; --bg: #F2F2F7; --input-bg: #F9FAFB;
+            --gray: #8E8E93; --green: #34C759; --white: #FFFFFF; --red: #FF3B30; --orange: #FF9500;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: var(--bg); color: var(--dark); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+        /* Telas */
+        .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg); display: none; flex-direction: column; overflow-y: auto; }
+        .screen.active { display: flex; animation: fadeIn 0.3s ease-out; }
+        .screen.white-bg { background-color: var(--white); }
+
+        /* UI Elements */
+        .input-group { margin-bottom: 20px; }
+        .label { display: block; font-size: 12px; font-weight: 700; color: var(--gray); text-transform: uppercase; margin-bottom: 8px; margin-left: 4px; }
+        .input { width: 100%; padding: 16px 20px; border-radius: 16px; border: 1px solid transparent; background-color: var(--input-bg); font-size: 14px; color: var(--dark); font-weight: 500; font-family: inherit; outline: none; transition: 0.3s; }
+        .input:focus { background-color: var(--white); border-color: var(--primary); box-shadow: 0 0 0 4px rgba(94, 92, 230, 0.15); }
+
+        .btn { width: 100%; padding: 18px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: transform 0.1s; display: flex; align-items: center; justify-content: center; }
+        .btn-primary { background-color: var(--primary); color: var(--white); box-shadow: 0 4px 20px rgba(94, 92, 230, 0.4); }
+        .btn-primary:active { transform: scale(0.98); }
+        .btn-text { background: none; color: var(--primary); text-transform: none; padding: 0; border: none; font-weight: bold; cursor: pointer; font-family: inherit; font-size: 14px; }
+
+        .card { background: var(--white); padding: 24px; border-radius: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        
+        /* Menu */
+        .nav-bar { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--white); padding: 15px 30px 30px; border-radius: 30px 30px 0 0; box-shadow: 0 -5px 40px rgba(0,0,0,0.05); display: flex; justify-content: space-between; z-index: 100; }
+        .nav-item { background: none; border: none; color: #CCC; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+        .nav-item i { font-size: 24px; }
+        .nav-item span { font-size: 10px; font-weight: 700; }
+        .nav-item.active { color: var(--primary); }
+
+        /* Treinos */
+        .timeline { position: relative; padding-left: 20px; }
+        .line { position: absolute; left: 34px; top: 10px; bottom: 0; width: 2px; background: #E5E5E5; z-index: 0; }
+        .workout { display: flex; align-items: center; margin-bottom: 20px; position: relative; z-index: 1; }
+        .w-icon { width: 30px; height: 30px; border-radius: 50%; background: var(--white); border: 3px solid #E5E5E5; color: #E5E5E5; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; margin-right: 15px; flex-shrink: 0; }
+        .workout.active .w-icon { border-color: var(--primary); color: var(--primary); background: var(--white); }
+        .workout.done .w-icon { background: var(--green); border-color: var(--bg); color: var(--white); }
+        .w-card { flex: 1; background: var(--white); padding: 16px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+
+        /* Switch */
+        .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; border-radius: 34px; transition: .4s; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; border-radius: 50%; transition: .4s; }
+        input:checked + .slider { background-color: var(--green); }
+        input:checked + .slider:before { transform: translateX(22px); }
+        
+        /* Logout & Loader */
+        .btn-logout-header { width: 40px; height: 40px; border-radius: 50%; background: var(--white); color: var(--red); border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; }
+        .loader { display: none; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; margin-right: 10px; }
+        .btn-primary.loading .loader { display: block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Modal Admin Auth */
+        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-card { background: white; width: 90%; max-width: 350px; border-radius: 24px; padding: 30px; transform: translateY(20px); transition: transform 0.3s; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
+        .modal-overlay.active .modal-card { transform: translateY(0); }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. LOGIN -->
+    <div id="view-login" class="screen white-bg active">
+        <!-- Botão Admin com Cadeado -->
+        <button onclick="app.showAdminAuth()" style="position: absolute; top: 20px; right: 20px; border: none; background: none; color: #EEE; padding: 10px; cursor: pointer;"><i class="fa-solid fa-lock"></i></button>
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 40px;">
+            <h1 style="font-size: 36px; margin-bottom: 10px; line-height: 1.1;">Bem-vindo<br>de volta!</h1>
+            <p style="color: var(--gray); font-size: 14px; margin-bottom: 40px;">Entre para continuar seus treinos.</p>
+            <form onsubmit="app.handleLogin(event)">
+                <div class="input-group"><label class="label">Email</label><input type="email" id="log-email" class="input" placeholder="seu@email.com" required></div>
+                <div class="input-group"><label class="label">Senha</label><input type="password" id="log-pass" class="input" placeholder="******" required></div>
+                <button type="submit" id="btn-login" class="btn btn-primary"><div class="loader"></div>ENTRAR</button>
+            </form>
+            <p id="login-error" style="color: var(--red); font-size: 12px; text-align: center; margin-top: 20px; display: none;"></p>
+            <div style="text-align: center; margin-top: 40px;"><p style="color: var(--gray); font-size: 14px;">Não tem uma conta? <button onclick="app.goToRegister()" class="btn-text">Cadastre-se</button></p></div>
+        </div>
+    </div>
+
+    <!-- 2. CADASTRO -->
+    <div id="view-register" class="screen white-bg">
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 40px;">
+            <button onclick="app.goToLogin()" style="align-self: flex-start; background: none; border: none; color: var(--gray); margin-bottom: 20px; padding: 0; cursor: pointer; font-size: 14px;"><i class="fa-solid fa-chevron-left"></i> Voltar</button>
+            <h1 style="font-size: 36px; line-height: 1.1; margin-bottom: 40px;">Criar Nova<br>Conta</h1>
+            <form onsubmit="app.handleRegister(event)">
+                <div class="input-group"><label class="label">Nome Completo</label><input type="text" id="reg-name" class="input" placeholder="Ex: Ana Silva" required></div>
+                <div class="input-group"><label class="label">Email</label><input type="email" id="reg-email" class="input" placeholder="ana@email.com" required></div>
+                <div class="input-group"><label class="label">Senha</label><input type="password" id="reg-pass" class="input" placeholder="******" required></div>
+                <button type="submit" id="btn-reg" class="btn btn-primary"><div class="loader"></div>CADASTRAR</button>
+            </form>
+            <div style="text-align: center; margin-top: 30px;"><p style="color: var(--gray); font-size: 14px;">Já tem conta? <button onclick="app.goToLogin()" class="btn-text">Entrar</button></p></div>
+        </div>
+    </div>
+
+    <!-- 3. PENDENTE -->
+    <div id="view-pending" class="screen white-bg" style="align-items: center; justify-content: center; padding: 40px; text-align: center;">
+        <div style="width: 80px; height: 80px; background: rgba(255,149,0,0.1); color: var(--orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 30px;"><i class="fa-solid fa-hourglass-start"></i></div>
+        <h2 style="font-size: 24px; margin-bottom: 10px;">Cadastro em Análise</h2>
+        <p style="color: var(--gray); font-size: 14px; line-height: 1.6; margin-bottom: 40px;">Seu treinador precisa liberar seu acesso. Aguarde e tente logar novamente mais tarde.</p>
+        <button onclick="app.goToLogin()" class="btn-text">VOLTAR AO LOGIN</button>
+    </div>
+
+    <!-- 4. APP ALUNO -->
+    <div id="view-app" class="screen">
+        <div class="scroll-content" style="padding-bottom: 100px; flex: 1; overflow-y: auto;">
+            <!-- HOME -->
+            <div id="tab-home" class="tab-content" style="padding: 24px;">
+                <div class="header" style="padding: 20px 0 30px; display:flex; justify-content:space-between; align-items:center;">
+                    <div><h2 style="font-size: 26px; margin: 0;">Olá!</h2><p id="user-name" style="color: var(--gray); font-size: 14px; margin: 0;">Atleta</p></div>
+                    <div style="display:flex; gap:10px; align-items:center;">
+                        <button onclick="app.logout()" class="btn-logout-header" title="Sair"><i class="fa-solid fa-right-from-bracket"></i></button>
+                        <div style="width: 45px; height: 45px; background: #DDD; border-radius: 50%; overflow: hidden;"><img id="user-avatar-home" src="https://api.dicebear.com/7.x/avataaars/svg?seed=User" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                    </div>
+                </div>
+                <!-- Prova -->
+                <div class="card" style="background: var(--dark); color: var(--white);">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div><span style="background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700;">PRÓXIMO DESAFIO</span><h3 id="app-race" style="font-size: 22px; margin: 15px 0 5px;">...</h3><p id="app-date" style="font-size: 12px; color: #AAA; margin: 0;">...</p></div>
+                        <div style="font-size: 24px; color: var(--primary);"><i class="fa-solid fa-trophy"></i></div>
+                    </div>
+                    <div style="margin-top: 30px;">
+                        <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;"><div id="app-progress" style="width: 0%; height: 100%; background: var(--green);"></div></div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px; color: #AAA;">
+                            <span id="app-remaining" style="font-weight: 500;">Calculando...</span>
+                            <span id="app-percent" style="color: var(--green); font-weight: 700;">0% Concluído</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Atalhos -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div onclick="app.nav('workouts')" class="card" style="text-align: center; padding: 30px; cursor: pointer;"><i class="fa-solid fa-dumbbell" style="font-size: 24px; color: var(--primary); margin-bottom: 10px;"></i><div style="font-size: 12px; font-weight: 700;">Planilha</div></div>
+                    <div class="card" style="text-align: center; padding: 30px;"><i class="fa-solid fa-chart-line" style="font-size: 24px; color: var(--orange); margin-bottom: 10px;"></i><div style="font-size: 12px; font-weight: 700;">Stats</div></div>
+                </div>
+            </div>
+            <!-- TREINOS -->
+            <div id="tab-workouts" class="tab-content hidden" style="padding: 24px;">
+                <h2 style="margin-bottom: 20px; margin-top: 20px;">Sua Planilha</h2>
+                <div class="timeline"><div class="line"></div><div id="workouts-container"></div></div>
+            </div>
+            <!-- PERFIL -->
+            <div id="tab-profile" class="tab-content hidden" style="padding: 40px; text-align: center;">
+                <div style="width: 100px; height: 100px; background: #DDD; border-radius: 50%; margin: 0 auto 20px; overflow: hidden;"><img id="user-avatar-profile" src="https://api.dicebear.com/7.x/avataaars/svg?seed=User" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                <h2 id="profile-name" style="margin: 0;">Nome</h2>
+                <p style="color: var(--primary); font-size: 12px; font-weight: 700; background: rgba(94,92,230,0.1); display: inline-block; padding: 5px 15px; border-radius: 20px; margin-top: 10px;">ALUNO ATIVO</p>
+            </div>
+        </div>
+        <!-- Menu -->
+        <div class="nav-bar">
+            <button class="nav-item active" onclick="app.nav('home')" data-tab="home"><i class="fa-solid fa-house"></i><span>Início</span></button>
+            <button class="nav-item" onclick="app.nav('workouts')" data-tab="workouts"><i class="fa-solid fa-calendar-check"></i><span>Treino</span></button>
+            <button class="nav-item" onclick="app.nav('profile')" data-tab="profile"><i class="fa-solid fa-user"></i><span>Perfil</span></button>
+        </div>
+    </div>
+
+    <!-- 5. ADMIN -->
+    <div id="view-admin" class="screen" style="background: var(--bg);">
+        <div class="header" style="background: var(--white); box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 20px 24px;">
+            <h3>Painel Treinador</h3>
+            <button onclick="app.logout()" style="border: none; background: none; color: var(--red); font-weight: bold; cursor: pointer;">Sair</button>
+        </div>
+        <div id="admin-list" style="padding: 24px; overflow-y: auto; flex: 1;"></div>
+        <!-- Modal Editor -->
+        <div id="admin-editor" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 200; transform: translateY(100%); transition: transform 0.3s ease; display: flex; flex-direction: column;">
+            <div style="padding: 20px; background: var(--white); display: flex; justify-content: space-between; align-items: center;">
+                <button onclick="app.closeEditor()" style="border: none; background: none; font-size: 20px; cursor: pointer;"><i class="fa-solid fa-chevron-down"></i></button>
+                <h3 style="margin: 0; font-size: 16px;">Editar Aluno</h3>
+                <button onclick="app.saveAdminData()" style="border: none; background: var(--primary); color: white; padding: 8px 20px; border-radius: 10px; font-weight: 700; cursor: pointer;">Salvar</button>
+            </div>
+            <div style="flex: 1; overflow-y: auto; padding: 24px;">
+                <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div><strong id="adm-name-display" style="font-size: 18px;">Nome</strong><p style="font-size: 12px; color: var(--gray); margin: 0;">Liberar Acesso</p></div>
+                    <label class="switch"><input type="checkbox" id="adm-active"><span class="slider"></span></label>
+                </div>
+                <div class="card">
+                    <div class="input-group"><label class="label">Nome da Prova</label><input type="text" id="adm-race" class="input" placeholder="Ex: Maratona"></div>
+                    <div class="input-group" style="margin: 0;"><label class="label">Data</label><input type="date" id="adm-date" class="input"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h4 style="margin: 0; font-size: 12px; color: var(--gray);">PLANILHA (20 DIAS)</h4>
+                    <button onclick="app.fillDefaults()" style="border: 1px solid #DDD; background: white; padding: 5px 10px; border-radius: 8px; font-size: 10px; font-weight: 700; color: var(--primary); cursor: pointer;">Preencher Padrão</button>
+                </div>
+                <div id="adm-workouts-list" style="display: flex; flex-direction: column; gap: 10px; padding-bottom: 50px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Senha Admin -->
+    <div id="modal-admin-auth" class="modal-overlay">
+        <div class="modal-card">
+            <h3 style="margin-top: 0; text-align: center; margin-bottom: 20px;">Acesso Treinador</h3>
+            <div class="input-group">
+                <label class="label">Senha Mestra</label>
+                <input type="password" id="admin-pass-input" class="input" placeholder="******">
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="app.closeAdminAuth()" class="btn" style="background: #EEE; color: #555;">Cancelar</button>
+                <button onclick="app.checkAdminAuth()" class="btn btn-primary">Entrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // CONFIGURAÇÃO FORNECIDA
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZc5IXA3PRIadz87sysrC_7lLZZG-7Izw",
+            authDomain: "app-corrida-d3568.firebaseapp.com",
+            projectId: "app-corrida-d3568",
+            storageBucket: "app-corrida-d3568.firebasestorage.app",
+            messagingSenderId: "690843260846",
+            appId: "1:690843260846:web:e32be21759c9e813bada3f",
+            measurementId: "G-26RNCCZYED"
+        };
+
+        const appInit = initializeApp(firebaseConfig);
+        const auth = getAuth(appInit);
+        const db = getFirestore(appInit);
+        const collectionName = 'expliq_users_v2'; // Versão nova da coleção
+
+        // Constante da Senha Admin (Simples para este projeto)
+        const ADMIN_MASTER_PASS = "admin123"; 
+
+        // Refs
+        const getUsersColl = () => collection(db, collectionName);
+        const getUserDoc = (email) => doc(db, collectionName, email.replace(/[^a-zA-Z0-9]/g, '_'));
+
+        window.app = {
+            currentUser: null,
+            editEmail: null,
+            unsubscribeUser: null,
+            unsubscribeAdmin: null,
+
+            init: async () => {
+                try {
+                    await signInAnonymously(auth);
+                } catch (e) {
+                    console.log("Auth anonima necessária.");
+                }
+                app.switchScreen('view-login');
+            },
+
+            switchScreen: (id) => {
+                document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+                document.getElementById(id).classList.add('active');
+            },
+
+            // ADMIN AUTH MODAL
+            showAdminAuth: () => {
+                document.getElementById('modal-admin-auth').classList.add('active');
+                document.getElementById('admin-pass-input').value = '';
+            },
+            closeAdminAuth: () => {
+                document.getElementById('modal-admin-auth').classList.remove('active');
+            },
+            checkAdminAuth: () => {
+                const pass = document.getElementById('admin-pass-input').value;
+                if(pass === ADMIN_MASTER_PASS) {
+                    app.closeAdminAuth();
+                    app.goToAdmin();
+                } else {
+                    alert("Senha incorreta!");
+                }
+            },
+
+            goToLogin: () => { document.getElementById('login-error').style.display = 'none'; app.switchScreen('view-login'); },
+            goToRegister: () => app.switchScreen('view-register'),
+            
+            goToAdmin: () => {
+                app.switchScreen('view-admin');
+                if (app.unsubscribeAdmin) app.unsubscribeAdmin();
+                
+                app.unsubscribeAdmin = onSnapshot(getUsersColl(), (snapshot) => {
+                    const list = document.getElementById('admin-list');
+                    list.innerHTML = '';
+                    if(snapshot.empty) { list.innerHTML = '<p style="text-align:center; color:#AAA;">Nenhum aluno.</p>'; return; }
+                    
+                    snapshot.forEach(docSnap => {
+                        const u = docSnap.data();
+                        const status = u.active ? '<span style="color:var(--green); font-weight:700; font-size:12px;">ATIVO</span>' : '<span style="color:var(--orange); font-weight:700; font-size:12px;">PENDENTE</span>';
+                        const div = document.createElement('div');
+                        div.className = 'card';
+                        div.style.display = 'flex'; div.style.justifyContent = 'space-between'; div.style.alignItems = 'center'; div.style.cursor = 'pointer';
+                        div.innerHTML = `<div><h4 style="margin:0;">${u.name}</h4><p style="margin:0; font-size:12px; color:#888;">${u.email}</p></div>${status}`;
+                        div.onclick = () => app.openEditor(u);
+                        list.appendChild(div);
+                    });
+                });
+            },
+            
+            logout: () => {
+                app.currentUser = null;
+                if (app.unsubscribeUser) app.unsubscribeUser();
+                if (app.unsubscribeAdmin) app.unsubscribeAdmin();
+                document.querySelectorAll('input').forEach(i => i.value = '');
+                app.switchScreen('view-login');
+            },
+
+            nav: (tab) => {
+                document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+                document.getElementById('tab-' + tab).classList.remove('hidden');
+                document.querySelectorAll('.nav-item').forEach(el => {
+                    el.classList.remove('active');
+                    if (el.dataset.tab === tab) el.classList.add('active');
+                });
+            },
+
+            // LOGIC
+            handleRegister: async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('btn-reg');
+                btn.classList.add('loading');
+                const name = document.getElementById('reg-name').value;
+                const email = document.getElementById('reg-email').value.toLowerCase();
+                const pass = document.getElementById('reg-pass').value;
+
+                const newUser = {
+                    name, email, pass,
+                    active: false,
+                    race: { name: '', date: '' },
+                    workouts: Array(20).fill({ title: '', desc: '', done: false }),
+                    avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${name}`
+                };
+
+                try {
+                    await setDoc(getUserDoc(email), newUser);
+                    app.switchScreen('view-pending');
+                } catch (err) {
+                    alert('Erro ao cadastrar. Verifique sua conexão.');
+                } finally {
+                    btn.classList.remove('loading');
+                }
+            },
+
+            handleLogin: async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('btn-login');
+                const errDiv = document.getElementById('login-error');
+                btn.innerText = 'Carregando...';
+                errDiv.style.display = 'none';
+                
+                const email = document.getElementById('log-email').value.toLowerCase();
+                const pass = document.getElementById('log-pass').value;
+
+                try {
+                    const docSnap = await getDoc(getUserDoc(email));
+                    
+                    if (docSnap.exists()) {
+                        const user = docSnap.data();
+                        if (user.pass === pass) {
+                            app.currentUser = user;
+                            
+                            if(app.unsubscribeUser) app.unsubscribeUser();
+                            app.unsubscribeUser = onSnapshot(getUserDoc(email), (doc) => {
+                                if(doc.exists()) {
+                                    app.currentUser = doc.data();
+                                    if(document.getElementById('view-app').classList.contains('active')) app.loadAppUI();
+                                    if(app.currentUser.active && document.getElementById('view-pending').classList.contains('active')) {
+                                        app.loadAppUI();
+                                        app.switchScreen('view-app');
+                                    }
+                                }
+                            });
+
+                            if (user.active) {
+                                app.loadAppUI();
+                                app.switchScreen('view-app');
+                            } else {
+                                app.switchScreen('view-pending');
+                            }
+                        } else {
+                            errDiv.innerText = 'Senha incorreta.';
+                            errDiv.style.display = 'block';
+                        }
+                    } else {
+                        errDiv.innerText = 'Usuário não encontrado.';
+                        errDiv.style.display = 'block';
+                    }
+                } catch (err) {
+                    errDiv.innerText = 'Erro de conexão.';
+                    errDiv.style.display = 'block';
+                } finally {
+                    btn.innerText = 'ENTRAR';
+                }
+            },
+
+            loadAppUI: () => {
+                const u = app.currentUser;
+                document.getElementById('user-name').innerText = u.name;
+                document.getElementById('user-avatar-home').src = u.avatar;
+                document.getElementById('user-avatar-profile').src = u.avatar;
+                document.getElementById('profile-name').innerText = u.name;
+                
+                document.getElementById('app-race').innerText = u.race.name || 'Aguardando...';
+                let d = 'DATA INDEFINIDA';
+                if(u.race.date) d = u.race.date.split('-').reverse().join('/');
+                document.getElementById('app-date').innerText = d;
+
+                const container = document.getElementById('workouts-container');
+                container.innerHTML = '';
+                let doneCount = 0;
+                const total = u.workouts.length || 20;
+
+                u.workouts.forEach((w, i) => {
+                    if (w.done) doneCount++;
+                    const isNext = !w.done && (i === 0 || u.workouts[i-1].done);
+                    if (!w.title) return; 
+
+                    let html = '';
+                    if (w.done) {
+                        html = `<div class="workout done"><div class="w-icon"><i class="fa-solid fa-check"></i></div><div class="w-card" style="display:flex; justify-content:space-between;"><span style="text-decoration: line-through; color: #AAA;">${w.title}</span><span style="color:var(--green); font-size:10px; font-weight:700;">FEITO</span></div></div>`;
+                    } else if (isNext) {
+                        html = `<div class="workout active"><div class="w-icon">${i+1}</div><div class="w-card" style="border-left:4px solid var(--primary);"><span style="color:var(--primary); font-size:10px; font-weight:700;">HOJE</span><h4 style="margin:5px 0;">${w.title}</h4><p style="font-size:12px; color:#888; margin-bottom:15px;">${w.desc}</p><button onclick="app.finishWorkout(${i})" class="btn btn-primary" style="padding:10px; font-size:12px;">CONCLUIR</button></div></div>`;
+                    } else {
+                        html = `<div class="workout" style="opacity:0.5;"><div class="w-icon">${i+1}</div><div class="w-card"><h4 style="margin:0; font-size:14px;">${w.title}</h4><span style="font-size:10px;">Bloqueado</span></div></div>`;
+                    }
+                    container.innerHTML += html;
+                });
+
+                const pct = Math.round((doneCount / total) * 100);
+                const remaining = total - doneCount;
+                document.getElementById('app-progress').style.width = pct + '%';
+                document.getElementById('app-remaining').innerText = `Faltam ${remaining} treinos`;
+                document.getElementById('app-percent').innerText = `${pct}% Concluído`;
+            },
+
+            finishWorkout: async (i) => {
+                app.currentUser.workouts[i].done = true;
+                app.loadAppUI();
+                await updateDoc(getUserDoc(app.currentUser.email), { workouts: app.currentUser.workouts });
+            },
+
+            // ADMIN
+            openEditor: (user) => {
+                app.editEmail = user.email;
+                document.getElementById('adm-name-display').innerText = user.name;
+                document.getElementById('adm-active').checked = user.active;
+                document.getElementById('adm-race').value = user.race.name || '';
+                document.getElementById('adm-date').value = user.race.date || '';
+                
+                const list = document.getElementById('adm-workouts-list');
+                list.innerHTML = '';
+                const workouts = user.workouts || [];
+                for(let i=0; i<20; i++) {
+                    const w = workouts[i] || {title:'', desc:'', done:false};
+                    list.innerHTML += `<div style="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px;"><span style="font-weight:700; color:#AAA; font-size:12px; margin-top:5px;">${i+1}</span><div style="flex:1;"><input type="text" class="edt-t" value="${w.title}" placeholder="Título" style="width:100%; border:none; font-weight:700; font-size:12px; margin-bottom:5px; outline:none;"><input type="text" class="edt-d" value="${w.desc}" placeholder="Detalhes..." style="width:100%; border:none; font-size:11px; color:#666; outline:none;"></div></div>`;
+                }
+                document.getElementById('admin-editor').style.transform = 'translateY(0)';
+            },
+
+            closeEditor: () => {
+                document.getElementById('admin-editor').style.transform = 'translateY(100%)';
+            },
+
+            saveAdminData: async () => {
+                const email = app.editEmail;
+                const active = document.getElementById('adm-active').checked;
+                const raceName = document.getElementById('adm-race').value;
+                const raceDate = document.getElementById('adm-date').value;
+                const ts = document.querySelectorAll('.edt-t');
+                const ds = document.querySelectorAll('.edt-d');
+                const workouts = [];
+                ts.forEach((t, i) => {
+                    workouts.push({ title: t.value, desc: ds[i].value, done: false });
+                });
+
+                await updateDoc(getUserDoc(email), { active, race: { name: raceName, date: raceDate }, workouts });
+                alert('Salvo!');
+                app.closeEditor();
+            },
+
+            fillDefaults: () => {
+                const ts = document.querySelectorAll('.edt-t');
+                const ds = document.querySelectorAll('.edt-d');
+                const tpls = [{t:'Caminhada Leve', d:'30 min Z1'}, {t:'Trote 3km', d:'Ritmo Confortável'}, {t:'Tiros', d:'10x400m forte'}, {t:'Longo', d:'5km simulação'}];
+                ts.forEach((t, i) => {
+                    t.value = tpls[i % tpls.length].t;
+                    ds[i].value = tpls[i % tpls.length].d;
+                });
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', app.init);
+    </script>
+</body>
+</html>
