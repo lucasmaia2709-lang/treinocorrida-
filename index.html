@@ -23,20 +23,22 @@
         body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: var(--bg); color: var(--dark); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
         /* Telas */
-        .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg); display: none; flex-direction: column; overflow-y: auto; }
+        .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg); display: none; flex-direction: column; overflow-y: auto; z-index: 10; }
         .screen.active { display: flex; animation: fadeIn 0.3s ease-out; }
         .screen.white-bg { background-color: var(--white); }
 
-        /* Painéis Admin (Fixed) */
+        /* Painéis Admin (FIXED) */
         .admin-panel { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background-color: var(--bg); z-index: 300; 
+            background-color: var(--bg); z-index: 500; 
             transform: translateX(100%); transition: transform 0.3s ease; 
-            display: flex; flex-direction: column; visibility: hidden;
+            display: none; flex-direction: column;
         }
-        .admin-panel.active { transform: translateX(0); visibility: visible; }
-        #admin-user-detail { z-index: 300; }
-        #admin-race-editor { z-index: 310; }
+        .admin-panel.active { transform: translateX(0); display: flex; }
+        
+        /* Z-Indexes */
+        #admin-user-detail { z-index: 500; }
+        #admin-race-editor { z-index: 510; }
 
         /* Inputs */
         .input-group { margin-bottom: 20px; text-align: left; width: 100%; }
@@ -49,12 +51,11 @@
         .btn-primary { background-color: var(--primary); color: var(--white); box-shadow: 0 4px 20px rgba(94, 92, 230, 0.4); }
         .btn-primary:active { transform: scale(0.98); }
         .btn-text { background: none; color: var(--primary); text-transform: none; padding: 10px; border: none; font-weight: bold; cursor: pointer; font-family: inherit; font-size: 14px; }
-        
         .btn-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: none; cursor: pointer; background: #F2F2F7; color: var(--dark); transition: 0.2s; }
         .btn-icon.active { background: var(--primary); color: white; }
 
         /* Cards */
-        .card { background: var(--white); padding: 24px; border-radius: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.05); margin-bottom: 20px; width: 100%; }
+        .card { background: var(--white); padding: 24px; border-radius: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.05); margin-bottom: 20px; width: 100%; position: relative; }
         .quote-card { background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); border-left: 4px solid var(--primary); padding: 20px; border-radius: 16px; margin-bottom: 20px; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
         .quote-icon { position: absolute; top: -10px; right: 20px; font-size: 40px; color: rgba(94, 92, 230, 0.1); }
 
@@ -81,25 +82,28 @@
         .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; border-radius: 50%; transition: .4s; }
         input:checked + .slider { background-color: var(--green); }
         input:checked + .slider:before { transform: translateX(22px); }
-
-        /* Logout & Modals */
-        .btn-logout-header { width: 40px; height: 40px; border-radius: 50%; background: var(--white); color: var(--red); border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; }
-        .btn-logout-header:active { background: #FFF5F5; }
-
-        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index: 400; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        /* Modals */
+        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index: 400; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
+        .modal-overlay.active { display: flex; opacity: 1; pointer-events: auto; }
         .modal-card { background: white; width: 90%; max-width: 350px; border-radius: 24px; padding: 30px; transform: translateY(20px); transition: transform 0.3s; box-shadow: 0 20px 50px rgba(0,0,0,0.2); display: flex; flex-direction: column; max-height: 90vh; overflow-y: auto; }
         .modal-overlay.active .modal-card { transform: translateY(0); }
 
         /* Upload Avatar */
-        .avatar-wrapper { width: 100%; height: 100%; position: relative; background: #EEE; display: flex; align-items: center; justify-content: center; color: #AAA; font-size: 24px; }
+        .avatar-wrapper { width: 100%; height: 100%; position: relative; background: #EEE; display: flex; align-items: center; justify-content: center; color: #AAA; font-size: 24px; overflow: hidden; border-radius: 50%; }
         .avatar-wrapper img { width: 100%; height: 100%; object-fit: cover; display: none; } 
         .avatar-wrapper img.show { display: block; }
+        .avatar-wrapper i { display: block; }
         .avatar-wrapper i.hide { display: none; }
+        
         .avatar-upload-container { width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin: 0 auto 20px; position: relative; border: 4px solid var(--bg); cursor: pointer; background: #EEE; display: flex; align-items: center; justify-content: center; color: #AAA; font-size: 30px; }
         .avatar-upload-container img { width: 100%; height: 100%; object-fit: cover; display: none; }
         .avatar-upload-container img.show { display: block; }
         .avatar-overlay { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.5); color: white; font-size: 10px; text-align: center; padding: 4px; font-weight: 700; }
+
+        /* Editor Admin FIXED */
+        #admin-editor { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 300; transform: translateY(100%); transition: transform 0.3s ease; display: flex; flex-direction: column; visibility: hidden; }
+        #admin-editor.active { transform: translateY(0); visibility: visible; }
 
         .loader { display: none; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; margin-right: 10px; }
         .btn-primary.loading .loader { display: block; }
@@ -154,13 +158,10 @@
             <!-- Aba HOME -->
             <div id="tab-home" class="tab-content" style="padding: 24px;">
                 <div class="header" style="padding: 20px 0 30px; display:flex; justify-content:space-between; align-items:center;">
-                    <div>
-                        <h2 style="font-size: 26px; margin: 0;">Olá!</h2>
-                        <p id="user-name" style="color: var(--gray); font-size: 14px; margin: 0;">Atleta</p>
-                    </div>
+                    <div><h2 style="font-size: 26px; margin: 0;">Olá!</h2><p id="user-name" style="color: var(--gray); font-size: 14px; margin: 0;">Atleta</p></div>
                     <div style="display:flex; gap:10px; align-items:center;">
-                        <button onclick="app.logout()" class="btn-logout-header" title="Sair"><i class="fa-solid fa-right-from-bracket"></i></button>
-                        <div onclick="app.showProfileSettings()" style="width: 45px; height: 45px; background: #DDD; border-radius: 50%; overflow: hidden; cursor: pointer; border: 2px solid var(--white); box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                        <button onclick="app.logout()" style="width:40px; height:40px; border-radius:50%; background:white; color:var(--red); border:none; box-shadow:0 4px 10px rgba(0,0,0,0.05); cursor:pointer;"><i class="fa-solid fa-right-from-bracket"></i></button>
+                        <div onclick="app.showProfileSettings()" style="width: 45px; height: 45px; border-radius: 50%; overflow: hidden; cursor: pointer; border: 2px solid var(--white); box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
                             <div class="avatar-wrapper" id="avatar-wrapper-home"><i class="fa-solid fa-user"></i><img src="" alt="Avatar"></div>
                         </div>
                     </div>
@@ -179,11 +180,11 @@
                         </div>
                     </div>
                 </div>
-                <!-- Botão Novo Objetivo -->
-                <button onclick="app.showAddRaceModal()" style="background:white; border: 1px dashed var(--primary); color: var(--primary); margin-bottom: 20px; width: 100%; padding: 12px; border-radius: 16px; font-weight: 700; cursor: pointer;">+ DEFINIR NOVO OBJETIVO</button>
-                
                 <!-- Frase -->
                 <div id="quote-section" class="quote-card"><i class="fa-solid fa-quote-right quote-icon"></i><p id="daily-quote" style="font-size: 14px; color: var(--dark); font-weight: 500; font-style: italic; line-height: 1.6;">"Carregando inspiração..."</p><p style="font-size: 10px; color: var(--gray); margin-top: 10px; text-transform: uppercase; font-weight: 700;">Motivação do Dia</p></div>
+                
+                <!-- Botão Novo Objetivo -->
+                <button onclick="app.showAddRaceModal()" style="background:white; border: 1px dashed var(--primary); color: var(--primary); margin-top: 20px; width: 100%; padding: 12px; border-radius: 16px; font-weight: 700; cursor: pointer;">+ DEFINIR NOVO OBJETIVO</button>
             </div>
             <!-- TREINOS -->
             <div id="tab-workouts" class="tab-content hidden" style="padding: 24px;">
@@ -196,12 +197,12 @@
                 <h2 id="profile-name" style="margin: 0;">Nome</h2>
                 <p style="color: var(--primary); font-size: 12px; font-weight: 700; background: rgba(94,92,230,0.1); display: inline-block; padding: 5px 15px; border-radius: 20px; margin-top: 10px;">ALUNO ATIVO</p>
                 
-                <!-- HISTÓRICO -->
+                <!-- HISTÓRICO DE CONQUISTAS -->
                 <div style="margin-top: 40px; text-align: left;">
                     <h3 style="font-size: 14px; color: var(--gray); text-transform: uppercase; font-weight: 700; margin-bottom: 20px;">Histórico de Conquistas</h3>
                     <div id="profile-history-list" style="display: flex; flex-direction: column; gap: 15px;"></div>
                 </div>
-                
+
                 <button onclick="app.showProfileSettings()" class="btn" style="background: var(--white); border: 1px solid #EEE; color: var(--gray); margin-top: 30px;">Editar Perfil</button>
             </div>
         </div>
@@ -213,7 +214,7 @@
         </div>
     </div>
 
-    <!-- 5. ADMIN: DASHBOARD -->
+    <!-- 5. ADMIN -->
     <div id="view-admin" class="screen" style="background: var(--bg);">
         <div class="header" style="background: var(--white); box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 20px 24px;">
             <h3>Painel Treinador</h3>
@@ -223,16 +224,14 @@
                 <button onclick="app.goToLogin()" style="border: none; background: none; color: var(--red); font-weight: bold; cursor: pointer; font-size: 12px;">Sair</button>
             </div>
         </div>
-        <!-- Tab: Alunos -->
         <div id="admin-content-users" style="padding: 24px; overflow-y: auto; flex: 1;"><div id="admin-list" style="display: flex; flex-direction: column; gap: 10px;"></div></div>
-        <!-- Tab: Frases -->
         <div id="admin-content-quotes" class="hidden" style="padding: 24px; overflow-y: auto; flex: 1;">
             <div class="card"><div class="input-group" style="margin-bottom: 10px;"><label class="label">Nova Frase</label><textarea id="new-quote-text" class="input" style="resize: none; height: 80px;"></textarea></div><button onclick="app.addQuote()" class="btn btn-primary" style="padding: 12px; font-size: 14px;">ADICIONAR FRASE</button></div>
             <div id="admin-quotes-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
         </div>
     </div>
 
-    <!-- 6. ADMIN: PERFIL DO ALUNO -->
+    <!-- 6. ADMIN: PERFIL DO ALUNO (NÍVEL 2) -->
     <div id="admin-user-detail" class="admin-panel">
         <div style="padding: 20px; background: var(--white); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
             <button onclick="app.closeUserDetail()" style="border: none; background: none; font-size: 20px; cursor: pointer;"><i class="fa-solid fa-chevron-down"></i></button>
@@ -252,7 +251,7 @@
         </div>
     </div>
 
-    <!-- 7. ADMIN: EDITOR DE TREINOS -->
+    <!-- 7. ADMIN: EDITOR DE TREINOS (NÍVEL 3) -->
     <div id="admin-race-editor" class="admin-panel">
         <div style="padding: 20px; background: var(--white); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
             <button onclick="app.closeRaceEditor()" style="border: none; background: none; font-size: 20px; cursor: pointer;"><i class="fa-solid fa-chevron-left"></i></button>
@@ -264,6 +263,7 @@
                 <div class="input-group"><label class="label">Nome da Prova</label><input type="text" id="adm-race-name" class="input" placeholder="Ex: Maratona"></div>
                 <div class="input-group" style="margin: 0;"><label class="label">Data</label><input type="date" id="adm-race-date" class="input"></div>
             </div>
+            
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <h4 style="margin: 0; font-size: 12px; color: var(--gray);">LISTA DE TREINOS</h4>
                 <div>
@@ -286,32 +286,43 @@
         <div class="modal-card"><h3 style="margin-top: 0; text-align: center; margin-bottom: 20px;">Novo Objetivo</h3><div class="input-group"><label class="label">Nome da Prova</label><input type="text" id="new-race-name" class="input" placeholder="Ex: Corrida 5K"></div><div class="input-group"><label class="label">Data</label><input type="date" id="new-race-date" class="input"></div><div style="display: flex; gap: 10px;"><button onclick="app.closeAddRaceModal()" class="btn" style="background: #EEE; color: #555;">Cancelar</button><button onclick="app.saveStudentRace()" class="btn btn-primary">Criar</button></div></div>
     </div>
 
+    <!-- FIREBASE LÓGICA -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, updateDoc, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- CONFIG ---
         const geminiApiKey = ""; 
-        const firebaseConfig = { apiKey: "AIzaSyAZc5IXA3PRIadz87sysrC_7lLZZG-7Izw", authDomain: "app-corrida-d3568.firebaseapp.com", projectId: "app-corrida-d3568", storageBucket: "app-corrida-d3568.firebasestorage.app", messagingSenderId: "690843260846", appId: "1:690843260846:web:e32be21759c9e813bada3f", measurementId: "G-26RNCCZYED" };
+        
+        // SUAS CHAVES DO FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyAZc5IXA3PRIadz87sysrC_7lLZZG-7Izw",
+            authDomain: "app-corrida-d3568.firebaseapp.com",
+            projectId: "app-corrida-d3568",
+            storageBucket: "app-corrida-d3568.firebasestorage.app",
+            messagingSenderId: "690843260846",
+            appId: "1:690843260846:web:e32be21759c9e813bada3f",
+            measurementId: "G-26RNCCZYED"
+        };
 
         let appInit, auth, db; let useMock = false;
         try { appInit = initializeApp(firebaseConfig); auth = getAuth(appInit); db = getFirestore(appInit); } catch (e) { useMock = true; }
 
-        const usersColl = 'expliq_users_v8'; // Nova versão para garantir dados limpos
+        const usersColl = 'expliq_users_v8'; // Nova Versão com histórico
         const quotesColl = 'expliq_quotes_v8';
         const getRef = (c) => useMock ? null : collection(db, c);
         const getDocRef = (c, k) => useMock ? null : doc(db, c, k.replace(/[^a-zA-Z0-9]/g, '_'));
 
         window.app = {
-            currentUser: null, editEmail: null, editUser: null, editRaceIndex: null, unsubscribeUser: null, unsubscribeAdmin: null, unsubscribeQuotes: null, mockDB: [],
-            mockQuotes: ["O sucesso é a soma de pequenos esforços.", "Corra hoje, vença amanhã."],
-            
+            currentUser: null, editEmail: null, editUser: null, editRaceIndex: null, 
+            unsubscribeUser: null, unsubscribeAdmin: null, unsubscribeQuotes: null, mockDB: [],
+            mockQuotes: ["Persistência é o caminho do êxito.", "Corra hoje, vença amanhã."],
+
             setAvatar: (wId, url) => {
                 const w = document.getElementById(wId); if(!w)return;
                 const i = w.querySelector('img'), ic = w.querySelector('i');
-                if(url && url.length>20) { i.src=url; i.classList.add('show'); if(ic)ic.classList.add('hide'); }
-                else { i.src=''; i.classList.remove('show'); if(ic)ic.classList.remove('hide'); }
+                if(url && url.length>20) { i.src=url; i.style.display='block'; if(ic)ic.style.display='none'; }
+                else { i.src=''; i.style.display='none'; if(ic)ic.style.display='block'; }
             },
             init: async () => {
                 if(!useMock) { try{ await signInAnonymously(auth); }catch(e){} }
@@ -321,16 +332,37 @@
             saveLocal: () => { if(useMock) localStorage.setItem('expliq_local_db_v8', JSON.stringify(app.mockDB)); },
             switchScreen: (id) => { document.querySelectorAll('.screen').forEach(e=>e.classList.remove('active')); document.getElementById(id).classList.add('active'); },
             
-            // Profile
-            showProfileSettings: () => { const u = app.currentUser; document.getElementById('edit-profile-name').value = u.name; app.setAvatar('avatar-wrapper-edit', u.avatar); document.getElementById('modal-profile-settings').style.display='flex'; setTimeout(()=>document.getElementById('modal-profile-settings').classList.add('active'),10); },
-            closeProfileSettings: () => { document.getElementById('modal-profile-settings').classList.remove('active'); setTimeout(()=>document.getElementById('modal-profile-settings').style.display='none',300); },
-            handleAvatarPreview: (input) => { if(input.files && input.files[0]) { const r = new FileReader(); r.onload=(e)=>{ const img=new Image(); img.src=e.target.result; img.onload=()=>{ const c=document.createElement('canvas'),x=c.getContext('2d'); let w=img.width,h=img.height,m=150; if(w>h){if(w>m){h*=m/w;w=m}}else{if(h>m){w*=m/h;h=m}} c.width=w;c.height=h; x.drawImage(img,0,0,w,h); app.setAvatar('avatar-wrapper-edit',c.toDataURL('image/jpeg',0.7)); }}; r.readAsDataURL(input.files[0]); } },
-            saveProfileSettings: async () => { const n=document.getElementById('edit-profile-name').value; const i=document.querySelector('#avatar-wrapper-edit img'); const a=i.classList.contains('show')?i.src:null; app.currentUser.name=n; app.currentUser.avatar=a; if(useMock){const idx=app.mockDB.findIndex(u=>u.email===app.currentUser.email);if(idx>-1)app.mockDB[idx]=app.currentUser;app.saveLocal();} app.loadAppUI(); app.closeProfileSettings(); if(!useMock) await updateDoc(getDocRef(usersColl, app.currentUser.email), {name:n, avatar:a}); },
-
-            // Auth
+            // Auth & Profile
             goToLogin: () => { document.getElementById('login-error').style.display='none'; app.switchScreen('view-login'); },
             goToRegister: () => app.switchScreen('view-register'),
             logout: () => { app.currentUser=null; document.querySelectorAll('input').forEach(i=>i.value=''); app.switchScreen('view-login'); },
+            showProfileSettings: () => { const u = app.currentUser; document.getElementById('edit-profile-name').value = u.name; app.setAvatar('avatar-wrapper-edit', u.avatar); document.getElementById('modal-profile-settings').style.display='flex'; setTimeout(()=>document.getElementById('modal-profile-settings').classList.add('active'),10); },
+            closeProfileSettings: () => { document.getElementById('modal-profile-settings').classList.remove('active'); setTimeout(()=>document.getElementById('modal-profile-settings').style.display='none',300); },
+            handleAvatarPreview: (input) => { if(input.files && input.files[0]) { const r = new FileReader(); r.onload=(e)=>{ const img=new Image(); img.src=e.target.result; img.onload=()=>{ const c=document.createElement('canvas'),x=c.getContext('2d'); let w=img.width,h=img.height,m=150; if(w>h){if(w>m){h*=m/w;w=m}}else{if(h>m){w*=m/h;h=m}} c.width=w;c.height=h; x.drawImage(img,0,0,w,h); app.setAvatar('avatar-wrapper-edit',c.toDataURL('image/jpeg',0.7)); }}; r.readAsDataURL(input.files[0]); } },
+            
+            // FIX: CORREÇÃO DE PERSISTÊNCIA DO AVATAR
+            saveProfileSettings: async () => { 
+                const n = document.getElementById('edit-profile-name').value;
+                const imgEl = document.querySelector('#avatar-wrapper-edit img');
+                // Pega o SRC apenas se a imagem estiver visível (classe 'show' ou display block)
+                const a = (imgEl.style.display === 'block') ? imgEl.src : null;
+                
+                app.currentUser.name = n;
+                app.currentUser.avatar = a;
+                
+                // Atualiza MockDB se estiver offline
+                if(useMock) {
+                    const idx = app.mockDB.findIndex(u => u.email === app.currentUser.email);
+                    if(idx > -1) app.mockDB[idx] = app.currentUser;
+                    app.saveLocal();
+                }
+                
+                app.loadAppUI();
+                app.closeProfileSettings();
+                
+                if (!useMock) await updateDoc(getDocRef(usersColl, app.currentUser.email), { name: n, avatar: a });
+            },
+
             handleRegister: async (e) => { e.preventDefault(); const btn=document.getElementById('btn-reg'); btn.classList.add('loading'); const name=document.getElementById('reg-name').value, email=document.getElementById('reg-email').value.toLowerCase(), pass=document.getElementById('reg-pass').value; const newUser={name,email,pass,active:false,races:[],avatar:null}; if(!useMock){try{await setDoc(getDocRef(usersColl,email),newUser);}catch(e){useMock=true;app.mockDB.push(newUser);app.saveLocal();}}else{app.mockDB.push(newUser);app.saveLocal();} btn.classList.remove('loading'); app.switchScreen('view-pending'); },
             handleLogin: async (e) => { e.preventDefault(); const btn=document.getElementById('btn-login'); const err=document.getElementById('login-error'); btn.classList.add('loading'); err.style.display='none'; const email=document.getElementById('log-email').value.toLowerCase(), pass=document.getElementById('log-pass').value; let user=null; if(!useMock){try{const s=await getDoc(getDocRef(usersColl,email));if(s.exists())user=s.data();}catch(e){}} if(!user)user=app.mockDB.find(u=>u.email===email); btn.classList.remove('loading'); if(user && user.pass===pass){ app.currentUser=user; if(!useMock){if(app.unsubscribeUser)app.unsubscribeUser();app.unsubscribeUser=onSnapshot(getDocRef(usersColl,email),(d)=>{if(d.exists()){app.currentUser=d.data();if(document.getElementById('view-app').classList.contains('active'))app.loadAppUI();if(app.currentUser.active && document.getElementById('view-pending').classList.contains('active')){app.loadAppUI();app.switchScreen('view-app');}}});} app.loadRandomQuote(); user.active?(app.loadAppUI(),app.switchScreen('view-app')):app.switchScreen('view-pending'); }else{err.innerText='Credenciais inválidas.';err.style.display='block';} },
             
@@ -363,7 +395,8 @@
                     hList.innerHTML = '';
                     if(races.length===0) hList.innerHTML='<p style="text-align:center;font-size:12px;color:#AAA;">Sem histórico.</p>';
                     [...races].reverse().forEach(r=>{
-                        const tW=r.workouts?.length||0; const dW=r.workouts?r.workouts.filter(k=>k.done).length:0; const p=tW>0?Math.round((dW/tW)*100):0; const isC=p===100;
+                        const tW = r.workouts?.length||0; const dW = r.workouts ? r.workouts.filter(k=>k.done).length : 0;
+                        const p = tW>0?Math.round((dW/tW)*100):0; const isC=p===100;
                         const ic=isC?'fa-medal':'fa-person-running'; const clr=isC?'#FBC02D':'#CCC';
                         hList.innerHTML+=`<div class="card" style="padding:15px; margin-bottom:10px; display:flex; align-items:center; gap:15px;"><div style="width:40px; height:40px; background:${isC?'#FFF9C4':'#F5F5F5'}; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; color:${clr};"><i class="fa-solid ${ic}"></i></div><div style="flex:1;"><h4 style="margin:0; font-size:14px; color:var(--dark);">${r.name}</h4><p style="margin:0; font-size:10px; color:var(--gray);">${r.date||''}</p></div><span style="font-size:12px; font-weight:bold; color:${isC?'var(--green)':'var(--primary)'};">${p}%</span></div>`;
                     });
@@ -376,12 +409,15 @@
             nav: (t) => { document.querySelectorAll('.tab-content').forEach(e=>e.classList.add('hidden')); document.getElementById('tab-'+t).classList.remove('hidden'); document.querySelectorAll('.nav-item').forEach(e=>{e.classList.remove('active'); if(e.dataset.tab===t)e.classList.add('active');}); },
             loadRandomQuote: async () => { if(geminiApiKey){ try{ const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${geminiApiKey}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:"Frase curta motivacional corrida."}]}]})}); const d=await r.json(); const q=d.candidates?.[0]?.content?.parts?.[0]?.text?.trim(); if(q){ document.getElementById('daily-quote').innerText=`"${q}"`; return; } }catch(e){} } if(!useMock){onSnapshot(getRef(quotesColl),(s)=>{if(!s.empty){const a=[];s.forEach(d=>a.push(d.data().text));if(a.length>0)document.getElementById('daily-quote').innerText=`"${a[Math.floor(Math.random()*a.length)]}"`;}});} else document.getElementById('daily-quote').innerText=`"${app.mockQuotes[Math.floor(Math.random()*app.mockQuotes.length)]}"`; },
 
-            // ADD RACE
+            // STUDENT ADD RACE
             showAddRaceModal: () => { document.getElementById('modal-add-race').style.display='flex'; setTimeout(()=>document.getElementById('modal-add-race').classList.add('active'),10); document.getElementById('new-race-name').value=''; document.getElementById('new-race-date').value=''; },
             closeAddRaceModal: () => { document.getElementById('modal-add-race').classList.remove('active'); setTimeout(()=>document.getElementById('modal-add-race').style.display='none',300); },
             saveStudentRace: async () => {
-                const n=document.getElementById('new-race-name').value; const d=document.getElementById('new-race-date').value; if(!n)return alert("Nome obrigatório");
-                const races = app.currentUser.races || []; races.push({name:n, date:d, workouts:[]}); app.currentUser.races = races;
+                const n=document.getElementById('new-race-name').value; const d=document.getElementById('new-race-date').value;
+                if(!n) return alert("Nome obrigatório");
+                const races = app.currentUser.races || [];
+                races.push({name:n, date:d, workouts:[]}); // Starts empty
+                app.currentUser.races = races;
                 app.loadAppUI(); app.closeAddRaceModal();
                 if(!useMock) await updateDoc(getDocRef(usersColl, app.currentUser.email), {races:races}); else app.saveLocal();
                 alert('Objetivo criado!');
@@ -401,19 +437,24 @@
                 } else { app.renderAdminList(app.mockDB); app.renderAdminQuotes(app.mockQuotes.map((q,i)=>({id:i,text:q}))); }
             },
             adminTab: (t) => { document.querySelectorAll('[id^="admin-content"]').forEach(e=>e.classList.add('hidden')); document.querySelectorAll('.btn-icon').forEach(e=>e.classList.remove('active')); document.getElementById('admin-content-'+t).classList.remove('hidden'); document.getElementById('adm-tab-'+t).classList.add('active'); },
-            
             renderAdminList: (users) => {
                 const l=document.getElementById('admin-list'); l.innerHTML='';
                 if(!users||users.length===0){ l.innerHTML='<p style="text-align:center; color:#AAA;">Vazio.</p>'; return; }
                 users.forEach(u=>{
-                    // Progress logic
-                    const races = u.races || []; const activeR = races.length>0?races[races.length-1]:null;
-                    const done = activeR?activeR.workouts.filter(w=>w.done).length:0; const total = activeR?(activeR.workouts.length||1):1;
-                    const pct = Math.round((done/total)*100); const rName = activeR?activeR.name:'Sem prova';
+                    // MODIFIED: Add progress bar to admin list
+                    const races = u.races || [];
+                    const activeR = races.length > 0 ? races[races.length-1] : null;
+                    const done = activeR ? activeR.workouts.filter(w=>w.done).length : 0;
+                    const total = activeR ? (activeR.workouts.length||1) : 1;
+                    const pct = Math.round((done/total)*100);
+                    const rName = activeR ? activeR.name : 'Sem prova';
 
                     const st = u.active ? '<span style="color:var(--green); font-weight:bold; font-size:10px;">ATIVO</span>' : '<span style="color:var(--orange); font-weight:bold; font-size:10px;">PENDENTE</span>';
                     const d=document.createElement('div'); d.className='card'; d.style.cssText='display:flex; flex-direction:column; gap:10px; cursor:pointer;';
-                    d.innerHTML=`<div style="display:flex; justify-content:space-between; align-items:center; width:100%;"><div><h4 style="margin:0;">${u.name}</h4><p style="margin:0; font-size:12px; color:#888;">${u.email}</p></div>${st}</div><div style="width:100%;"><div style="display:flex; justify-content:space-between; font-size:10px; color:#AAA; margin-bottom:3px;"><span>${rName}</span><span>${done}/${total} (${pct}%)</span></div><div style="width:100%; height:4px; background:#F2F2F7; border-radius:2px;"><div style="width:${pct}%; height:100%; background:var(--primary);"></div></div></div>`;
+                    d.innerHTML=`
+                        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;"><div><h4 style="margin:0;">${u.name}</h4><p style="margin:0; font-size:12px; color:#888;">${u.email}</p></div>${st}</div>
+                        <div style="width:100%;"><div style="display:flex; justify-content:space-between; font-size:10px; color:#AAA; margin-bottom:3px;"><span>${rName}</span><span>${done}/${total} (${pct}%)</span></div><div style="width:100%; height:4px; background:#F2F2F7; border-radius:2px;"><div style="width:${pct}%; height:100%; background:var(--primary);"></div></div></div>
+                    `;
                     d.onclick=()=>app.openUser(u); l.appendChild(d);
                 });
             },
@@ -421,12 +462,26 @@
                 const l=document.getElementById('admin-quotes-list'); l.innerHTML='';
                 qs.forEach(q=>{ l.innerHTML+=`<div class="card" style="padding:15px; display:flex; justify-content:space-between; align-items:center;"><p style="margin:0; font-size:12px; font-style:italic;">"${q.text}"</p><button onclick="app.deleteQuote('${q.id}')" style="border:none; background:none; color:var(--red); cursor:pointer;"><i class="fa-solid fa-trash"></i></button></div>`; });
             },
+            // FIX: Delete Quote Function
             addQuote: async ()=>{ const t=document.getElementById('new-quote-text').value; if(!t)return; if(!useMock) await addDoc(getRef(quotesColl),{text:t,created:Date.now()}); else { app.mockQuotes.push(t); app.renderAdminQuotes(app.mockQuotes.map((q,i)=>({id:i,text:q}))); } document.getElementById('new-quote-text').value=''; },
-            deleteQuote: async (id)=>{ if(!useMock) await deleteDoc(doc(db,quotesCollName,id)); else alert("Apenas online."); },
-
+            deleteQuote: async (id)=>{ 
+                if(!useMock) {
+                    await deleteDoc(doc(db, quotesColl, id)); 
+                } else { 
+                    // Mock delete by index (id passed as index)
+                    const idx = parseInt(id);
+                    if (!isNaN(idx)) {
+                        app.mockQuotes.splice(idx, 1);
+                        app.renderAdminQuotes(app.mockQuotes.map((q,i)=>({id:i,text:q})));
+                    }
+                } 
+            },
+            
+            // Level 1: User Detail
             openUser: (u) => {
                 app.editEmail = u.email;
-                if(!useMock) getDoc(getDocRef(usersColl, u.email)).then(s=>{ if(s.exists()) app.renderUserDetail(s.data()); }); else app.renderUserDetail(app.mockDB.find(x=>x.email===u.email));
+                if(!useMock) getDoc(getDocRef(usersColl, u.email)).then(s=>{ if(s.exists()) app.renderUserDetail(s.data()); });
+                else app.renderUserDetail(app.mockDB.find(x=>x.email===u.email));
                 document.getElementById('admin-user-detail').classList.add('active');
             },
             renderUserDetail: (u) => {
@@ -443,15 +498,72 @@
                 });
             },
             closeUserDetail: () => document.getElementById('admin-user-detail').classList.remove('active'),
-            saveUserAccess: async () => { const a = document.getElementById('adm-detail-active').checked; if(!useMock) await updateDoc(getDocRef(usersColl, app.editEmail), {active:a}); else { const i=app.mockDB.findIndex(x=>x.email===app.editEmail); if(i>-1)app.mockDB[i].active=a; app.saveLocal(); app.renderAdminList(app.mockDB); } alert('Salvo!'); app.closeUserDetail(); },
+            saveUserAccess: async () => {
+                const a = document.getElementById('adm-detail-active').checked;
+                if(!useMock) await updateDoc(getDocRef(usersColl, app.editEmail), {active:a}); else { const i=app.mockDB.findIndex(x=>x.email===app.editEmail); if(i>-1)app.mockDB[i].active=a; app.saveLocal(); app.renderAdminList(app.mockDB); }
+                alert('Salvo!'); app.closeUserDetail();
+            },
             addRace: () => { if(!app.editUser.races) app.editUser.races=[]; app.editUser.races.push({name:'Nova Prova', date:'', workouts:[]}); app.openRace(app.editUser.races.length-1); },
             
-            openRace: (idx) => { app.editRaceIndex = idx; const r = app.editUser.races[idx]; document.getElementById('adm-race-name').value = r.name; document.getElementById('adm-race-date').value = r.date; app.renderWorkoutInputs(r.workouts); document.getElementById('admin-race-editor').classList.add('active'); },
+            // Level 2: Race Editor
+            openRace: (idx) => {
+                app.editRaceIndex = idx; const r = app.editUser.races[idx];
+                document.getElementById('adm-race-name').value = r.name; document.getElementById('adm-race-date').value = r.date;
+                app.renderWorkoutInputs(r.workouts);
+                document.getElementById('admin-race-editor').classList.add('active');
+            },
             closeRaceEditor: () => document.getElementById('admin-race-editor').classList.remove('active'),
-            renderWorkoutInputs: (wks) => { const l=document.getElementById('adm-workouts-list'); l.innerHTML=''; wks.forEach((w, i)=>{ const d=document.createElement('div'); d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px;"; d.innerHTML=`<span style="font-weight:700; color:#AAA; font-size:12px; margin-top:5px;">${i+1}</span><div style="flex:1;"><input class="edt-t" value="${w.title}" placeholder="Título" style="width:100%; border:none; font-weight:700; font-size:12px; margin-bottom:5px; outline:none;"><input class="edt-d" value="${w.desc}" placeholder="Detalhes..." style="width:100%; border:none; font-size:11px; color:#666; outline:none;"></div><button onclick="this.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>`; l.appendChild(d); }); },
-            addWorkout: () => { const l=document.getElementById('adm-workouts-list'); const i=l.children.length+1; const d=document.createElement('div'); d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px;"; d.innerHTML=`<span style="font-weight:700; color:#AAA; font-size:12px; margin-top:5px;">${i}</span><div style="flex:1;"><input class="edt-t" placeholder="Título" style="width:100%; border:none; font-weight:700; font-size:12px; margin-bottom:5px; outline:none;"><input class="edt-d" placeholder="Detalhes..." style="width:100%; border:none; font-size:11px; color:#666; outline:none;"></div><button onclick="this.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>`; l.appendChild(d); },
-            saveRaceData: async () => { const rN=document.getElementById('adm-race-name').value; const rD=document.getElementById('adm-race-date').value; const ts=document.querySelectorAll('.edt-t'); const ds=document.querySelectorAll('.edt-d'); const w=[]; ts.forEach((t,i)=>w.push({title:t.value, desc:ds[i].value, done:false})); app.editUser.races[app.editRaceIndex] = { name:rN, date:rD, workouts:w }; if(!useMock) await updateDoc(getDocRef(usersColl, app.editEmail), {races:app.editUser.races}); else { const idx=app.mockDB.findIndex(u=>u.email===app.editEmail); if(idx>-1) app.mockDB[idx].races=app.editUser.races; app.saveLocal(); } alert('Salvo!'); app.closeRaceEditor(); app.renderUserDetail(app.editUser); },
-            fillDefaults: () => { const l=document.getElementById('adm-workouts-list'); const tpls=[{t:'Caminhada Leve',d:'30 min Z1'},{t:'Trote 3km',d:'Ritmo Confortável'},{t:'Tiros',d:'10x400m forte'},{t:'Longo',d:'5km simulação'}]; for(let i=0; i<20; i++){ const t=tpls[i%tpls.length]; const d=document.createElement('div'); d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px;"; d.innerHTML=`<span style="font-weight:700; color:#AAA; font-size:12px; margin-top:5px;">${l.children.length+1}</span><div style="flex:1;"><input class="edt-t" value="${t.t}" style="width:100%; border:none; font-weight:700; font-size:12px; margin-bottom:5px; outline:none;"><input class="edt-d" value="${t.d}" style="width:100%; border:none; font-size:11px; color:#666; outline:none;"></div><button onclick="this.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>`; l.appendChild(d); } }
+            renderWorkoutInputs: (wks) => {
+                const l=document.getElementById('adm-workouts-list'); l.innerHTML='';
+                wks.forEach((w, i)=>{
+                    const d=document.createElement('div'); d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px;";
+                    d.innerHTML=`<span style="font-weight:700; color:#AAA; font-size:12px; margin-top:5px;">${i+1}</span><div style="flex:1;"><input class="edt-t" value="${w.title}" placeholder="Título" style="width:100%; border:none; font-weight:700; font-size:12px; margin-bottom:5px; outline:none;"><input class="edt-d" value="${w.desc}" placeholder="Detalhes..." style="width:100%; border:none; font-size:11px; color:#666; outline:none;"></div><button onclick="this.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>`;
+                    l.appendChild(d);
+                });
+            },
+            addWorkout: () => {
+                const l=document.getElementById('adm-workouts-list'); const i=l.children.length+1;
+                const d=document.createElement('div'); d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px;";
+                d.innerHTML=`<span style="font-weight:700; color:#AAA; font-size:12px; margin-top:5px;">${i}</span><div style="flex:1;"><input class="edt-t" placeholder="Título" style="width:100%; border:none; font-weight:700; font-size:12px; margin-bottom:5px; outline:none;"><input class="edt-d" placeholder="Detalhes..." style="width:100%; border:none; font-size:11px; color:#666; outline:none;"></div><button onclick="this.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>`;
+                l.appendChild(d);
+            },
+            saveRaceData: async () => {
+                const rN=document.getElementById('adm-race-name').value; const rD=document.getElementById('adm-race-date').value;
+                const ts=document.querySelectorAll('.edt-t'); const ds=document.querySelectorAll('.edt-d'); const w=[];
+                ts.forEach((t,i)=>w.push({title:t.value, desc:ds[i].value, done:false}));
+                app.editUser.races[app.editRaceIndex] = { name:rN, date:rD, workouts:w };
+                if(!useMock) await updateDoc(getDocRef(usersColl, app.editEmail), {races:app.editUser.races});
+                else { const idx=app.mockDB.findIndex(u=>u.email===app.editEmail); if(idx>-1) app.mockDB[idx].races=app.editUser.races; app.saveLocal(); }
+                alert('Salvo!'); app.closeRaceEditor(); app.renderUserDetail(app.editUser);
+            },
+            fillDefaults: () => {
+                const l=document.getElementById('adm-workouts-list');
+                const tpls=[
+                  {t:'Corrida 1: Caminhada Leve', d:'30 min de Caminhada em Zona 1 (Z1 - ritmo fácil).'},
+                  {t:'Fortalecimento 1: Força Base', d:'3x10 Agachamento, 3x10 Afundo (por perna), 3x15 Elevação de panturrilha.'},
+                  {t:'Corrida 2: Início da Corrida (C/C)', d:'5 min aquecimento + (30 seg corrida / 90 seg caminhada) x 8 repetições + 5 min volta à calma.'},
+                  {t:'Corrida 3: Caminhada Acelerada', d:'40 min de Caminhada Z1/Z2 (aumentar levemente o ritmo).'},
+                  {t:'Corrida 4: Intervalos 1:2', d:'5 min aquecimento + (1 min corrida / 2 min caminhada) x 7 repetições + 5 min volta à calma.'},
+                  {t:'Fortalecimento 2: Core e Postura', d:'3x45 seg Prancha frontal, 3x15 Elevação de quadril (ponte), 3x15 Superman.'},
+                  {t:'Corrida 5: Aumento da Corrida', d:'5 min aquecimento + (1 min corrida / 1 min caminhada) x 10 repetições + 5 min volta à calma.'},
+                  {t:'Corrida 6: Duração (30 min C/C)', d:'5 min aquecimento + (2 min corrida / 1 min caminhada) x 8 repetições + 5 min volta à calma.'},
+                  {t:'Fortalecimento 3: Resistência Leve', d:'3x12 Agachamento livre/leve peso, 3x10 Flexão de braço (com apoio), 3x20 Abdominal remador.'},
+                  {t:'Corrida 7: 3km C/C (Total)', d:'5 min aquecimento + (3 min corrida / 1 min caminhada) x 6 repetições + 5 min volta à calma. Total: 30 min de esforço.'},
+                  {t:'Corrida 8: Mais Corrida (40 min C/C)', d:'5 min aquecimento + (4 min corrida / 1 min caminhada) x 7 repetições + 5 min volta à calma.'},
+                  {t:'Fortalecimento 4: Mobilidade e Estabilidade', d:'3x10 Rotação externa de ombro, 3x10 Passada lateral com mini band, 3x10 Extensão de tronco.'},
+                  {t:'Corrida 9: Longão Curto (3.5km)', d:'5 min aquecimento + 18 minutos de corrida contínua em ritmo Z2 + 5 min volta à calma.'},
+                  {t:'Corrida 10: Ritmo Estável (45 min C/C)', d:'5 min aquecimento + (5 min corrida / 1 min caminhada) x 6 repetições + 5 min volta à calma.'},
+                  {t:'Fortalecimento 5: Força e Potência Leve', d:'3x8 Salto vertical (box jump baixo), 3x12 Peso Morto (RDL) leve, 3x15 Elevação de joelhos.'},
+                  {t:'Corrida 11: 4km Contínuos (Desafio)', d:'5 min aquecimento + 20 minutos de corrida contínua em Z2 + 5 min volta à calma.'},
+                  {t:'Corrida 12: Revezamento 1:1', d:'5 min aquecimento + (2 min corrida / 2 min caminhada) x 10 repetições + 5 min volta à calma.'},
+                  {t:'Fortalecimento 6: Circuito Completo', d:'4 exercícios: Agachamento, Flexão, Prancha, Afundo (1 min execução / 3 voltas / 1 min descanso).'},
+                  {t:'Corrida 13: Simulação 5km (Quase lá!)', d:'5 min aquecimento + 25 minutos de corrida contínua em Z2/Z3 + 5 min volta à calma.'},
+                  {t:'Corrida 14: Treino de Ajuste (2km)', d:'5 min aquecimento + 10 minutos de corrida em ritmo Z2 + 5 min volta à calma.'},
+                  {t:'Corrida 15: Descanso Ativo (Caminhada)', d:'30 minutos de caminhada leve ou alongamento dinâmico.'},
+                  {t:'Corrida 16: O Grande Dia: 5km!', d:'5 min aquecimento + Corrida Contínua de 5km em ritmo confortável (Z2).'}
+                ];
+                for(let i=0; i<tpls.length; i++){ const t=tpls[i]; const d=document.createElement('div'); d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px;"; d.innerHTML=`<span style="font-weight:700; color:#AAA; font-size:12px; margin-top:5px;">${l.children.length+1}</span><div style="flex:1;"><input class="edt-t" value="${t.t}" style="width:100%; border:none; font-weight:700; font-size:12px; margin-bottom:5px; outline:none;"><input class="edt-d" value="${t.d}" style="width:100%; border:none; font-size:11px; color:#666; outline:none;"></div><button onclick="this.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>`; l.appendChild(d); }
+            }
         };
         document.addEventListener('DOMContentLoaded', app.init);
     </script>
