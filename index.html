@@ -157,9 +157,11 @@
             <!-- Aba HOME -->
             <div id="tab-home" class="tab-content" style="padding: 24px;">
                 <div class="header" style="padding: 20px 0 30px; display:flex; justify-content:space-between; align-items:center;">
-                    <div><h2 style="font-size: 26px; margin: 0;">Olá!</h2><p id="user-name" style="color: var(--gray); font-size: 14px; margin: 0;">Atleta</p></div>
+                    <div>
+                        <h2 style="font-size: 26px; margin: 0;">Olá!</h2>
+                        <p id="user-name" style="color: var(--gray); font-size: 14px; margin: 0;">Atleta</p>
+                    </div>
                     <div style="display:flex; gap:10px; align-items:center;">
-                        <!-- Avatar com Click para Perfil -->
                         <div onclick="app.showProfileSettings()" style="width: 45px; height: 45px; border-radius: 50%; overflow: hidden; cursor: pointer; border: 2px solid var(--white); box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
                             <div class="avatar-wrapper" id="avatar-wrapper-home"><i class="fa-solid fa-user"></i><img src="" alt="Avatar"></div>
                         </div>
@@ -180,25 +182,21 @@
                     </div>
                 </div>
                 
-                <!-- Atalhos (Removidos por pedido anterior, mantidos fora do código) -->
-
                 <!-- Frase -->
                 <div id="quote-section" class="quote-card"><i class="fa-solid fa-quote-right quote-icon"></i><p id="daily-quote" style="font-size: 14px; color: var(--dark); font-weight: 500; font-style: italic; line-height: 1.6;">"Carregando inspiração..."</p><p style="font-size: 10px; color: var(--gray); margin-top: 10px; text-transform: uppercase; font-weight: 700;">Motivação do Dia</p></div>
             </div>
-            
             <!-- TREINOS -->
             <div id="tab-workouts" class="tab-content hidden" style="padding: 24px;">
                 <h2 style="margin-bottom: 20px; margin-top: 20px;">Sua Planilha</h2>
                 <div class="timeline"><div class="line"></div><div id="workouts-container"></div></div>
             </div>
-            
             <!-- PERFIL -->
             <div id="tab-profile" class="tab-content hidden" style="padding: 40px; text-align: center;">
                 <div style="width: 100px; height: 100px; background: #DDD; border-radius: 50%; margin: 0 auto 20px; overflow: hidden;"><div class="avatar-wrapper" id="avatar-wrapper-profile" style="font-size: 40px;"><i class="fa-solid fa-user"></i><img src="" alt="Avatar"></div></div>
                 <h2 id="profile-name" style="margin: 0;">Nome</h2>
                 <p style="color: var(--primary); font-size: 12px; font-weight: 700; background: rgba(94,92,230,0.1); display: inline-block; padding: 5px 15px; border-radius: 20px; margin-top: 10px;">ALUNO ATIVO</p>
                 
-                <!-- Botão Novo Objetivo (Movido para cá) -->
+                <!-- Botão Novo Objetivo -->
                 <button onclick="app.showAddRaceModal()" style="background:rgba(94,92,230,0.1); border: 1px dashed var(--primary); color: var(--primary); margin-top: 30px; margin-bottom: 15px; width: 100%; padding: 12px; border-radius: 16px; font-weight: 700; cursor: pointer;">+ DEFINIR NOVO OBJETIVO</button>
 
                 <button onclick="app.showProfileSettings()" class="btn" style="background: var(--white); border: 1px solid #EEE; color: var(--gray); margin-bottom: 30px;">Editar Perfil</button>
@@ -235,7 +233,7 @@
         </div>
     </div>
 
-    <!-- 6. ADMIN: PERFIL DO ALUNO (NÍVEL 2) -->
+    <!-- 6. ADMIN: DETALHES DO ALUNO (NÍVEL 2) -->
     <div id="admin-user-detail" class="admin-panel">
         <div style="padding: 20px; background: var(--white); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
             <button onclick="app.closeUserDetail()" style="border: none; background: none; font-size: 20px; cursor: pointer;"><i class="fa-solid fa-chevron-down"></i></button>
@@ -283,7 +281,6 @@
     <div id="modal-profile-settings" class="modal-overlay" style="display: none;">
         <div class="modal-card">
             <h3 style="margin-top: 0; text-align: center; margin-bottom: 20px;">Editar Perfil</h3>
-            
             <div class="avatar-upload-container" onclick="document.getElementById('edit-profile-file').click()">
                 <div class="avatar-wrapper" id="avatar-wrapper-edit" style="font-size: 40px;">
                     <i class="fa-solid fa-user"></i>
@@ -292,12 +289,11 @@
                 <div class="avatar-overlay">ALTERAR</div>
                 <input type="file" id="edit-profile-file" accept="image/*" style="display: none;" onchange="app.handleAvatarPreview(this)">
             </div>
-            
             <div class="input-group"><label class="label">Seu Nome</label><input type="text" id="edit-profile-name" class="input"></div>
             
             <button onclick="app.saveProfileSettings()" class="btn btn-primary" style="margin-bottom: 15px;">Salvar Alterações</button>
             
-            <!-- LOGOUT AQUI -->
+            <!-- BOTÃO SAIR (MANTIDO NO PERFIL) -->
             <button onclick="app.logout()" class="btn" style="background: rgba(255,59,48,0.1); color: var(--red); margin-bottom: 10px;">Sair da Conta</button>
             
             <button onclick="app.closeProfileSettings()" class="btn-text" style="width: 100%;">Cancelar</button>
@@ -328,19 +324,37 @@
         const getDocRef = (c, k) => useMock ? null : doc(db, c, k.replace(/[^a-zA-Z0-9]/g, '_'));
 
         window.app = {
-            currentUser: null, editEmail: null, editUser: null, editRaceIndex: null, 
-            unsubscribeUser: null, unsubscribeAdmin: null, unsubscribeQuotes: null, mockDB: [],
+            currentUser: null, editEmail: null, editUser: null, editRaceIndex: null, unsubscribeUser: null, unsubscribeAdmin: null, unsubscribeQuotes: null, mockDB: [],
             mockQuotes: ["Persistência é o caminho do êxito.", "Corra hoje, vença amanhã."],
 
             setAvatar: (wId, url) => {
                 const w = document.getElementById(wId); if(!w)return;
                 const i = w.querySelector('img'), ic = w.querySelector('i');
-                // CORREÇÃO: Usando apenas 'show' e verificando string
-                if(url && url.length > 50) { i.src=url; i.classList.add('show'); if(ic)ic.classList.add('hide'); }
+                if(url && url.length>20) { i.src=url; i.classList.add('show'); if(ic)ic.classList.add('hide'); }
                 else { i.src=''; i.classList.remove('show'); if(ic)ic.classList.remove('hide'); }
             },
             init: async () => {
                 if(!useMock) { try{ await signInAnonymously(auth); }catch(e){} }
+                
+                // AUTO LOGIN
+                const savedEmail = localStorage.getItem('expliq_session_email');
+                if(savedEmail) {
+                    let user = null;
+                    if(!useMock) { try { const s=await getDoc(getDocRef(usersColl, savedEmail)); if(s.exists()) user=s.data(); }catch(e){} }
+                    else { const local=localStorage.getItem('expliq_local_db_v9'); if(local) app.mockDB=JSON.parse(local); user=app.mockDB.find(u=>u.email===savedEmail); }
+
+                    if(user) {
+                        app.currentUser = user;
+                        if(!useMock) {
+                            if(app.unsubscribeUser) app.unsubscribeUser();
+                            app.unsubscribeUser = onSnapshot(getDocRef(usersColl, savedEmail), (d)=>{ if(d.exists()) { app.currentUser=d.data(); if(document.getElementById('view-app').classList.contains('active')) app.loadAppUI(); } });
+                        }
+                        app.loadRandomQuote();
+                        if(user.active) { app.loadAppUI(); app.switchScreen('view-app'); return; }
+                        else { app.switchScreen('view-pending'); return; }
+                    }
+                }
+
                 const local = localStorage.getItem('expliq_local_db_v9'); if(local) app.mockDB = JSON.parse(local);
                 app.switchScreen('view-login');
             },
@@ -350,13 +364,22 @@
             // Auth & Profile
             goToLogin: () => { document.getElementById('login-error').style.display='none'; app.switchScreen('view-login'); },
             goToRegister: () => app.switchScreen('view-register'),
-            logout: () => { app.currentUser=null; document.querySelectorAll('input').forEach(i=>i.value=''); app.switchScreen('view-login'); app.closeProfileSettings(); },
+            
+            // LOGOUT ATUALIZADO
+            logout: () => { 
+                app.currentUser=null; 
+                localStorage.removeItem('expliq_session_email');
+                document.querySelectorAll('input').forEach(i=>i.value=''); 
+                app.switchScreen('view-login'); 
+                app.closeProfileSettings(); 
+            },
+
             showProfileSettings: () => { const u = app.currentUser; document.getElementById('edit-profile-name').value = u.name; app.setAvatar('avatar-wrapper-edit', u.avatar); document.getElementById('modal-profile-settings').style.display='flex'; setTimeout(()=>document.getElementById('modal-profile-settings').classList.add('active'),10); },
             closeProfileSettings: () => { document.getElementById('modal-profile-settings').classList.remove('active'); setTimeout(()=>document.getElementById('modal-profile-settings').style.display='none',300); },
             handleAvatarPreview: (input) => { if(input.files && input.files[0]) { const r = new FileReader(); r.onload=(e)=>{ const img=new Image(); img.src=e.target.result; img.onload=()=>{ const c=document.createElement('canvas'),x=c.getContext('2d'); let w=img.width,h=img.height,m=150; if(w>h){if(w>m){h*=m/w;w=m}}else{if(h>m){w*=m/h;h=m}} c.width=w;c.height=h; x.drawImage(img,0,0,w,h); app.setAvatar('avatar-wrapper-edit',c.toDataURL('image/jpeg',0.7)); }}; r.readAsDataURL(input.files[0]); } },
             saveProfileSettings: async () => { const n=document.getElementById('edit-profile-name').value; const i=document.querySelector('#avatar-wrapper-edit img'); const a=i.classList.contains('show')?i.src:null; app.currentUser.name=n; app.currentUser.avatar=a; if(useMock){const idx=app.mockDB.findIndex(u=>u.email===app.currentUser.email);if(idx>-1)app.mockDB[idx]=app.currentUser;app.saveLocal();} app.loadAppUI(); app.closeProfileSettings(); if(!useMock) await updateDoc(getDocRef(usersColl, app.currentUser.email), {name:n, avatar:a}); },
-            handleRegister: async (e) => { e.preventDefault(); const btn=document.getElementById('btn-reg'); btn.classList.add('loading'); const name=document.getElementById('reg-name').value, email=document.getElementById('reg-email').value.toLowerCase(), pass=document.getElementById('reg-pass').value; const newUser={name,email,pass,active:false,races:[],avatar:null}; if(!useMock){try{await setDoc(getDocRef(usersColl,email),newUser);}catch(e){useMock=true;app.mockDB.push(newUser);app.saveLocal();}}else{app.mockDB.push(newUser);app.saveLocal();} btn.classList.remove('loading'); app.switchScreen('view-pending'); },
-            handleLogin: async (e) => { e.preventDefault(); const btn=document.getElementById('btn-login'); const err=document.getElementById('login-error'); btn.classList.add('loading'); err.style.display='none'; const email=document.getElementById('log-email').value.toLowerCase(), pass=document.getElementById('log-pass').value; let user=null; if(!useMock){try{const s=await getDoc(getDocRef(usersColl,email));if(s.exists())user=s.data();}catch(e){}} if(!user)user=app.mockDB.find(u=>u.email===email); btn.classList.remove('loading'); if(user && user.pass===pass){ app.currentUser=user; if(!useMock){if(app.unsubscribeUser)app.unsubscribeUser();app.unsubscribeUser=onSnapshot(getDocRef(usersColl,email),(d)=>{if(d.exists()){app.currentUser=d.data();if(document.getElementById('view-app').classList.contains('active'))app.loadAppUI();if(app.currentUser.active && document.getElementById('view-pending').classList.contains('active')){app.loadAppUI();app.switchScreen('view-app');}}});} app.loadRandomQuote(); user.active?(app.loadAppUI(),app.switchScreen('view-app')):app.switchScreen('view-pending'); }else{err.innerText='Credenciais inválidas.';err.style.display='block';} },
+            handleRegister: async (e) => { e.preventDefault(); const btn=document.getElementById('btn-reg'); btn.classList.add('loading'); const name=document.getElementById('reg-name').value, email=document.getElementById('reg-email').value.toLowerCase(), pass=document.getElementById('reg-pass').value; const newUser={name,email,pass,active:false,races:[],avatar:null}; if(!useMock){try{await setDoc(getDocRef(usersColl,email),newUser);}catch(e){useMock=true;app.mockDB.push(newUser);app.saveLocal();}}else{app.mockDB.push(newUser);app.saveLocal();} localStorage.setItem('expliq_session_email', email); btn.classList.remove('loading'); app.switchScreen('view-pending'); },
+            handleLogin: async (e) => { e.preventDefault(); const btn=document.getElementById('btn-login'); const err=document.getElementById('login-error'); btn.classList.add('loading'); err.style.display='none'; const email=document.getElementById('log-email').value.toLowerCase(), pass=document.getElementById('log-pass').value; let user=null; if(!useMock){try{const s=await getDoc(getDocRef(usersColl,email));if(s.exists())user=s.data();}catch(e){}} if(!user)user=app.mockDB.find(u=>u.email===email); btn.classList.remove('loading'); if(user && user.pass===pass){ app.currentUser=user; localStorage.setItem('expliq_session_email', email); if(!useMock){if(app.unsubscribeUser)app.unsubscribeUser();app.unsubscribeUser=onSnapshot(getDocRef(usersColl,email),(d)=>{if(d.exists()){app.currentUser=d.data();if(document.getElementById('view-app').classList.contains('active'))app.loadAppUI();if(app.currentUser.active && document.getElementById('view-pending').classList.contains('active')){app.loadAppUI();app.switchScreen('view-app');}}});} app.loadRandomQuote(); user.active?(app.loadAppUI(),app.switchScreen('view-app')):app.switchScreen('view-pending'); }else{err.innerText='Credenciais inválidas.';err.style.display='block';} },
             
             // APP UI
             loadAppUI: () => {
@@ -438,10 +461,7 @@
 
                     const st = u.active ? '<span style="color:var(--green); font-weight:bold; font-size:10px;">ATIVO</span>' : '<span style="color:var(--orange); font-weight:bold; font-size:10px;">PENDENTE</span>';
                     const d=document.createElement('div'); d.className='card'; d.style.cssText='display:flex; flex-direction:column; gap:10px; cursor:pointer;';
-                    d.innerHTML=`
-                        <div style="display:flex; justify-content:space-between; align-items:center; width:100%;"><div><h4 style="margin:0;">${u.name}</h4><p style="margin:0; font-size:12px; color:#888;">${u.email}</p></div>${st}</div>
-                        <div style="width:100%;"><div style="display:flex; justify-content:space-between; font-size:10px; color:#AAA; margin-bottom:3px;"><span>${rName}</span><span>${done}/${total} (${pct}%)</span></div><div style="width:100%; height:4px; background:#F2F2F7; border-radius:2px;"><div style="width:${pct}%; height:100%; background:var(--primary);"></div></div></div>
-                    `;
+                    d.innerHTML=`<div style="display:flex; justify-content:space-between; align-items:center; width:100%;"><div><h4 style="margin:0;">${u.name}</h4><p style="margin:0; font-size:12px; color:#888;">${u.email}</p></div>${st}</div><div style="width:100%;"><div style="display:flex; justify-content:space-between; font-size:10px; color:#AAA; margin-bottom:3px;"><span>${rName}</span><span>${done}/${total} (${pct}%)</span></div><div style="width:100%; height:4px; background:#F2F2F7; border-radius:2px;"><div style="width:${pct}%; height:100%; background:var(--primary);"></div></div></div>`;
                     d.onclick=()=>app.openUser(u); l.appendChild(d);
                 });
             },
