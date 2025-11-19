@@ -14,15 +14,8 @@
     <!-- CSS Nativo -->
     <style>
         :root {
-            --primary: #5E5CE6;
-            --dark: #1C1C1E;
-            --bg: #F2F2F7;
-            --input-bg: #F9FAFB;
-            --gray: #8E8E93;
-            --green: #34C759;
-            --white: #FFFFFF;
-            --red: #FF3B30;
-            --orange: #FF9500;
+            --primary: #5E5CE6; --dark: #1C1C1E; --bg: #F2F2F7; --input-bg: #F9FAFB;
+            --gray: #8E8E93; --green: #34C759; --white: #FFFFFF; --red: #FF3B30; --orange: #FF9500;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -31,10 +24,10 @@
 
         /* Telas */
         .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg); display: none; flex-direction: column; overflow-y: auto; }
-        .screen.active { display: flex; }
+        .screen.active { display: flex; animation: fadeIn 0.3s ease-out; }
         .screen.white-bg { background-color: var(--white); }
 
-        /* Painéis Admin */
+        /* Painéis Admin (Fixed) */
         .admin-panel { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background-color: var(--bg); z-index: 300; 
@@ -108,7 +101,6 @@
         .avatar-upload-container img.show { display: block; }
         .avatar-overlay { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.5); color: white; font-size: 10px; text-align: center; padding: 4px; font-weight: 700; }
 
-        /* Loader */
         .loader { display: none; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; margin-right: 10px; }
         .btn-primary.loading .loader { display: block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -152,17 +144,20 @@
     <div id="view-pending" class="screen white-bg" style="align-items: center; justify-content: center; padding: 40px; text-align: center;">
         <div style="width: 80px; height: 80px; background: rgba(255,149,0,0.1); color: var(--orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 30px;"><i class="fa-solid fa-hourglass-start"></i></div>
         <h2 style="font-size: 24px; margin-bottom: 10px;">Cadastro em Análise</h2>
-        <p style="color: var(--gray); font-size: 14px; line-height: 1.6; margin-bottom: 40px;">Seu treinador precisa liberar seu acesso e configurar sua planilha. Tente logar novamente mais tarde.</p>
+        <p style="color: var(--gray); font-size: 14px; line-height: 1.6; margin-bottom: 40px;">Seu treinador precisa liberar seu acesso. Aguarde e tente logar novamente mais tarde.</p>
         <button onclick="app.goToLogin()" class="btn-text">VOLTAR AO LOGIN</button>
     </div>
 
     <!-- 4. APP ALUNO -->
     <div id="view-app" class="screen">
         <div class="scroll-content" style="padding-bottom: 100px; flex: 1; overflow-y: auto;">
-            <!-- HOME -->
+            <!-- Aba HOME -->
             <div id="tab-home" class="tab-content" style="padding: 24px;">
                 <div class="header" style="padding: 20px 0 30px; display:flex; justify-content:space-between; align-items:center;">
-                    <div><h2 style="font-size: 26px; margin: 0;">Olá!</h2><p id="user-name" style="color: var(--gray); font-size: 14px; margin: 0;">Atleta</p></div>
+                    <div>
+                        <h2 style="font-size: 26px; margin: 0;">Olá!</h2>
+                        <p id="user-name" style="color: var(--gray); font-size: 14px; margin: 0;">Atleta</p>
+                    </div>
                     <div style="display:flex; gap:10px; align-items:center;">
                         <button onclick="app.logout()" class="btn-logout-header" title="Sair"><i class="fa-solid fa-right-from-bracket"></i></button>
                         <div onclick="app.showProfileSettings()" style="width: 45px; height: 45px; background: #DDD; border-radius: 50%; overflow: hidden; cursor: pointer; border: 2px solid var(--white); box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
@@ -184,6 +179,9 @@
                         </div>
                     </div>
                 </div>
+                <!-- Botão Novo Objetivo -->
+                <button onclick="app.showAddRaceModal()" style="background:white; border: 1px dashed var(--primary); color: var(--primary); margin-bottom: 20px; width: 100%; padding: 12px; border-radius: 16px; font-weight: 700; cursor: pointer;">+ DEFINIR NOVO OBJETIVO</button>
+                
                 <!-- Frase -->
                 <div id="quote-section" class="quote-card"><i class="fa-solid fa-quote-right quote-icon"></i><p id="daily-quote" style="font-size: 14px; color: var(--dark); font-weight: 500; font-style: italic; line-height: 1.6;">"Carregando inspiração..."</p><p style="font-size: 10px; color: var(--gray); margin-top: 10px; text-transform: uppercase; font-weight: 700;">Motivação do Dia</p></div>
             </div>
@@ -198,12 +196,12 @@
                 <h2 id="profile-name" style="margin: 0;">Nome</h2>
                 <p style="color: var(--primary); font-size: 12px; font-weight: 700; background: rgba(94,92,230,0.1); display: inline-block; padding: 5px 15px; border-radius: 20px; margin-top: 10px;">ALUNO ATIVO</p>
                 
-                <!-- HISTÓRICO DE PROVAS (NOVO) -->
+                <!-- HISTÓRICO -->
                 <div style="margin-top: 40px; text-align: left;">
                     <h3 style="font-size: 14px; color: var(--gray); text-transform: uppercase; font-weight: 700; margin-bottom: 20px;">Histórico de Conquistas</h3>
                     <div id="profile-history-list" style="display: flex; flex-direction: column; gap: 15px;"></div>
                 </div>
-
+                
                 <button onclick="app.showProfileSettings()" class="btn" style="background: var(--white); border: 1px solid #EEE; color: var(--gray); margin-top: 30px;">Editar Perfil</button>
             </div>
         </div>
@@ -215,7 +213,7 @@
         </div>
     </div>
 
-    <!-- 5. ADMIN -->
+    <!-- 5. ADMIN: DASHBOARD -->
     <div id="view-admin" class="screen" style="background: var(--bg);">
         <div class="header" style="background: var(--white); box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 20px 24px;">
             <h3>Painel Treinador</h3>
@@ -225,14 +223,16 @@
                 <button onclick="app.goToLogin()" style="border: none; background: none; color: var(--red); font-weight: bold; cursor: pointer; font-size: 12px;">Sair</button>
             </div>
         </div>
-        <div id="admin-content-users" style="padding: 24px; overflow-y: auto; flex: 1;"><div id="admin-list"></div></div>
+        <!-- Tab: Alunos -->
+        <div id="admin-content-users" style="padding: 24px; overflow-y: auto; flex: 1;"><div id="admin-list" style="display: flex; flex-direction: column; gap: 10px;"></div></div>
+        <!-- Tab: Frases -->
         <div id="admin-content-quotes" class="hidden" style="padding: 24px; overflow-y: auto; flex: 1;">
             <div class="card"><div class="input-group" style="margin-bottom: 10px;"><label class="label">Nova Frase</label><textarea id="new-quote-text" class="input" style="resize: none; height: 80px;"></textarea></div><button onclick="app.addQuote()" class="btn btn-primary" style="padding: 12px; font-size: 14px;">ADICIONAR FRASE</button></div>
             <div id="admin-quotes-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
         </div>
     </div>
 
-    <!-- 6. ADMIN: DETALHES DO ALUNO (NÍVEL 2) -->
+    <!-- 6. ADMIN: PERFIL DO ALUNO -->
     <div id="admin-user-detail" class="admin-panel">
         <div style="padding: 20px; background: var(--white); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
             <button onclick="app.closeUserDetail()" style="border: none; background: none; font-size: 20px; cursor: pointer;"><i class="fa-solid fa-chevron-down"></i></button>
@@ -252,7 +252,7 @@
         </div>
     </div>
 
-    <!-- 7. ADMIN: EDITOR DE TREINOS (NÍVEL 3) -->
+    <!-- 7. ADMIN: EDITOR DE TREINOS -->
     <div id="admin-race-editor" class="admin-panel">
         <div style="padding: 20px; background: var(--white); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
             <button onclick="app.closeRaceEditor()" style="border: none; background: none; font-size: 20px; cursor: pointer;"><i class="fa-solid fa-chevron-left"></i></button>
@@ -264,7 +264,6 @@
                 <div class="input-group"><label class="label">Nome da Prova</label><input type="text" id="adm-race-name" class="input" placeholder="Ex: Maratona"></div>
                 <div class="input-group" style="margin: 0;"><label class="label">Data</label><input type="date" id="adm-race-date" class="input"></div>
             </div>
-            
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <h4 style="margin: 0; font-size: 12px; color: var(--gray);">LISTA DE TREINOS</h4>
                 <div>
@@ -283,28 +282,31 @@
     <div id="modal-admin-auth" class="modal-overlay" style="display: none;">
         <div class="modal-card"><h3 style="margin-top: 0; text-align: center; margin-bottom: 20px;">Acesso Treinador</h3><div class="input-group"><label class="label">Senha Mestra</label><input type="password" id="admin-pass-input" class="input" placeholder="******"></div><div style="display: flex; gap: 10px;"><button onclick="app.closeAdminAuth()" class="btn" style="background: #EEE; color: #555;">Cancelar</button><button onclick="app.checkAdminAuth()" class="btn btn-primary">Entrar</button></div></div>
     </div>
+    <div id="modal-add-race" class="modal-overlay" style="display: none;">
+        <div class="modal-card"><h3 style="margin-top: 0; text-align: center; margin-bottom: 20px;">Novo Objetivo</h3><div class="input-group"><label class="label">Nome da Prova</label><input type="text" id="new-race-name" class="input" placeholder="Ex: Corrida 5K"></div><div class="input-group"><label class="label">Data</label><input type="date" id="new-race-date" class="input"></div><div style="display: flex; gap: 10px;"><button onclick="app.closeAddRaceModal()" class="btn" style="background: #EEE; color: #555;">Cancelar</button><button onclick="app.saveStudentRace()" class="btn btn-primary">Criar</button></div></div>
+    </div>
 
-    <!-- FIREBASE LÓGICA -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, updateDoc, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // --- CONFIG ---
         const geminiApiKey = ""; 
         const firebaseConfig = { apiKey: "AIzaSyAZc5IXA3PRIadz87sysrC_7lLZZG-7Izw", authDomain: "app-corrida-d3568.firebaseapp.com", projectId: "app-corrida-d3568", storageBucket: "app-corrida-d3568.firebasestorage.app", messagingSenderId: "690843260846", appId: "1:690843260846:web:e32be21759c9e813bada3f", measurementId: "G-26RNCCZYED" };
 
         let appInit, auth, db; let useMock = false;
         try { appInit = initializeApp(firebaseConfig); auth = getAuth(appInit); db = getFirestore(appInit); } catch (e) { useMock = true; }
 
-        const usersColl = 'expliq_users_v6'; // Versão 6
-        const quotesColl = 'expliq_quotes_v6';
+        const usersColl = 'expliq_users_v8'; // Nova versão para garantir dados limpos
+        const quotesColl = 'expliq_quotes_v8';
         const getRef = (c) => useMock ? null : collection(db, c);
         const getDocRef = (c, k) => useMock ? null : doc(db, c, k.replace(/[^a-zA-Z0-9]/g, '_'));
 
         window.app = {
             currentUser: null, editEmail: null, editUser: null, editRaceIndex: null, unsubscribeUser: null, unsubscribeAdmin: null, unsubscribeQuotes: null, mockDB: [],
-            mockQuotes: ["Persistência é o caminho do êxito.", "Corra hoje, vença amanhã."],
-
+            mockQuotes: ["O sucesso é a soma de pequenos esforços.", "Corra hoje, vença amanhã."],
+            
             setAvatar: (wId, url) => {
                 const w = document.getElementById(wId); if(!w)return;
                 const i = w.querySelector('img'), ic = w.querySelector('i');
@@ -313,20 +315,22 @@
             },
             init: async () => {
                 if(!useMock) { try{ await signInAnonymously(auth); }catch(e){} }
-                const local = localStorage.getItem('expliq_local_db_v6'); if(local) app.mockDB = JSON.parse(local);
+                const local = localStorage.getItem('expliq_local_db_v8'); if(local) app.mockDB = JSON.parse(local);
                 app.switchScreen('view-login');
             },
-            saveLocal: () => { if(useMock) localStorage.setItem('expliq_local_db_v6', JSON.stringify(app.mockDB)); },
+            saveLocal: () => { if(useMock) localStorage.setItem('expliq_local_db_v8', JSON.stringify(app.mockDB)); },
             switchScreen: (id) => { document.querySelectorAll('.screen').forEach(e=>e.classList.remove('active')); document.getElementById(id).classList.add('active'); },
-
-            // Auth & Profile
-            goToLogin: () => { document.getElementById('login-error').style.display='none'; app.switchScreen('view-login'); },
-            goToRegister: () => app.switchScreen('view-register'),
-            logout: () => { app.currentUser=null; document.querySelectorAll('input').forEach(i=>i.value=''); app.switchScreen('view-login'); },
+            
+            // Profile
             showProfileSettings: () => { const u = app.currentUser; document.getElementById('edit-profile-name').value = u.name; app.setAvatar('avatar-wrapper-edit', u.avatar); document.getElementById('modal-profile-settings').style.display='flex'; setTimeout(()=>document.getElementById('modal-profile-settings').classList.add('active'),10); },
             closeProfileSettings: () => { document.getElementById('modal-profile-settings').classList.remove('active'); setTimeout(()=>document.getElementById('modal-profile-settings').style.display='none',300); },
             handleAvatarPreview: (input) => { if(input.files && input.files[0]) { const r = new FileReader(); r.onload=(e)=>{ const img=new Image(); img.src=e.target.result; img.onload=()=>{ const c=document.createElement('canvas'),x=c.getContext('2d'); let w=img.width,h=img.height,m=150; if(w>h){if(w>m){h*=m/w;w=m}}else{if(h>m){w*=m/h;h=m}} c.width=w;c.height=h; x.drawImage(img,0,0,w,h); app.setAvatar('avatar-wrapper-edit',c.toDataURL('image/jpeg',0.7)); }}; r.readAsDataURL(input.files[0]); } },
             saveProfileSettings: async () => { const n=document.getElementById('edit-profile-name').value; const i=document.querySelector('#avatar-wrapper-edit img'); const a=i.classList.contains('show')?i.src:null; app.currentUser.name=n; app.currentUser.avatar=a; if(useMock){const idx=app.mockDB.findIndex(u=>u.email===app.currentUser.email);if(idx>-1)app.mockDB[idx]=app.currentUser;app.saveLocal();} app.loadAppUI(); app.closeProfileSettings(); if(!useMock) await updateDoc(getDocRef(usersColl, app.currentUser.email), {name:n, avatar:a}); },
+
+            // Auth
+            goToLogin: () => { document.getElementById('login-error').style.display='none'; app.switchScreen('view-login'); },
+            goToRegister: () => app.switchScreen('view-register'),
+            logout: () => { app.currentUser=null; document.querySelectorAll('input').forEach(i=>i.value=''); app.switchScreen('view-login'); },
             handleRegister: async (e) => { e.preventDefault(); const btn=document.getElementById('btn-reg'); btn.classList.add('loading'); const name=document.getElementById('reg-name').value, email=document.getElementById('reg-email').value.toLowerCase(), pass=document.getElementById('reg-pass').value; const newUser={name,email,pass,active:false,races:[],avatar:null}; if(!useMock){try{await setDoc(getDocRef(usersColl,email),newUser);}catch(e){useMock=true;app.mockDB.push(newUser);app.saveLocal();}}else{app.mockDB.push(newUser);app.saveLocal();} btn.classList.remove('loading'); app.switchScreen('view-pending'); },
             handleLogin: async (e) => { e.preventDefault(); const btn=document.getElementById('btn-login'); const err=document.getElementById('login-error'); btn.classList.add('loading'); err.style.display='none'; const email=document.getElementById('log-email').value.toLowerCase(), pass=document.getElementById('log-pass').value; let user=null; if(!useMock){try{const s=await getDoc(getDocRef(usersColl,email));if(s.exists())user=s.data();}catch(e){}} if(!user)user=app.mockDB.find(u=>u.email===email); btn.classList.remove('loading'); if(user && user.pass===pass){ app.currentUser=user; if(!useMock){if(app.unsubscribeUser)app.unsubscribeUser();app.unsubscribeUser=onSnapshot(getDocRef(usersColl,email),(d)=>{if(d.exists()){app.currentUser=d.data();if(document.getElementById('view-app').classList.contains('active'))app.loadAppUI();if(app.currentUser.active && document.getElementById('view-pending').classList.contains('active')){app.loadAppUI();app.switchScreen('view-app');}}});} app.loadRandomQuote(); user.active?(app.loadAppUI(),app.switchScreen('view-app')):app.switchScreen('view-pending'); }else{err.innerText='Credenciais inválidas.';err.style.display='block';} },
             
@@ -351,41 +355,17 @@
                     });
                 }
                 const pct = workouts.length > 0 ? Math.round((done/workouts.length)*100) : 0;
-                document.getElementById('app-progress').style.width = pct+'%'; document.getElementById('app-remaining').innerText = `Faltam ${workouts.length-done}`; document.getElementById('app-percent').innerText = `${pct}%`;
+                document.getElementById('app-progress').style.width = pct+'%'; document.getElementById('app-remaining').innerText = `Faltam ${workouts.length-done} treinos`; document.getElementById('app-percent').innerText = `${pct}%`;
                 
-                // PERFIL: Histórico
-                const historyList = document.getElementById('profile-history-list');
-                if (historyList) {
-                    historyList.innerHTML = '';
-                    if (races.length === 0) historyList.innerHTML = '<p style="text-align:center; font-size:12px; color:#AAA;">Nenhum histórico.</p>';
-                    // Mostrar em ordem decrescente (mais recente primeiro)
-                    [...races].reverse().forEach(r => {
-                        const totalW = r.workouts.length;
-                        const doneW = r.workouts.filter(wk => wk.done).length;
-                        const p = totalW > 0 ? Math.round((doneW / totalW) * 100) : 0;
-                        const isComplete = p === 100;
-                        const iconColor = isComplete ? 'text-yellow-500' : 'text-gray-300';
-                        const iconClass = isComplete ? 'fa-medal' : 'fa-person-running';
-                        
-                        const item = document.createElement('div');
-                        item.className = 'card';
-                        item.style.padding = '15px';
-                        item.style.marginBottom = '10px';
-                        item.style.display = 'flex';
-                        item.style.alignItems = 'center';
-                        item.style.gap = '15px';
-                        
-                        item.innerHTML = `
-                            <div style="width:40px; height:40px; background:${isComplete ? '#FFF9C4' : '#F5F5F5'}; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; color:${isComplete ? '#FBC02D' : '#CCC'};">
-                                <i class="fa-solid ${iconClass}"></i>
-                            </div>
-                            <div style="flex:1;">
-                                <h4 style="margin:0; font-size:14px; color:var(--dark);">${r.name}</h4>
-                                <p style="margin:0; font-size:10px; color:var(--gray);">${r.date || 'Sem data'}</p>
-                            </div>
-                            <span style="font-size:12px; font-weight:bold; color:${isComplete ? 'var(--green)' : 'var(--primary)'};">${p}%</span>
-                        `;
-                        historyList.appendChild(item);
+                // HISTORICO
+                const hList = document.getElementById('profile-history-list');
+                if(hList) {
+                    hList.innerHTML = '';
+                    if(races.length===0) hList.innerHTML='<p style="text-align:center;font-size:12px;color:#AAA;">Sem histórico.</p>';
+                    [...races].reverse().forEach(r=>{
+                        const tW=r.workouts?.length||0; const dW=r.workouts?r.workouts.filter(k=>k.done).length:0; const p=tW>0?Math.round((dW/tW)*100):0; const isC=p===100;
+                        const ic=isC?'fa-medal':'fa-person-running'; const clr=isC?'#FBC02D':'#CCC';
+                        hList.innerHTML+=`<div class="card" style="padding:15px; margin-bottom:10px; display:flex; align-items:center; gap:15px;"><div style="width:40px; height:40px; background:${isC?'#FFF9C4':'#F5F5F5'}; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; color:${clr};"><i class="fa-solid ${ic}"></i></div><div style="flex:1;"><h4 style="margin:0; font-size:14px; color:var(--dark);">${r.name}</h4><p style="margin:0; font-size:10px; color:var(--gray);">${r.date||''}</p></div><span style="font-size:12px; font-weight:bold; color:${isC?'var(--green)':'var(--primary)'};">${p}%</span></div>`;
                     });
                 }
             },
@@ -394,13 +374,20 @@
                 app.loadAppUI(); if (!useMock) await updateDoc(getDocRef(usersColl, app.currentUser.email), { races: races }); else app.saveLocal();
             },
             nav: (t) => { document.querySelectorAll('.tab-content').forEach(e=>e.classList.add('hidden')); document.getElementById('tab-'+t).classList.remove('hidden'); document.querySelectorAll('.nav-item').forEach(e=>{e.classList.remove('active'); if(e.dataset.tab===t)e.classList.add('active');}); },
-            loadRandomQuote: async () => {
-                if(geminiApiKey){ try{ const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${geminiApiKey}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:"Frase curta motivacional corrida."}]}]})}); const d=await r.json(); const q=d.candidates?.[0]?.content?.parts?.[0]?.text?.trim(); if(q){ document.getElementById('daily-quote').innerText=`"${q}"`; return; } }catch(e){} }
-                if(!useMock){ onSnapshot(getRef(quotesColl),(s)=>{ if(!s.empty){ const a=[]; s.forEach(d=>a.push(d.data().text)); if(a.length>0) document.getElementById('daily-quote').innerText=`"${a[Math.floor(Math.random()*a.length)]}"`; } }); }
-                else document.getElementById('daily-quote').innerText=`"${app.mockQuotes[Math.floor(Math.random()*app.mockQuotes.length)]}"`;
+            loadRandomQuote: async () => { if(geminiApiKey){ try{ const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${geminiApiKey}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:"Frase curta motivacional corrida."}]}]})}); const d=await r.json(); const q=d.candidates?.[0]?.content?.parts?.[0]?.text?.trim(); if(q){ document.getElementById('daily-quote').innerText=`"${q}"`; return; } }catch(e){} } if(!useMock){onSnapshot(getRef(quotesColl),(s)=>{if(!s.empty){const a=[];s.forEach(d=>a.push(d.data().text));if(a.length>0)document.getElementById('daily-quote').innerText=`"${a[Math.floor(Math.random()*a.length)]}"`;}});} else document.getElementById('daily-quote').innerText=`"${app.mockQuotes[Math.floor(Math.random()*app.mockQuotes.length)]}"`; },
+
+            // ADD RACE
+            showAddRaceModal: () => { document.getElementById('modal-add-race').style.display='flex'; setTimeout(()=>document.getElementById('modal-add-race').classList.add('active'),10); document.getElementById('new-race-name').value=''; document.getElementById('new-race-date').value=''; },
+            closeAddRaceModal: () => { document.getElementById('modal-add-race').classList.remove('active'); setTimeout(()=>document.getElementById('modal-add-race').style.display='none',300); },
+            saveStudentRace: async () => {
+                const n=document.getElementById('new-race-name').value; const d=document.getElementById('new-race-date').value; if(!n)return alert("Nome obrigatório");
+                const races = app.currentUser.races || []; races.push({name:n, date:d, workouts:[]}); app.currentUser.races = races;
+                app.loadAppUI(); app.closeAddRaceModal();
+                if(!useMock) await updateDoc(getDocRef(usersColl, app.currentUser.email), {races:races}); else app.saveLocal();
+                alert('Objetivo criado!');
             },
 
-            // ADMIN NEW STRUCTURE
+            // ADMIN
             showAdminAuth: () => { document.getElementById('modal-admin-auth').style.display='flex'; setTimeout(()=>document.getElementById('modal-admin-auth').classList.add('active'),10); document.getElementById('admin-pass-input').value=''; },
             closeAdminAuth: () => { document.getElementById('modal-admin-auth').classList.remove('active'); setTimeout(()=>document.getElementById('modal-admin-auth').style.display='none',300); },
             checkAdminAuth: () => { if(document.getElementById('admin-pass-input').value === 'admin123') { app.closeAdminAuth(); app.goToAdmin(); } else alert("Senha incorreta"); },
@@ -414,92 +401,57 @@
                 } else { app.renderAdminList(app.mockDB); app.renderAdminQuotes(app.mockQuotes.map((q,i)=>({id:i,text:q}))); }
             },
             adminTab: (t) => { document.querySelectorAll('[id^="admin-content"]').forEach(e=>e.classList.add('hidden')); document.querySelectorAll('.btn-icon').forEach(e=>e.classList.remove('active')); document.getElementById('admin-content-'+t).classList.remove('hidden'); document.getElementById('adm-tab-'+t).classList.add('active'); },
+            
             renderAdminList: (users) => {
                 const l=document.getElementById('admin-list'); l.innerHTML='';
                 if(!users||users.length===0){ l.innerHTML='<p style="text-align:center; color:#AAA;">Vazio.</p>'; return; }
                 users.forEach(u=>{
+                    // Progress logic
+                    const races = u.races || []; const activeR = races.length>0?races[races.length-1]:null;
+                    const done = activeR?activeR.workouts.filter(w=>w.done).length:0; const total = activeR?(activeR.workouts.length||1):1;
+                    const pct = Math.round((done/total)*100); const rName = activeR?activeR.name:'Sem prova';
+
                     const st = u.active ? '<span style="color:var(--green); font-weight:bold; font-size:10px;">ATIVO</span>' : '<span style="color:var(--orange); font-weight:bold; font-size:10px;">PENDENTE</span>';
-                    const d=document.createElement('div'); d.className='card'; d.style.cssText='display:flex; justify-content:space-between; align-items:center; cursor:pointer;';
-                    d.innerHTML=`<div><h4 style="margin:0;">${u.name}</h4><p style="margin:0; font-size:12px; color:#888;">${u.email}</p></div>${st}`;
+                    const d=document.createElement('div'); d.className='card'; d.style.cssText='display:flex; flex-direction:column; gap:10px; cursor:pointer;';
+                    d.innerHTML=`<div style="display:flex; justify-content:space-between; align-items:center; width:100%;"><div><h4 style="margin:0;">${u.name}</h4><p style="margin:0; font-size:12px; color:#888;">${u.email}</p></div>${st}</div><div style="width:100%;"><div style="display:flex; justify-content:space-between; font-size:10px; color:#AAA; margin-bottom:3px;"><span>${rName}</span><span>${done}/${total} (${pct}%)</span></div><div style="width:100%; height:4px; background:#F2F2F7; border-radius:2px;"><div style="width:${pct}%; height:100%; background:var(--primary);"></div></div></div>`;
                     d.onclick=()=>app.openUser(u); l.appendChild(d);
                 });
             },
-            // Level 1: User Detail
-            openUser: (u) => {
-                app.editEmail = u.email;
-                if(!useMock) getDoc(getDocRef(usersColl, u.email)).then(s=>{ if(s.exists()) app.renderUserDetail(s.data()); });
-                else app.renderUserDetail(app.mockDB.find(x=>x.email===u.email));
-                document.getElementById('admin-user-detail').classList.add('active');
-            },
-            renderUserDetail: (u) => {
-                app.editUser = u; document.getElementById('adm-detail-name').innerText=u.name; document.getElementById('adm-detail-email').innerText=u.email; document.getElementById('adm-detail-active').checked=u.active;
-                const l = document.getElementById('adm-races-list'); l.innerHTML='';
-                const rs = u.races || [];
-                if(rs.length===0) l.innerHTML='<p style="font-size:12px; color:#AAA;">Nenhuma prova criada.</p>';
-                rs.forEach((r, i) => {
-                    const d = document.createElement('div'); d.className='card'; d.style.padding='15px'; d.style.cursor='pointer';
-                    d.innerHTML = `<div style="display:flex; justify-content:space-between;"><strong>${r.name}</strong><span style="font-size:12px; color:#888;">${r.date||''}</span></div><p style="margin:5px 0 0; font-size:12px; color:#AAA;">${r.workouts?.length||0} treinos</p>`;
-                    d.onclick = () => app.openRace(i);
-                    l.appendChild(d);
-                });
-            },
-            closeUserDetail: () => document.getElementById('admin-user-detail').classList.remove('active'),
-            saveUserAccess: async () => {
-                const a = document.getElementById('adm-detail-active').checked;
-                if(!useMock) await updateDoc(getDocRef(usersColl, app.editEmail), {active:a}); else { const i=app.mockDB.findIndex(x=>x.email===app.editEmail); if(i>-1)app.mockDB[i].active=a; app.saveLocal(); app.renderAdminList(app.mockDB); }
-                alert('Salvo!'); app.closeUserDetail();
-            },
-            addRace: () => { if(!app.editUser.races) app.editUser.races=[]; app.editUser.races.push({name:'Nova Prova', date:'', workouts:[]}); app.openRace(app.editUser.races.length-1); },
-            
-            // Level 2: Race Editor
-            openRace: (idx) => {
-                app.editRaceIndex = idx; const r = app.editUser.races[idx];
-                document.getElementById('adm-race-name').value = r.name; document.getElementById('adm-race-date').value = r.date;
-                app.renderWorkoutInputs(r.workouts);
-                document.getElementById('admin-race-editor').classList.add('active');
-            },
-            closeRaceEditor: () => document.getElementById('admin-race-editor').classList.remove('active'),
-            renderWorkoutInputs: (wks) => {
-                const l=document.getElementById('adm-workouts-list'); l.innerHTML='';
-                wks.forEach((w, i)=>{
-                    const d=document.createElement('div'); d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px;";
-                    d.innerHTML=`<span style="font-weight:700; color:#AAA; font-size:12px; margin-top:5px;">${i+1}</span><div style="flex:1;"><input class="edt-t" value="${w.title}" placeholder="Título" style="width:100%; border:none; font-weight:700; font-size:12px; margin-bottom:5px; outline:none;"><input class="edt-d" value="${w.desc}" placeholder="Detalhes..." style="width:100%; border:none; font-size:11px; color:#666; outline:none;"></div><button onclick="this.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>`;
-                    l.appendChild(d);
-                });
-            },
-            addWorkout: () => {
-                const l=document.getElementById('adm-workouts-list'); const i=l.children.length+1;
-                const d=document.createElement('div'); d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px;";
-                d.innerHTML=`<span style="font-weight:700; color:#AAA; font-size:12px; margin-top:5px;">${i}</span><div style="flex:1;"><input class="edt-t" placeholder="Título" style="width:100%; border:none; font-weight:700; font-size:12px; margin-bottom:5px; outline:none;"><input class="edt-d" placeholder="Detalhes..." style="width:100%; border:none; font-size:11px; color:#666; outline:none;"></div><button onclick="this.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>`;
-                l.appendChild(d);
-            },
-            saveRaceData: async () => {
-                const rN=document.getElementById('adm-race-name').value; const rD=document.getElementById('adm-race-date').value;
-                const ts=document.querySelectorAll('.edt-t'); const ds=document.querySelectorAll('.edt-d'); const w=[];
-                ts.forEach((t,i)=>w.push({title:t.value, desc:ds[i].value, done:false}));
-                app.editUser.races[app.editRaceIndex] = { name:rN, date:rD, workouts:w };
-                if(!useMock) await updateDoc(getDocRef(usersColl, app.editEmail), {races:app.editUser.races});
-                else { const idx=app.mockDB.findIndex(u=>u.email===app.editEmail); if(idx>-1) app.mockDB[idx].races=app.editUser.races; app.saveLocal(); }
-                alert('Salvo!'); app.closeRaceEditor(); app.renderUserDetail(app.editUser);
-            },
-            fillDefaults: () => {
-                const l=document.getElementById('adm-workouts-list');
-                const tpls=[{t:'Caminhada Leve',d:'30 min Z1'},{t:'Trote 3km',d:'Ritmo Confortável'},{t:'Tiros',d:'10x400m forte'},{t:'Longo',d:'5km simulação'}];
-                for(let i=0; i<20; i++){
-                    const t=tpls[i%tpls.length];
-                    const d=document.createElement('div'); d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px;";
-                    d.innerHTML=`<span style="font-weight:700; color:#AAA; font-size:12px; margin-top:5px;">${l.children.length+1}</span><div style="flex:1;"><input class="edt-t" value="${t.t}" style="width:100%; border:none; font-weight:700; font-size:12px; margin-bottom:5px; outline:none;"><input class="edt-d" value="${t.d}" style="width:100%; border:none; font-size:11px; color:#666; outline:none;"></div><button onclick="this.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>`;
-                    l.appendChild(d);
-                }
-            },
-            
-            // ... (Admin Quotes logic) ...
             renderAdminQuotes: (qs) => {
                 const l=document.getElementById('admin-quotes-list'); l.innerHTML='';
                 qs.forEach(q=>{ l.innerHTML+=`<div class="card" style="padding:15px; display:flex; justify-content:space-between; align-items:center;"><p style="margin:0; font-size:12px; font-style:italic;">"${q.text}"</p><button onclick="app.deleteQuote('${q.id}')" style="border:none; background:none; color:var(--red); cursor:pointer;"><i class="fa-solid fa-trash"></i></button></div>`; });
             },
             addQuote: async ()=>{ const t=document.getElementById('new-quote-text').value; if(!t)return; if(!useMock) await addDoc(getRef(quotesColl),{text:t,created:Date.now()}); else { app.mockQuotes.push(t); app.renderAdminQuotes(app.mockQuotes.map((q,i)=>({id:i,text:q}))); } document.getElementById('new-quote-text').value=''; },
-            deleteQuote: async (id)=>{ if(!useMock) await deleteDoc(doc(db,quotesCollName,id)); else alert("Apenas online."); }
+            deleteQuote: async (id)=>{ if(!useMock) await deleteDoc(doc(db,quotesCollName,id)); else alert("Apenas online."); },
+
+            openUser: (u) => {
+                app.editEmail = u.email;
+                if(!useMock) getDoc(getDocRef(usersColl, u.email)).then(s=>{ if(s.exists()) app.renderUserDetail(s.data()); }); else app.renderUserDetail(app.mockDB.find(x=>x.email===u.email));
+                document.getElementById('admin-user-detail').classList.add('active');
+            },
+            renderUserDetail: (u) => {
+                app.editUser = u; document.getElementById('adm-detail-name').innerText=u.name; document.getElementById('adm-detail-email').innerText=u.email; document.getElementById('adm-detail-active').checked=u.active;
+                const l = document.getElementById('adm-races-list'); l.innerHTML=''; const rs = u.races || [];
+                if(rs.length===0) l.innerHTML='<p style="font-size:12px; color:#AAA;">Nenhuma prova criada.</p>';
+                [...rs].reverse().forEach((r, i) => {
+                    const originalIndex = rs.length - 1 - i;
+                    const d = document.createElement('div'); d.className='card'; d.style.padding='15px'; d.style.cursor='pointer';
+                    const t = r.workouts?.length||0; const dn = r.workouts?r.workouts.filter(w=>w.done).length:0; const p = t>0?Math.round((dn/t)*100):0;
+                    d.innerHTML = `<div style="display:flex; justify-content:space-between;"><strong>${r.name}</strong><span style="font-size:12px; color:#888;">${r.date||''}</span></div><p style="margin:5px 0 0; font-size:12px; color:#AAA;">${t} treinos (${p}%)</p>`;
+                    d.onclick = () => app.openRace(originalIndex);
+                    l.appendChild(d);
+                });
+            },
+            closeUserDetail: () => document.getElementById('admin-user-detail').classList.remove('active'),
+            saveUserAccess: async () => { const a = document.getElementById('adm-detail-active').checked; if(!useMock) await updateDoc(getDocRef(usersColl, app.editEmail), {active:a}); else { const i=app.mockDB.findIndex(x=>x.email===app.editEmail); if(i>-1)app.mockDB[i].active=a; app.saveLocal(); app.renderAdminList(app.mockDB); } alert('Salvo!'); app.closeUserDetail(); },
+            addRace: () => { if(!app.editUser.races) app.editUser.races=[]; app.editUser.races.push({name:'Nova Prova', date:'', workouts:[]}); app.openRace(app.editUser.races.length-1); },
+            
+            openRace: (idx) => { app.editRaceIndex = idx; const r = app.editUser.races[idx]; document.getElementById('adm-race-name').value = r.name; document.getElementById('adm-race-date').value = r.date; app.renderWorkoutInputs(r.workouts); document.getElementById('admin-race-editor').classList.add('active'); },
+            closeRaceEditor: () => document.getElementById('admin-race-editor').classList.remove('active'),
+            renderWorkoutInputs: (wks) => { const l=document.getElementById('adm-workouts-list'); l.innerHTML=''; wks.forEach((w, i)=>{ const d=document.createElement('div'); d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px;"; d.innerHTML=`<span style="font-weight:700; color:#AAA; font-size:12px; margin-top:5px;">${i+1}</span><div style="flex:1;"><input class="edt-t" value="${w.title}" placeholder="Título" style="width:100%; border:none; font-weight:700; font-size:12px; margin-bottom:5px; outline:none;"><input class="edt-d" value="${w.desc}" placeholder="Detalhes..." style="width:100%; border:none; font-size:11px; color:#666; outline:none;"></div><button onclick="this.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>`; l.appendChild(d); }); },
+            addWorkout: () => { const l=document.getElementById('adm-workouts-list'); const i=l.children.length+1; const d=document.createElement('div'); d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px;"; d.innerHTML=`<span style="font-weight:700; color:#AAA; font-size:12px; margin-top:5px;">${i}</span><div style="flex:1;"><input class="edt-t" placeholder="Título" style="width:100%; border:none; font-weight:700; font-size:12px; margin-bottom:5px; outline:none;"><input class="edt-d" placeholder="Detalhes..." style="width:100%; border:none; font-size:11px; color:#666; outline:none;"></div><button onclick="this.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>`; l.appendChild(d); },
+            saveRaceData: async () => { const rN=document.getElementById('adm-race-name').value; const rD=document.getElementById('adm-race-date').value; const ts=document.querySelectorAll('.edt-t'); const ds=document.querySelectorAll('.edt-d'); const w=[]; ts.forEach((t,i)=>w.push({title:t.value, desc:ds[i].value, done:false})); app.editUser.races[app.editRaceIndex] = { name:rN, date:rD, workouts:w }; if(!useMock) await updateDoc(getDocRef(usersColl, app.editEmail), {races:app.editUser.races}); else { const idx=app.mockDB.findIndex(u=>u.email===app.editEmail); if(idx>-1) app.mockDB[idx].races=app.editUser.races; app.saveLocal(); } alert('Salvo!'); app.closeRaceEditor(); app.renderUserDetail(app.editUser); },
+            fillDefaults: () => { const l=document.getElementById('adm-workouts-list'); const tpls=[{t:'Caminhada Leve',d:'30 min Z1'},{t:'Trote 3km',d:'Ritmo Confortável'},{t:'Tiros',d:'10x400m forte'},{t:'Longo',d:'5km simulação'}]; for(let i=0; i<20; i++){ const t=tpls[i%tpls.length]; const d=document.createElement('div'); d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px;"; d.innerHTML=`<span style="font-weight:700; color:#AAA; font-size:12px; margin-top:5px;">${l.children.length+1}</span><div style="flex:1;"><input class="edt-t" value="${t.t}" style="width:100%; border:none; font-weight:700; font-size:12px; margin-bottom:5px; outline:none;"><input class="edt-d" value="${t.d}" style="width:100%; border:none; font-size:11px; color:#666; outline:none;"></div><button onclick="this.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>`; l.appendChild(d); } }
         };
         document.addEventListener('DOMContentLoaded', app.init);
     </script>
