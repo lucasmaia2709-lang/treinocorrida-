@@ -7,18 +7,25 @@
     <!-- Fontes e Ícones -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- CSS Nativo -->
     <style>
         :root {
+            /* Cores Base - Editáveis pelo Admin */
+            --primary: rgba(0, 0, 0, 0.85);
             --bg: #FFFFFF;
             --surface: #F2F2F7;
             --text-main: rgba(0, 0, 0, 0.85); 
+            
+            /* Design System - Editáveis pelo Admin */
+            --radius: 12px; /* Raio padrão para botões e inputs */
+            --font-main: 'Poppins', sans-serif;
+            
+            /* Cores Fixas / Derivadas */
             --text-sec: #666666;
             --text-light: #999999;
-            --primary: rgba(0, 0, 0, 0.85);
             --accent: #E0E0E0;
             --success: #34C759;
             --red: #FF3B30;
@@ -30,28 +37,31 @@
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: var(--bg); color: var(--text-main); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+        body { margin: 0; padding: 0; font-family: var(--font-main); background-color: var(--bg); color: var(--text-main); height: 100vh; overflow: hidden; display: flex; flex-direction: column; transition: background-color 0.3s, color 0.3s; }
+        
+        /* Títulos mantêm Playfair se desejado, ou mudam */
         h1, h2, h3, .serif-font { font-family: 'Playfair Display', serif; }
 
         /* Telas */
-        .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg); display: none; flex-direction: column; overflow-y: auto; z-index: 10; }
+        .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg); display: none; flex-direction: column; overflow-y: auto; z-index: 10; transition: background-color 0.3s; }
         .screen.active { display: flex; animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
 
         /* Inputs & Botões */
         .input-group { margin-bottom: 20px; text-align: left; width: 100%; }
         .label { display: block; font-size: 13px; font-weight: 500; color: var(--text-main); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .input { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--border); background-color: #FFFFFF; font-size: 15px; color: var(--text-main); outline: none; font-family: 'Poppins', sans-serif; }
-        .input:focus { border-color: var(--text-main); }
+        .input { width: 100%; padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); background-color: rgba(255,255,255,0.8); font-size: 15px; color: var(--text-main); outline: none; font-family: var(--font-main); transition: 0.2s; }
+        .input:focus { border-color: var(--text-main); background-color: #FFF; }
         textarea.input { resize: none; height: 100px; }
         
-        .btn { width: 100%; padding: 16px; border-radius: 12px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn { width: 100%; padding: 16px; border-radius: var(--radius); border: none; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; text-transform: uppercase; letter-spacing: 0.5px; font-family: var(--font-main); transition: 0.2s; }
         .btn-primary { background-color: var(--primary); color: #FFFFFF; box-shadow: var(--shadow); }
-        .btn-text { background: none; color: var(--text-main); padding: 10px; border: none; font-weight: 600; cursor: pointer; font-size: 14px; }
+        .btn-primary:active { opacity: 0.9; transform: scale(0.98); }
+        .btn-text { background: none; color: var(--text-main); padding: 10px; border: none; font-weight: 600; cursor: pointer; font-size: 14px; font-family: var(--font-main); }
         .btn-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: none; cursor: pointer; background: var(--surface); color: var(--text-main); transition: 0.2s; }
         .btn-icon.active { background: var(--primary); color: white; }
 
         /* Feed Social */
-        .post-card { margin-bottom: 20px; background: white; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        .post-card { margin-bottom: 20px; background: rgba(255,255,255,0.5); border-bottom: 1px solid var(--border); padding-bottom: 15px; }
         .post-header { display: flex; align-items: center; padding: 15px 24px; }
         .post-avatar { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; margin-right: 12px; background: #EEE; flex-shrink: 0; }
         .post-avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -66,34 +76,34 @@
 
         /* Comentários */
         .comment-item { margin-bottom: 15px; display: flex; gap: 10px; align-items: flex-start; }
-        .comment-content { flex: 1; background: var(--surface); padding: 10px 15px; border-radius: 0 12px 12px 12px; font-size: 13px; }
+        .comment-content { flex: 1; background: var(--surface); padding: 10px 15px; border-radius: 0 var(--radius) var(--radius) var(--radius); font-size: 13px; }
         .comment-header { display: flex; justify-content: space-between; margin-bottom: 4px; font-weight: 600; font-size: 12px; }
         .delete-comment { color: var(--red); cursor: pointer; font-size: 12px; border: none; background: none; padding: 5px; }
 
         /* FAB */
-        .fab { position: fixed; bottom: 100px; right: 20px; width: 60px; height: 60px; background: var(--text-main); color: white; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); cursor: pointer; z-index: 90; border: none; font-size: 26px; transition: transform 0.2s; }
+        .fab { position: fixed; bottom: 100px; right: 20px; width: 60px; height: 60px; background: var(--primary); color: white; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); cursor: pointer; z-index: 90; border: none; font-size: 26px; transition: transform 0.2s; }
         .fab:active { transform: scale(0.95); }
 
         /* Tela Criar Post */
-        #view-create-post { background: white; z-index: 100; }
+        #view-create-post { background: var(--bg); z-index: 100; }
         .composer-header { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .composer-area { padding: 20px; flex: 1; display: flex; flex-direction: column; }
-        .composer-input { border: none; width: 100%; font-family: 'Poppins'; font-size: 16px; resize: none; outline: none; min-height: 150px; }
+        .composer-input { border: none; width: 100%; font-family: var(--font-main); background: transparent; color: var(--text-main); font-size: 16px; resize: none; outline: none; min-height: 150px; }
         .composer-tools { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 20px; }
         .add-photo-btn { display: flex; align-items: center; gap: 10px; color: var(--text-main); font-weight: 600; cursor: pointer; padding: 10px; border-radius: 8px; transition: 0.2s; }
         .add-photo-btn:active { background: var(--surface); }
-        .photo-preview { margin-top: 20px; position: relative; border-radius: 12px; overflow: hidden; display: none; }
+        .photo-preview { margin-top: 20px; position: relative; border-radius: var(--radius); overflow: hidden; display: none; }
         .photo-preview.show { display: block; }
         .photo-preview img { width: 100%; height: auto; display: block; }
         .remove-photo { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
         /* Nav Bar */
-        .nav-bar { position: absolute; bottom: 0; left: 0; width: 100%; background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); padding: 15px 20px 30px; border-top: 1px solid var(--border); display: flex; justify-content: space-around; z-index: 100; }
+        .nav-bar { position: absolute; bottom: 0; left: 0; width: 100%; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); padding: 15px 20px 30px; border-top: 1px solid var(--border); display: flex; justify-content: space-around; z-index: 100; }
         .nav-item { background: none; border: none; color: var(--text-light); display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; flex: 1; }
         .nav-item i { font-size: 22px; }
-        .nav-item span { font-size: 10px; font-weight: 500; font-family: 'Poppins'; }
-        .nav-item.active { color: var(--text-main); }
-        .nav-item-center { background: var(--text-main); width: 50px; height: 50px; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: white !important; margin-top: -25px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .nav-item span { font-size: 10px; font-weight: 500; font-family: var(--font-main); }
+        .nav-item.active { color: var(--primary); }
+        .nav-item-center { background: var(--primary); width: 50px; height: 50px; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: white !important; margin-top: -25px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
 
         /* CALENDÁRIO */
         .calendar-wrapper { margin-bottom: 30px; width: 100%; display: flex; flex-direction: column; align-items: center; }
@@ -110,7 +120,7 @@
         @media (min-width: 400px) { .calendar-strip { justify-content: center; } }
         .cal-day { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 45px; opacity: 0.5; cursor: pointer; flex-shrink: 0; }
         .cal-day.active { opacity: 1; }
-        .cal-d-num { width: 36px; height: 36px; border-radius: 50%; background: var(--surface); display: flex; align-items: center; justify-content: center; font-weight: 600; }
+        .cal-d-num { width: 36px; height: 36px; border-radius: 50%; background: var(--surface); display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--text-main); }
         .cal-day.active .cal-d-num { background: var(--primary); color: white; }
         .cal-dot { width: 5px; height: 5px; border-radius: 50%; margin-top: 4px; }
         .cal-day.has-workout .cal-dot { background: var(--text-main); }
@@ -118,9 +128,9 @@
         
         /* Cartões Home e Treino */
         .home-card, .workout-card {
-            background-color: white; 
-            border-radius: 24px; 
-            padding: 20px; /* Reduzi de 24 para 20 para ficar mais compacto */
+            background-color: #FFFFFF; 
+            border-radius: calc(var(--radius) + 8px); /* Um pouco mais redondo que botões */
+            padding: 20px;
             color: var(--text-main); 
             position: relative; 
             overflow: hidden; 
@@ -132,7 +142,7 @@
         /* Estilos Específicos do Card de Treino */
         .workout-card.done-style {
             opacity: 0.8;
-            background-color: #FAFAFA;
+            background-color: var(--surface);
         }
         .workout-card-header {
             display: flex;
@@ -166,7 +176,7 @@
             color: var(--text-main);
             border: none;
             padding: 12px;
-            border-radius: 12px;
+            border-radius: var(--radius);
             font-size: 13px;
             font-weight: 600;
             text-decoration: none;
@@ -187,7 +197,7 @@
         .recipe-scroll { display: flex; gap: 16px; overflow-x: auto; padding: 10px 24px 20px; scrollbar-width: none; }
         .recipe-card { 
             min-width: 160px; width: 160px; background: var(--surface); 
-            border-radius: 16px; overflow: hidden; border: 1px solid var(--border); cursor: pointer; display: flex; flex-direction: column;
+            border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); cursor: pointer; display: flex; flex-direction: column;
         }
         .recipe-img { 
             width: 100%; height: 160px; background-color: #EEE; background-size: cover; background-position: center; position: relative; 
@@ -203,11 +213,11 @@
         #recipes-grid .recipe-card { width: 100%; min-width: auto; }
         
         /* Recipe Detail */
-        #view-recipe-detail .content { background: white; border-radius: 30px 30px 0 0; margin-top: -40px; padding: 30px 24px 100px; position: relative; min-height: 600px; z-index: 1; }
-        .macro-pill { border: 1px solid var(--border); padding: 8px 16px; border-radius: 12px; font-size: 12px; font-weight: 600; color: var(--text-main); flex: 1; text-align: center; }
-        .recipe-badge { background: var(--tag-bg); color: var(--tag-text); padding: 8px 16px; border-radius: 12px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
-        .segment-control { background: var(--surface); padding: 4px; border-radius: 12px; display: flex; margin: 25px 0; }
-        .segment-btn { flex: 1; padding: 10px; border: none; background: transparent; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--text-sec); cursor: pointer; transition: 0.3s; }
+        #view-recipe-detail .content { background: var(--bg); border-radius: 30px 30px 0 0; margin-top: -40px; padding: 30px 24px 100px; position: relative; min-height: 600px; z-index: 1; box-shadow: 0 -10px 30px rgba(0,0,0,0.05); }
+        .macro-pill { border: 1px solid var(--border); padding: 8px 16px; border-radius: var(--radius); font-size: 12px; font-weight: 600; color: var(--text-main); flex: 1; text-align: center; }
+        .recipe-badge { background: var(--tag-bg); color: var(--tag-text); padding: 8px 16px; border-radius: var(--radius); font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        .segment-control { background: var(--surface); padding: 4px; border-radius: var(--radius); display: flex; margin: 25px 0; }
+        .segment-btn { flex: 1; padding: 10px; border: none; background: transparent; border-radius: calc(var(--radius) - 4px); font-size: 13px; font-weight: 600; color: var(--text-sec); cursor: pointer; transition: 0.3s; font-family: var(--font-main); }
         .segment-btn.active { background: white; color: var(--text-main); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .ingredient-row { display: flex; justify-content: center; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; text-align: center; }
         .step-item { margin-bottom: 20px; text-align: center; }
@@ -216,18 +226,18 @@
         /* Modals e Utils */
         .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index: 3000; display: none; align-items: center; justify-content: center; }
         .modal-overlay.active { display: flex; }
-        .modal-card { background: white; width: 90%; max-width: 350px; border-radius: 24px; padding: 24px; }
+        .modal-card { background: var(--bg); width: 90%; max-width: 350px; border-radius: 24px; padding: 24px; color: var(--text-main); }
         .hidden { display: none !important; }
         #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 4000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
         .toast { background: rgba(0,0,0,0.9); color: white; padding: 12px 20px; border-radius: 50px; font-size: 13px; opacity: 0; transform: translateY(-20px); transition: 0.3s; }
         .toast.show { opacity: 1; transform: translateY(0); }
         
         /* Video Player Modal Style */
-        .video-wrapper { width: 100%; max-width: 800px; aspect-ratio: 16/9; background: black; border-radius: 12px; overflow: hidden; position: relative; }
+        .video-wrapper { width: 100%; max-width: 800px; aspect-ratio: 16/9; background: black; border-radius: var(--radius); overflow: hidden; position: relative; }
         .video-wrapper video, .video-wrapper iframe { width: 100%; height: 100%; border: none; }
 
         /* Upload Imagens */
-        .img-upload-area { width: 100%; height: 180px; background: var(--surface); border: 2px dashed var(--border); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; position: relative; margin-bottom: 20px; }
+        .img-upload-area { width: 100%; height: 180px; background: var(--surface); border: 2px dashed var(--border); border-radius: var(--radius); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; position: relative; margin-bottom: 20px; }
         .img-upload-area img { width: 100%; height: 100%; object-fit: cover; display: none; }
         .img-upload-area img.show { display: block; }
         .img-upload-area i { font-size: 24px; color: var(--text-light); margin-bottom: 10px; }
@@ -256,6 +266,12 @@
         .admin-panel { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg); z-index: 500; transform: translateX(100%); transition: transform 0.3s ease; display: none; flex-direction: column; }
         .admin-panel.active { transform: translateX(0); display: flex; }
         
+        /* Admin Customization Inputs */
+        .color-picker-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 10px; background: var(--surface); border-radius: var(--radius); }
+        .color-input { border: none; width: 40px; height: 40px; cursor: pointer; background: none; }
+        .range-slider { width: 100%; accent-color: var(--primary); }
+        .select-style { width: 100%; padding: 12px; border-radius: var(--radius); border: 1px solid var(--border); background: #FFF; margin-bottom: 15px; }
+
         /* Remove Linha Branca */
         .timeline .line { display: none; }
     </style>
@@ -343,14 +359,14 @@
                     <div class="calendar-header">
                         <span id="cal-month-name">Novembro 2025</span>
                         <div class="calendar-controls">
-                           <button onclick="app.scrollCalendar(-1)" style="border:none; background:none; cursor:pointer;"><i class="fa-solid fa-chevron-left"></i></button>
-                           <button onclick="app.scrollCalendar(1)" style="border:none; background:none; cursor:pointer;"><i class="fa-solid fa-chevron-right"></i></button>
+                           <button onclick="app.scrollCalendar(-1)" style="border:none; background:none; cursor:pointer; color: var(--text-main);"><i class="fa-solid fa-chevron-left"></i></button>
+                           <button onclick="app.scrollCalendar(1)" style="border:none; background:none; cursor:pointer; color: var(--text-main);"><i class="fa-solid fa-chevron-right"></i></button>
                         </div>
                     </div>
                     <div class="calendar-strip" id="calendar-strip"></div>
                 </div>
 
-                <!-- Progresso (Compacto e com Barra Verde) -->
+                <!-- Progresso -->
                 <div style="padding: 0 24px; margin-bottom: 30px;">
                     <div class="home-card" style="min-height: auto; padding-bottom: 20px;">
                         <div class="progress-content">
@@ -362,12 +378,12 @@
                                 <span id="hero-percent" class="serif-font" style="font-size: 24px; font-weight: 700; color: var(--primary);">0%</span>
                             </div>
                             
-                            <!-- Barra Verde Discreta -->
-                            <div style="width: 100%; height: 6px; background: #F2F2F7; border-radius: 3px; margin: 15px 0; overflow: hidden;">
+                            <!-- Barra Verde -->
+                            <div style="width: 100%; height: 6px; background: var(--surface); border-radius: 3px; margin: 15px 0; overflow: hidden;">
                                 <div id="hero-prog-bar" style="width: 0%; height: 100%; background: var(--success); border-radius: 3px; transition: width 0.5s ease;"></div>
                             </div>
 
-                            <button onclick="app.nav('workouts')" style="width: 100%; background: var(--text-main); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 600; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;">Continuar Treino</button>
+                            <button onclick="app.nav('workouts')" style="width: 100%; background: var(--text-main); color: var(--bg); border: none; padding: 12px; border-radius: var(--radius); font-weight: 600; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;">Continuar Treino</button>
                         </div>
                     </div>
                 </div>
@@ -413,7 +429,7 @@
                 </div>
                 <h2 id="profile-name" style="margin: 0;">Nome</h2>
                 <button onclick="app.showAddRaceModal()" style="background:var(--surface); border: 1px dashed var(--text-main); color: var(--text-main); margin-top: 30px; margin-bottom: 15px; width: 100%; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer;">+ NOVO OBJETIVO</button>
-                <button onclick="app.showProfileSettings()" class="btn" style="background: white; border: 1px solid var(--border); color: var(--text-sec); margin-bottom: 15px;">Editar Perfil</button>
+                <button onclick="app.showProfileSettings()" class="btn" style="background: var(--bg); border: 1px solid var(--border); color: var(--text-sec); margin-bottom: 15px;">Editar Perfil</button>
                 <button onclick="app.logout()" class="btn" style="background: rgba(255,59,48,0.1); color: var(--red); margin-bottom: 30px;">Sair</button>
                 
                 <div style="margin-top: 20px; text-align: left; border-top: 1px solid var(--border); padding-top: 20px;">
@@ -441,7 +457,7 @@
         <div class="composer-header">
             <button onclick="app.closeCreatePost()" style="border:none; background:none; font-size:16px; color:var(--text-sec); cursor:pointer;">Cancelar</button>
             <h3 style="margin:0; font-size:16px;">Criar Publicação</h3>
-            <button onclick="app.submitPost()" style="border:none; background:var(--text-main); color:white; font-size:14px; font-weight:600; padding:8px 16px; border-radius:20px; cursor:pointer;">Publicar</button>
+            <button onclick="app.submitPost()" style="border:none; background:var(--text-main); color:var(--bg); font-size:14px; font-weight:600; padding:8px 16px; border-radius:20px; cursor:pointer;">Publicar</button>
         </div>
         <div class="composer-area">
             <textarea id="post-text" class="composer-input" placeholder="No que você está pensando?"></textarea>
@@ -487,8 +503,94 @@
     </div>
 
     <!-- MODAIS -->
-    <div id="modal-comments" class="modal-overlay" style="display: none;"><div class="modal-card" style="height: 80vh; display: flex; flex-direction: column; padding: 0; overflow: hidden;"><div style="padding: 15px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;"><h3 style="margin:0; font-size: 16px;">Comentários</h3><button onclick="document.getElementById('modal-comments').style.display='none'" style="background:none; border:none; font-size:20px;"><i class="fa-solid fa-times"></i></button></div><div id="comments-list" style="flex: 1; overflow-y: auto; padding: 15px;"></div><div style="padding: 15px; border-top: 1px solid var(--border); background: white; display: flex; gap: 10px;"><input type="text" id="comment-input" class="input" placeholder="Adicione um comentário..." style="margin:0; border-radius: 20px;"><button onclick="app.submitComment()" style="background: var(--text-main); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;"><i class="fa-solid fa-paper-plane"></i></button></div></div></div>
-    <div id="view-admin" class="screen" style="background: var(--bg);"><div class="header" style="background: white; border-bottom: 1px solid var(--border); padding: 20px 24px;"><h3>Painel Treinador</h3><div style="margin-top: 15px; display: flex; gap: 15px;"><button onclick="app.adminTab('users')" class="btn-icon active" id="adm-tab-users"><i class="fa-solid fa-users"></i></button><button onclick="app.adminTab('quotes')" class="btn-icon" id="adm-tab-quotes"><i class="fa-solid fa-quote-right"></i></button><button onclick="app.adminTab('recipes')" class="btn-icon" id="adm-tab-recipes"><i class="fa-solid fa-utensils"></i></button><button onclick="app.logout()" style="border: none; background: none; color: var(--red); font-weight: bold; font-size: 12px; margin-left: auto;">Sair</button></div></div><div id="admin-content-users" style="padding: 24px; overflow-y: auto; flex: 1;"><div id="admin-list" style="display: flex; flex-direction: column; gap: 10px;"></div></div><div id="admin-content-quotes" class="hidden" style="padding: 24px; overflow-y: auto; flex: 1;"><div class="card"><div class="input-group" style="margin-bottom: 10px;"><label class="label">Nova Frase</label><textarea id="new-quote-text" class="input" style="height: 60px;"></textarea></div><button onclick="app.addQuote()" class="btn btn-primary" style="padding: 10px;">ADICIONAR</button></div><div id="admin-quotes-list" style="display: flex; flex-direction: column; gap: 10px;"></div></div><div id="admin-content-recipes" class="hidden" style="padding: 24px; overflow-y: auto; flex: 1;"><div class="card"><h4 style="margin-top: 0;">Nova Receita</h4><div class="img-upload-area" onclick="document.getElementById('new-rec-file').click()"><img id="new-rec-preview"><i class="fa-solid fa-camera"></i><span>Tocar para enviar foto</span><input type="file" id="new-rec-file" accept="image/*" style="display: none;" onchange="app.handleRecipeImage(this)"></div><div class="input-group"><label class="label">Título</label><input id="new-rec-title" class="input"></div><div class="flex-row"><div class="input-group flex-1"><label class="label">Kcal</label><input id="new-rec-kcal" class="input" type="number"></div><div class="input-group flex-1"><label class="label">Minutos</label><input id="new-rec-time" class="input" type="number"></div></div><div class="flex-row"><div class="input-group flex-1"><label class="label">Prot</label><input id="new-rec-p" class="input" type="number"></div><div class="input-group flex-1"><label class="label">Carb</label><input id="new-rec-c" class="input" type="number"></div><div class="input-group flex-1"><label class="label">Gord</label><input id="new-rec-f" class="input" type="number"></div></div><div class="input-group"><label class="label">Ingredientes</label><textarea id="new-rec-ing" class="input"></textarea></div><div class="input-group"><label class="label">Passos</label><textarea id="new-rec-step" class="input"></textarea></div><button onclick="app.addRecipe()" class="btn btn-primary">SALVAR</button></div><div id="admin-recipes-list" style="display: flex; flex-direction: column; gap: 10px;"></div></div></div>
+    <div id="modal-comments" class="modal-overlay" style="display: none;"><div class="modal-card" style="height: 80vh; display: flex; flex-direction: column; padding: 0; overflow: hidden;"><div style="padding: 15px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;"><h3 style="margin:0; font-size: 16px;">Comentários</h3><button onclick="document.getElementById('modal-comments').style.display='none'" style="background:none; border:none; font-size:20px; color: var(--text-main);"><i class="fa-solid fa-times"></i></button></div><div id="comments-list" style="flex: 1; overflow-y: auto; padding: 15px;"></div><div style="padding: 15px; border-top: 1px solid var(--border); background: var(--bg); display: flex; gap: 10px;"><input type="text" id="comment-input" class="input" placeholder="Adicione um comentário..." style="margin:0; border-radius: 20px;"><button onclick="app.submitComment()" style="background: var(--text-main); color: var(--bg); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;"><i class="fa-solid fa-paper-plane"></i></button></div></div></div>
+    
+    <!-- ADMIN PANEL -->
+    <div id="view-admin" class="screen" style="background: var(--bg);">
+        <div class="header" style="background: var(--bg); border-bottom: 1px solid var(--border); padding: 20px 24px;">
+            <h3>Painel Treinador</h3>
+            <div style="margin-top: 15px; display: flex; gap: 15px;">
+                <button onclick="app.adminTab('users')" class="btn-icon active" id="adm-tab-users"><i class="fa-solid fa-users"></i></button>
+                <button onclick="app.adminTab('quotes')" class="btn-icon" id="adm-tab-quotes"><i class="fa-solid fa-quote-right"></i></button>
+                <button onclick="app.adminTab('recipes')" class="btn-icon" id="adm-tab-recipes"><i class="fa-solid fa-utensils"></i></button>
+                <button onclick="app.adminTab('custom')" class="btn-icon" id="adm-tab-custom"><i class="fa-solid fa-paint-roller"></i></button>
+                <button onclick="app.logout()" style="border: none; background: none; color: var(--red); font-weight: bold; font-size: 12px; margin-left: auto;">Sair</button>
+            </div>
+        </div>
+        <div id="admin-content-users" style="padding: 24px; overflow-y: auto; flex: 1;">
+            <div id="admin-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+        </div>
+        <div id="admin-content-quotes" class="hidden" style="padding: 24px; overflow-y: auto; flex: 1;">
+            <div class="card">
+                <div class="input-group" style="margin-bottom: 10px;"><label class="label">Nova Frase</label><textarea id="new-quote-text" class="input" style="height: 60px;"></textarea></div>
+                <button onclick="app.addQuote()" class="btn btn-primary" style="padding: 10px;">ADICIONAR</button>
+            </div>
+            <div id="admin-quotes-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+        </div>
+        <div id="admin-content-recipes" class="hidden" style="padding: 24px; overflow-y: auto; flex: 1;">
+            <div class="card">
+                <h4 style="margin-top: 0;">Nova Receita</h4>
+                <div class="img-upload-area" onclick="document.getElementById('new-rec-file').click()"><img id="new-rec-preview"><i class="fa-solid fa-camera"></i><span>Tocar para enviar foto</span><input type="file" id="new-rec-file" accept="image/*" style="display: none;" onchange="app.handleRecipeImage(this)"></div>
+                <div class="input-group"><label class="label">Título</label><input id="new-rec-title" class="input"></div>
+                <div class="flex-row" style="display:flex; gap:10px;"><div class="input-group flex-1"><label class="label">Kcal</label><input id="new-rec-kcal" class="input" type="number"></div><div class="input-group flex-1"><label class="label">Minutos</label><input id="new-rec-time" class="input" type="number"></div></div>
+                <div class="flex-row" style="display:flex; gap:10px;"><div class="input-group flex-1"><label class="label">Prot</label><input id="new-rec-p" class="input" type="number"></div><div class="input-group flex-1"><label class="label">Carb</label><input id="new-rec-c" class="input" type="number"></div><div class="input-group flex-1"><label class="label">Gord</label><input id="new-rec-f" class="input" type="number"></div></div>
+                <div class="input-group"><label class="label">Ingredientes</label><textarea id="new-rec-ing" class="input"></textarea></div>
+                <div class="input-group"><label class="label">Passos</label><textarea id="new-rec-step" class="input"></textarea></div>
+                <button onclick="app.addRecipe()" class="btn btn-primary">SALVAR</button>
+            </div>
+            <div id="admin-recipes-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+        </div>
+        
+        <!-- NOVA ABA: CUSTOMIZAÇÃO -->
+        <div id="admin-content-custom" class="hidden" style="padding: 24px; overflow-y: auto; flex: 1;">
+            <h4 style="margin-bottom: 20px;">Personalização do App</h4>
+            
+            <div class="card" style="margin-bottom: 25px;">
+                <label class="label">CORES</label>
+                <div class="color-picker-row">
+                    <span>Cor Primária</span>
+                    <input type="color" id="theme-primary" class="color-input" value="#000000" onchange="app.previewTheme()">
+                </div>
+                <div class="color-picker-row">
+                    <span>Cor de Fundo</span>
+                    <input type="color" id="theme-bg" class="color-input" value="#FFFFFF" onchange="app.previewTheme()">
+                </div>
+                <div class="color-picker-row">
+                    <span>Cor dos Cards (Superfície)</span>
+                    <input type="color" id="theme-surface" class="color-input" value="#F2F2F7" onchange="app.previewTheme()">
+                </div>
+                <div class="color-picker-row">
+                    <span>Cor do Texto</span>
+                    <input type="color" id="theme-text" class="color-input" value="#000000" onchange="app.previewTheme()">
+                </div>
+            </div>
+
+            <div class="card" style="margin-bottom: 25px;">
+                <label class="label">TIPOGRAFIA</label>
+                <select id="theme-font" class="select-style" onchange="app.previewTheme()">
+                    <option value="'Poppins', sans-serif">Poppins (Moderno)</option>
+                    <option value="'Roboto', sans-serif">Roboto (Clássico)</option>
+                    <option value="'Inter', sans-serif">Inter (Clean)</option>
+                    <option value="'Playfair Display', serif">Playfair (Elegante)</option>
+                </select>
+            </div>
+
+            <div class="card" style="margin-bottom: 25px;">
+                <label class="label">BOTÕES E FORMAS</label>
+                <div style="padding: 10px;">
+                    <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:10px;">
+                        <span>Quadrado</span>
+                        <span>Redondo</span>
+                    </div>
+                    <input type="range" id="theme-radius" min="0" max="30" value="12" class="range-slider" oninput="app.previewTheme()">
+                </div>
+            </div>
+
+            <button onclick="app.saveTheme()" class="btn btn-primary" style="margin-bottom: 15px;">SALVAR TEMA</button>
+            <button onclick="app.resetTheme()" class="btn btn-text" style="color:var(--red);">Restaurar Padrão</button>
+        </div>
+    </div>
+
     <div id="modal-calendar-details" class="modal-overlay" style="display: none;"><div class="modal-card"><h3 id="modal-cal-date" style="margin-top: 0; text-align: center;">Data</h3><div id="modal-cal-content" style="margin: 20px 0; text-align: center;"></div><button onclick="document.getElementById('modal-calendar-details').classList.remove('active'); setTimeout(()=>document.getElementById('modal-calendar-details').style.display='none', 300);" class="btn btn-primary">Fechar</button></div></div>
     
     <!-- Modal Video Player -->
@@ -516,15 +618,15 @@
         </div>
     </div>
 
-    <div id="modal-admin-auth" class="modal-overlay"><div class="modal-card"><h3 style="text-align:center;">Acesso Treinador</h3><div class="input-group"><input type="password" id="admin-pass-input" class="input" placeholder="Senha"></div><div class="flex-row"><button onclick="app.closeAdminAuth()" class="btn" style="background:#EEE;">Cancelar</button><button onclick="app.checkAdminAuth()" class="btn btn-primary">Entrar</button></div></div></div>
-    <div id="modal-add-race" class="modal-overlay"><div class="modal-card"><h3 style="text-align:center;">Novo Objetivo</h3><div class="input-group"><label class="label">Nome</label><input type="text" id="new-race-name" class="input"></div><div class="input-group"><label class="label">Data Alvo</label><input type="date" id="new-race-date" class="input"></div><div class="flex-row"><button onclick="app.closeAddRaceModal()" class="btn" style="background:#EEE;">Cancelar</button><button onclick="app.saveStudentRace()" class="btn btn-primary">Criar</button></div></div></div>
-    <div id="admin-user-detail" class="admin-panel"><div style="padding:20px;background:white;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EEE;"><button onclick="app.closeUserDetail()" style="border:none;background:none;font-size:20px;"><i class="fa-solid fa-chevron-down"></i></button><h3 style="margin:0;">Perfil</h3><button onclick="app.saveUserAccess()" style="border:none;background:var(--primary);color:white;padding:8px 20px;border-radius:8px;font-weight:700;">Salvar</button></div><div style="flex:1;overflow-y:auto;padding:24px;"><div class="card" style="display:flex;justify-content:space-between;align-items:center;"><div><strong id="adm-detail-name">Nome</strong><p id="adm-detail-email" style="font-size:12px;color:#888;margin:0;">email</p></div><label class="switch"><input type="checkbox" id="adm-detail-active"><span class="slider"></span></label></div><div style="display:flex;justify-content:space-between;margin:30px 0 15px;"><h4 style="margin:0;">CICLOS</h4><button onclick="app.addRace()" style="font-size:12px;font-weight:700;">+ Novo</button></div><div id="adm-races-list" style="display:flex;flex-direction:column;gap:10px;"></div></div></div>
-    <div id="admin-race-editor" class="admin-panel"><div style="padding:20px;background:white;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EEE;"><button onclick="app.closeRaceEditor()" style="border:none;background:none;font-size:20px;"><i class="fa-solid fa-chevron-left"></i></button><h3 style="margin:0;">Editar Treinos</h3><button onclick="app.saveRaceData()" style="border:none;background:var(--primary);color:white;padding:8px 20px;border-radius:8px;font-weight:700;">Salvar</button></div><div style="flex:1;overflow-y:auto;padding:24px;"><div class="card"><div class="input-group"><label class="label">Nome</label><input id="adm-race-name" class="input"></div><div class="input-group"><label class="label">Data</label><input type="date" id="adm-race-date" class="input"></div></div><div style="display:flex;justify-content:space-between;margin-bottom:15px;"><h4 style="margin:0;font-size:12px;">TREINOS</h4><div><button onclick="app.addWorkout()" style="font-weight:700;margin-right:5px;">+ Treino</button><button onclick="app.fillDefaults()">Padrão</button></div></div><div id="adm-workouts-list" style="display:flex;flex-direction:column;gap:10px;"></div></div></div>
+    <div id="modal-admin-auth" class="modal-overlay"><div class="modal-card"><h3 style="text-align:center;">Acesso Treinador</h3><div class="input-group"><input type="password" id="admin-pass-input" class="input" placeholder="Senha"></div><div class="flex-row" style="display:flex;gap:10px;"><button onclick="app.closeAdminAuth()" class="btn" style="background:#EEE; color:#333;">Cancelar</button><button onclick="app.checkAdminAuth()" class="btn btn-primary">Entrar</button></div></div></div>
+    <div id="modal-add-race" class="modal-overlay"><div class="modal-card"><h3 style="text-align:center;">Novo Objetivo</h3><div class="input-group"><label class="label">Nome</label><input type="text" id="new-race-name" class="input"></div><div class="input-group"><label class="label">Data Alvo</label><input type="date" id="new-race-date" class="input"></div><div class="flex-row" style="display:flex;gap:10px;"><button onclick="app.closeAddRaceModal()" class="btn" style="background:#EEE; color:#333;">Cancelar</button><button onclick="app.saveStudentRace()" class="btn btn-primary">Criar</button></div></div></div>
+    <div id="admin-user-detail" class="admin-panel"><div style="padding:20px;background:var(--bg);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EEE;"><button onclick="app.closeUserDetail()" style="border:none;background:none;font-size:20px; color: var(--text-main);"><i class="fa-solid fa-chevron-down"></i></button><h3 style="margin:0;">Perfil</h3><button onclick="app.saveUserAccess()" style="border:none;background:var(--primary);color:white;padding:8px 20px;border-radius:8px;font-weight:700;">Salvar</button></div><div style="flex:1;overflow-y:auto;padding:24px;"><div class="card" style="display:flex;justify-content:space-between;align-items:center; background:var(--surface); padding:15px; border-radius:var(--radius);"><div><strong id="adm-detail-name">Nome</strong><p id="adm-detail-email" style="font-size:12px;color:#888;margin:0;">email</p></div><label class="switch"><input type="checkbox" id="adm-detail-active"><span class="slider"></span></label></div><div style="display:flex;justify-content:space-between;margin:30px 0 15px;"><h4 style="margin:0;">CICLOS</h4><button onclick="app.addRace()" style="font-size:12px;font-weight:700;">+ Novo</button></div><div id="adm-races-list" style="display:flex;flex-direction:column;gap:10px;"></div></div></div>
+    <div id="admin-race-editor" class="admin-panel"><div style="padding:20px;background:var(--bg);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #EEE;"><button onclick="app.closeRaceEditor()" style="border:none;background:none;font-size:20px; color: var(--text-main);"><i class="fa-solid fa-chevron-left"></i></button><h3 style="margin:0;">Editar Treinos</h3><button onclick="app.saveRaceData()" style="border:none;background:var(--primary);color:white;padding:8px 20px;border-radius:8px;font-weight:700;">Salvar</button></div><div style="flex:1;overflow-y:auto;padding:24px;"><div class="card" style="background:var(--surface); padding:15px; border-radius:var(--radius); margin-bottom:15px;"><div class="input-group"><label class="label">Nome</label><input id="adm-race-name" class="input"></div><div class="input-group"><label class="label">Data</label><input type="date" id="adm-race-date" class="input"></div></div><div style="display:flex;justify-content:space-between;margin-bottom:15px;"><h4 style="margin:0;font-size:12px;">TREINOS</h4><div><button onclick="app.addWorkout()" style="font-weight:700;margin-right:5px;">+ Treino</button><button onclick="app.fillDefaults()">Padrão</button></div></div><div id="adm-workouts-list" style="display:flex;flex-direction:column;gap:10px;"></div></div></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, updateDoc, addDoc, deleteDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, updateDoc, deleteDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = { apiKey: "AIzaSyAZc5IXA3PRIadz87sysrC_7lLZZG-7Izw", authDomain: "app-corrida-d3568.firebaseapp.com", projectId: "app-corrida-d3568", storageBucket: "app-corrida-d3568.firebasestorage.app", messagingSenderId: "690843260846", appId: "1:690843260846:web:e32be21759c9e813bada3f", measurementId: "G-26RNCCZYED" };
         const appId = "1:690843260846:web:e32be21759c9e813bada3f";
@@ -547,13 +649,25 @@
         const getCollPath = (name) => useMock ? null : collection(db, 'artifacts', appId, 'public', 'data', name);
         const getDocPath = (col, id) => useMock ? null : doc(db, 'artifacts', appId, 'public', 'data', col, id.replace(/[^a-zA-Z0-9]/g, '_'));
         const usersColl = 'expliq_users_v9'; const quotesColl = 'expliq_quotes_v9'; const recipesColl = 'expliq_recipes_v9'; const postsColl = 'expliq_posts_v9';
+        // Nova Coleção para Configurações
+        const settingsColl = 'expliq_settings_v9'; 
 
         window.app = {
             currentUser: null, editEmail: null, editUser: null, editRaceIndex: null, 
-            unsubscribeUser: null, unsubscribeAdmin: null, unsubscribeQuotes: null, unsubscribeRecipes: null, unsubscribePosts: null,
+            unsubscribeUser: null, unsubscribeAdmin: null, unsubscribeQuotes: null, unsubscribeRecipes: null, unsubscribePosts: null, unsubscribeSettings: null,
             mockDB: [], mockQuotes: ["Persistência."], mockRecipes: [], mockPosts: [],
             calendarOffset: 0, recipes: [], posts: [], tempRecipeImg: null, tempPostImg: null, currentPostId: null,
             tempAvatar: null,
+            
+            // Default Theme
+            theme: {
+                primary: '#000000',
+                bg: '#FFFFFF',
+                surface: '#F2F2F7',
+                text: '#000000',
+                radius: '12',
+                font: "'Poppins', sans-serif"
+            },
 
             showToast: (msg, type='success') => {
                 const c = document.getElementById('toast-container');
@@ -568,7 +682,93 @@
                 else { i.style.display='none'; if(ic)ic.style.display='block'; }
             },
 
-            init: async () => { if(!useMock) onAuthStateChanged(auth, (firebaseUser) => { if(firebaseUser) app.checkSession(); }); else app.checkSession(); },
+            init: async () => { 
+                // Load Theme First
+                app.initThemeListener();
+                
+                if(!useMock) onAuthStateChanged(auth, (firebaseUser) => { if(firebaseUser) app.checkSession(); }); else app.checkSession(); 
+            },
+
+            // --- THEME ENGINE ---
+            initThemeListener: () => {
+                if(!useMock) {
+                    // Listen to global settings
+                    app.unsubscribeSettings = onSnapshot(getDocPath(settingsColl, 'global_theme'), (d) => {
+                        if(d.exists()) {
+                            app.theme = { ...app.theme, ...d.data() };
+                            app.applyTheme(app.theme);
+                            app.updateAdminInputs(app.theme);
+                        } else {
+                            // If doc doesn't exist yet, apply defaults
+                            app.applyTheme(app.theme);
+                        }
+                    });
+                } else {
+                    app.applyTheme(app.theme);
+                }
+            },
+
+            applyTheme: (t) => {
+                const root = document.documentElement;
+                root.style.setProperty('--primary', t.primary);
+                root.style.setProperty('--bg', t.bg);
+                root.style.setProperty('--surface', t.surface);
+                root.style.setProperty('--text-main', t.text);
+                root.style.setProperty('--radius', t.radius + 'px');
+                root.style.setProperty('--font-main', t.font);
+                
+                // Adjust text colors based on background brightness roughly? 
+                // For now trusting user choice.
+            },
+            
+            previewTheme: () => {
+                const t = {
+                    primary: document.getElementById('theme-primary').value,
+                    bg: document.getElementById('theme-bg').value,
+                    surface: document.getElementById('theme-surface').value,
+                    text: document.getElementById('theme-text').value,
+                    radius: document.getElementById('theme-radius').value,
+                    font: document.getElementById('theme-font').value
+                };
+                app.applyTheme(t);
+            },
+
+            saveTheme: async () => {
+                const t = {
+                    primary: document.getElementById('theme-primary').value,
+                    bg: document.getElementById('theme-bg').value,
+                    surface: document.getElementById('theme-surface').value,
+                    text: document.getElementById('theme-text').value,
+                    radius: document.getElementById('theme-radius').value,
+                    font: document.getElementById('theme-font').value
+                };
+                
+                if(!useMock && auth.currentUser) {
+                    await setDoc(getDocPath(settingsColl, 'global_theme'), t);
+                    app.showToast('Tema salvo globalmente!');
+                } else {
+                    app.showToast('Modo demonstração: Tema aplicado localmente.');
+                }
+            },
+            
+            resetTheme: () => {
+                 const def = { primary: '#000000', bg: '#FFFFFF', surface: '#F2F2F7', text: '#000000', radius: '12', font: "'Poppins', sans-serif" };
+                 app.updateAdminInputs(def);
+                 app.previewTheme();
+                 app.showToast('Clique em Salvar para confirmar.');
+            },
+
+            updateAdminInputs: (t) => {
+                const safeVal = (id, val) => { const el = document.getElementById(id); if(el) el.value = val; };
+                safeVal('theme-primary', t.primary);
+                safeVal('theme-bg', t.bg);
+                safeVal('theme-surface', t.surface);
+                safeVal('theme-text', t.text);
+                safeVal('theme-radius', t.radius);
+                safeVal('theme-font', t.font);
+            },
+
+            // --- END THEME ENGINE ---
 
             checkSession: async () => {
                 const savedEmail = localStorage.getItem('expliq_session_email');
@@ -721,7 +921,7 @@
 
                 if(!useMock && auth.currentUser) {
                     await updateDoc(getDocPath(postsColl, app.currentPostId), {comments: arrayUnion(c)});
-                    app.openComments(app.currentPostId); // Refresh to get correct delete button logic
+                    app.openComments(app.currentPostId); 
                 } else { 
                     const p = app.mockPosts.find(x=>x.id===app.currentPostId); 
                     if(!p.comments)p.comments=[]; p.comments.push(c); 
@@ -731,7 +931,6 @@
             deleteComment: async (postId, createdStr) => {
                 if(!confirm('Apagar comentário?')) return;
                 const created = parseInt(createdStr);
-                // Find post in local data (optimistic)
                 let p = app.posts.find(x => x.id === postId);
                 if (!p && useMock) p = app.mockPosts.find(x => x.id === postId);
                 
@@ -815,9 +1014,9 @@
             
             scrollCalendar: (dir) => { app.calendarOffset += dir; app.renderCalendar(); },
             renderCalendar: () => { const strip = document.getElementById('calendar-strip'); strip.innerHTML = ''; const today = new Date(); const baseDate = new Date(); baseDate.setDate(today.getDate() + (app.calendarOffset * 7)); const start = new Date(baseDate); start.setDate(baseDate.getDate() - 3); document.getElementById('cal-month-name').innerText = baseDate.toLocaleDateString('pt-BR', {month:'long', year:'numeric'}); const races = app.currentUser.races || []; const activeRace = races.length > 0 ? races[races.length - 1] : null; for(let i=0; i<7; i++) { const d = new Date(start); d.setDate(start.getDate() + i); const isToday = d.toDateString() === today.toDateString(); const dateStr = d.toISOString().split('T')[0]; let doneWorkout = null; if(activeRace && activeRace.workouts) { doneWorkout = activeRace.workouts.find(w => w.done && w.completedAt === dateStr); } const hasWorkout = !!doneWorkout; const el = document.createElement('div'); el.className = `cal-day ${isToday ? 'active' : ''} ${hasWorkout ? 'has-workout' : ''}`; el.innerHTML = `<span class="cal-d-name">${d.toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','')}</span><span class="cal-d-num">${d.getDate()}</span><div class="cal-dot"></div>`; el.onclick = () => app.openCalendarDay(dateStr, doneWorkout); strip.appendChild(el); } },
-            openCalendarDay: (dateStr, workout) => { const dateObj = new Date(dateStr); document.getElementById('modal-cal-date').innerText = dateObj.toLocaleDateString('pt-BR'); const content = document.getElementById('modal-cal-content'); if(workout) { content.innerHTML = `<div style="background:var(--surface); padding:15px; border-radius:12px;"><i class="fa-solid fa-check-circle" style="color:var(--success); font-size:30px; margin-bottom:10px;"></i><h4 style="margin:0;">${workout.title}</h4><p style="font-size:12px; color:#666;">Concluído</p></div>`; } else { content.innerHTML = `<p style="color:#999;">Nenhum treino.</p>`; } const m = document.getElementById('modal-calendar-details'); m.style.display='flex'; setTimeout(()=>m.classList.add('active'),10); },
+            openCalendarDay: (dateStr, workout) => { const dateObj = new Date(dateStr); document.getElementById('modal-cal-date').innerText = dateObj.toLocaleDateString('pt-BR'); const content = document.getElementById('modal-cal-content'); if(workout) { content.innerHTML = `<div style="background:var(--surface); padding:15px; border-radius:var(--radius);"><i class="fa-solid fa-check-circle" style="color:var(--success); font-size:30px; margin-bottom:10px;"></i><h4 style="margin:0;">${workout.title}</h4><p style="font-size:12px; color:#666;">Concluído</p></div>`; } else { content.innerHTML = `<p style="color:#999;">Nenhum treino.</p>`; } const m = document.getElementById('modal-calendar-details'); m.style.display='flex'; setTimeout(()=>m.classList.add('active'),10); },
             handleRecipeImage: (input) => { if(input.files && input.files[0]) { const r = new FileReader(); r.onload = (e) => { const img = new Image(); img.src = e.target.result; img.onload = () => { const c = document.createElement('canvas'); const x = c.getContext('2d'); let w = img.width, h = img.height, m = 600; if(w>h){if(w>m){h*=m/w;w=m}}else{if(h>m){w*=m/h;h=m}} c.width=w; c.height=h; x.drawImage(img,0,0,w,h); app.tempRecipeImg = c.toDataURL('image/jpeg', 0.7); const prev = document.getElementById('new-rec-preview'); prev.src = app.tempRecipeImg; prev.classList.add('show'); document.querySelector('.img-upload-area i').style.display='none'; document.querySelector('.img-upload-area span').style.display='none'; } }; r.readAsDataURL(input.files[0]); } },
-            renderAdminRecipes: () => { const l = document.getElementById('admin-recipes-list'); l.innerHTML = ''; app.recipes.forEach(r => { const d = document.createElement('div'); d.className='card'; d.style.display='flex'; d.style.justifyContent='space-between'; d.innerHTML = `<div><strong>${r.title}</strong><br><span style="font-size:12px; color:#888;">${r.kcal} kcal</span></div><button onclick="app.deleteRecipe('${r.id}')" style="color:red; border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>`; l.appendChild(d); }); },
+            renderAdminRecipes: () => { const l = document.getElementById('admin-recipes-list'); l.innerHTML = ''; app.recipes.forEach(r => { const d = document.createElement('div'); d.className='card'; d.style.cssText='display:flex; justify-content:space-between; background:var(--surface); padding:15px; border-radius:var(--radius); margin-bottom:10px;'; d.innerHTML = `<div><strong>${r.title}</strong><br><span style="font-size:12px; color:#888;">${r.kcal} kcal</span></div><button onclick="app.deleteRecipe('${r.id}')" style="color:red; border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>`; l.appendChild(d); }); },
             addRecipe: async () => { const t = document.getElementById('new-rec-title').value; const kcal = document.getElementById('new-rec-kcal').value; const time = document.getElementById('new-rec-time').value; const p = document.getElementById('new-rec-p').value; const c = document.getElementById('new-rec-c').value; const f = document.getElementById('new-rec-f').value; const ing = document.getElementById('new-rec-ing').value.split('\n').filter(i=>i.trim()); const step = document.getElementById('new-rec-step').value.split('\n').filter(i=>i.trim()); if(!t) return app.showToast('Título obrigatório', 'error'); if(!app.tempRecipeImg) return app.showToast('Imagem obrigatória', 'error'); const newR = { title:t, image:app.tempRecipeImg, kcal, time, p, c, f, ingredients:ing, steps:step, created: Date.now() }; if(!useMock && auth.currentUser) await setDoc(doc(getCollPath(recipesColl)), newR); else app.mockRecipes.push({id: Date.now().toString(), ...newR}); app.showToast('Receita adicionada!'); app.tempRecipeImg = null; document.getElementById('new-rec-preview').classList.remove('show'); document.querySelector('.img-upload-area i').style.display='block'; document.querySelector('.img-upload-area span').style.display='block'; document.querySelectorAll('#admin-content-recipes input, #admin-content-recipes textarea').forEach(i=>i.value=''); },
             deleteRecipe: async (id) => { if(!useMock && auth.currentUser) await deleteDoc(getDocPath(recipesColl, id)); else app.mockRecipes = app.mockRecipes.filter(r=>r.id!==id); app.showToast('Receita removida'); },
             
@@ -851,7 +1050,7 @@
                         const isDone = w.done;
                         const cardClass = isDone ? 'workout-card done-style' : 'workout-card';
                         
-                        // Botão de Vídeo (Agora chama openVideo)
+                        // Botão de Vídeo
                         const videoBtn = w.video 
                             ? `<button onclick="app.openVideo('${w.video}')" class="btn-video"><i class="fa-solid fa-play"></i> Assistir Vídeo</button>` 
                             : '';
@@ -885,7 +1084,7 @@
                     }); 
                 } 
                 
-                // ATUALIZADO: Cálculo e UI da Barra Verde
+                // Cálculo e UI da Barra Verde
                 const total = workouts.length;
                 const pct = total > 0 ? Math.round((done/total)*100) : 0; 
                 
@@ -893,22 +1092,20 @@
                 document.getElementById('hero-details').innerText = `${done} de ${total} treinos realizados`;
                 document.getElementById('hero-prog-bar').style.width = `${pct}%`;
 
-                const hList = document.getElementById('profile-history-list'); if(hList) { hList.innerHTML = ''; if(races.length===0) hList.innerHTML='<p style="text-align:center;font-size:12px;color:#AAA;">Sem histórico.</p>'; [...races].reverse().forEach(r=>{ const tW=r.workouts?.length||0; const dW=r.workouts?r.workouts.filter(k=>k.done).length:0; const p=tW>0?Math.round((dW/tW)*100):0; const isC=p===100; const ic=isC?'fa-medal':'fa-person-running'; const clr=isC?'#FBC02D':'#CCC'; hList.innerHTML+=`<div class="card" style="padding:15px; margin-bottom:10px; display:flex; align-items:center; gap:15px; border:1px solid #EEE;"><div style="width:40px; height:40px; background:${isC?'#FFF9C4':'#F5F5F5'}; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; color:${clr};"><i class="fa-solid ${ic}"></i></div><div style="flex:1;"><h4 style="margin:0; font-size:14px; color:var(--text-main);">${r.name}</h4><p style="margin:0; font-size:10px; color:var(--text-sec);">${r.date||''}</p></div><span style="font-size:12px; font-weight:bold; color:${isC?'var(--success)':'var(--text-main)'};">${p}%</span></div>`; }); } app.loadRandomQuote(); 
+                const hList = document.getElementById('profile-history-list'); if(hList) { hList.innerHTML = ''; if(races.length===0) hList.innerHTML='<p style="text-align:center;font-size:12px;color:#AAA;">Sem histórico.</p>'; [...races].reverse().forEach(r=>{ const tW=r.workouts?.length||0; const dW=r.workouts?r.workouts.filter(k=>k.done).length:0; const p=tW>0?Math.round((dW/tW)*100):0; const isC=p===100; const ic=isC?'fa-medal':'fa-person-running'; const clr=isC?'#FBC02D':'#CCC'; hList.innerHTML+=`<div class="card" style="padding:15px; margin-bottom:10px; display:flex; align-items:center; gap:15px; border:1px solid #EEE; background:var(--surface); border-radius:var(--radius);"><div style="width:40px; height:40px; background:${isC?'#FFF9C4':'#FFF'}; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; color:${clr};"><i class="fa-solid ${ic}"></i></div><div style="flex:1;"><h4 style="margin:0; font-size:14px; color:var(--text-main);">${r.name}</h4><p style="margin:0; font-size:10px; color:var(--text-sec);">${r.date||''}</p></div><span style="font-size:12px; font-weight:bold; color:${isC?'var(--success)':'var(--text-main)'};">${p}%</span></div>`; }); } app.loadRandomQuote(); 
             },
             
             // Video Player Logic
             openVideo: (url) => {
-                // Helper to fix GitHub links (blob -> raw)
                 let src = url;
                 if(src.includes('github.com') && src.includes('/blob/')) {
                     src = src.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
                 }
 
                 const area = document.getElementById('video-content-area');
-                area.innerHTML = ''; // Clear previous
+                area.innerHTML = ''; 
 
                 if(src.includes('youtube.com') || src.includes('youtu.be')) {
-                    // Simple YouTube handling
                     let embedSrc = src;
                     if(src.includes('watch?v=')) embedSrc = src.replace('watch?v=', 'embed/');
                     if(src.includes('youtu.be/')) embedSrc = src.replace('youtu.be/', 'www.youtube.com/embed/');
@@ -916,7 +1113,6 @@
                     
                     area.innerHTML = `<iframe src="${embedSrc}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
                 } else {
-                    // Native Video (MP4, GitHub Raw, etc)
                     area.innerHTML = `<video controls autoplay playsinline><source src="${src}" type="video/mp4">Seu navegador não suporta vídeos.</video>`;
                 }
 
@@ -927,7 +1123,7 @@
             closeVideo: () => {
                 const m = document.getElementById('modal-video-player');
                 const area = document.getElementById('video-content-area');
-                area.innerHTML = ''; // Stop playback
+                area.innerHTML = ''; 
                 m.classList.remove('active');
                 setTimeout(() => m.style.display = 'none', 300);
             },
@@ -963,9 +1159,9 @@
             checkAdminAuth: () => { if(document.getElementById('admin-pass-input').value === 'admin123') { app.closeAdminAuth(); app.goToAdmin(); } else app.showToast("Senha incorreta", 'error'); },
             goToAdmin: () => { app.switchScreen('view-admin'); app.adminTab('users'); if (!useMock && auth.currentUser) { if (app.unsubscribeAdmin) app.unsubscribeAdmin(); app.unsubscribeAdmin = onSnapshot(getCollPath(usersColl), (s) => { const l=[]; s.forEach(d=>l.push(d.data())); app.renderAdminList(l); }); if (app.unsubscribeRecipes) app.unsubscribeRecipes(); app.unsubscribeRecipes = onSnapshot(getCollPath(recipesColl), (s) => { app.recipes = []; s.forEach(d=>app.recipes.push({id:d.id, ...d.data()})); app.renderAdminRecipes(); }); } else { app.renderAdminList(app.mockDB); app.renderAdminRecipes(); } },
             adminTab: (t) => { document.querySelectorAll('[id^="admin-content"]').forEach(e=>e.classList.add('hidden')); document.querySelectorAll('.btn-icon').forEach(e=>e.classList.remove('active')); document.getElementById('admin-content-'+t).classList.remove('hidden'); document.getElementById('adm-tab-'+t).classList.add('active'); },
-            renderAdminList: (users) => { const l=document.getElementById('admin-list'); l.innerHTML=''; if(!users||users.length===0){ l.innerHTML='<p style="text-align:center; color:#AAA;">Vazio.</p>'; return; } users.forEach(u=>{ const races = u.races || []; const activeR = races.length > 0 ? races[races.length-1] : null; const done = activeR ? activeR.workouts.filter(w=>w.done).length : 0; const total = activeR ? (activeR.workouts.length||1) : 1; const pct = Math.round((done/total)*100); const st = u.active ? '<span style="color:var(--success); font-weight:bold; font-size:10px;">ATIVO</span>' : '<span style="color:var(--orange); font-weight:bold; font-size:10px;">PENDENTE</span>'; const d=document.createElement('div'); d.className='card'; d.style.cssText='display:flex; flex-direction:column; gap:10px; cursor:pointer;'; d.innerHTML=`<div style="display:flex; justify-content:space-between; align-items:center; width:100%;"><div><h4 style="margin:0;">${u.name}</h4><p style="margin:0; font-size:12px; color:#888;">${u.email}</p></div>${st}</div><div style="width:100%;"><div style="display:flex; justify-content:space-between; font-size:10px; color:#AAA; margin-bottom:3px;"><span>Progresso</span><span>${pct}%</span></div><div style="width:100%; height:4px; background:#F2F2F7; border-radius:2px;"><div style="width:${pct}%; height:100%; background:var(--text-main);"></div></div></div>`; d.onclick=()=>app.openUser(u); l.appendChild(d); }); },
+            renderAdminList: (users) => { const l=document.getElementById('admin-list'); l.innerHTML=''; if(!users||users.length===0){ l.innerHTML='<p style="text-align:center; color:#AAA;">Vazio.</p>'; return; } users.forEach(u=>{ const races = u.races || []; const activeR = races.length > 0 ? races[races.length-1] : null; const done = activeR ? activeR.workouts.filter(w=>w.done).length : 0; const total = activeR ? (activeR.workouts.length||1) : 1; const pct = Math.round((done/total)*100); const st = u.active ? '<span style="color:var(--success); font-weight:bold; font-size:10px;">ATIVO</span>' : '<span style="color:var(--orange); font-weight:bold; font-size:10px;">PENDENTE</span>'; const d=document.createElement('div'); d.className='card'; d.style.cssText='display:flex; flex-direction:column; gap:10px; cursor:pointer; background:var(--surface); padding:15px; border-radius:var(--radius);'; d.innerHTML=`<div style="display:flex; justify-content:space-between; align-items:center; width:100%;"><div><h4 style="margin:0;">${u.name}</h4><p style="margin:0; font-size:12px; color:#888;">${u.email}</p></div>${st}</div><div style="width:100%;"><div style="display:flex; justify-content:space-between; font-size:10px; color:#AAA; margin-bottom:3px;"><span>Progresso</span><span>${pct}%</span></div><div style="width:100%; height:4px; background:var(--bg); border-radius:2px;"><div style="width:${pct}%; height:100%; background:var(--text-main);"></div></div></div>`; d.onclick=()=>app.openUser(u); l.appendChild(d); }); },
             openUser: (u) => { app.editEmail = u.email; app.renderUserDetail(u); document.getElementById('admin-user-detail').classList.add('active'); },
-            renderUserDetail: (u) => { app.editUser = u; document.getElementById('adm-detail-name').innerText=u.name; document.getElementById('adm-detail-email').innerText=u.email; document.getElementById('adm-detail-active').checked=u.active; const l = document.getElementById('adm-races-list'); l.innerHTML=''; const rs = u.races || []; if(rs.length===0) l.innerHTML='<p style="font-size:12px; color:#AAA;">Nenhum objetivo.</p>'; [...rs].reverse().forEach((r, i) => { const originalIndex = rs.length - 1 - i; const d = document.createElement('div'); d.className='card'; d.style.padding='15px'; d.style.cursor='pointer'; d.innerHTML = `<div style="display:flex; justify-content:space-between;"><strong>${r.name}</strong><span style="font-size:12px; color:#888;">${r.date||''}</span></div>`; d.onclick = () => app.openRace(originalIndex); l.appendChild(d); }); },
+            renderUserDetail: (u) => { app.editUser = u; document.getElementById('adm-detail-name').innerText=u.name; document.getElementById('adm-detail-email').innerText=u.email; document.getElementById('adm-detail-active').checked=u.active; const l = document.getElementById('adm-races-list'); l.innerHTML=''; const rs = u.races || []; if(rs.length===0) l.innerHTML='<p style="font-size:12px; color:#AAA;">Nenhum objetivo.</p>'; [...rs].reverse().forEach((r, i) => { const originalIndex = rs.length - 1 - i; const d = document.createElement('div'); d.className='card'; d.style.padding='15px'; d.style.cursor='pointer'; d.style.background='var(--surface)'; d.style.borderRadius='var(--radius)'; d.innerHTML = `<div style="display:flex; justify-content:space-between;"><strong>${r.name}</strong><span style="font-size:12px; color:#888;">${r.date||''}</span></div>`; d.onclick = () => app.openRace(originalIndex); l.appendChild(d); }); },
             closeUserDetail: () => document.getElementById('admin-user-detail').classList.remove('active'),
             saveUserAccess: async () => { const a = document.getElementById('adm-detail-active').checked; if(!useMock && auth.currentUser) await updateDoc(getDocPath(usersColl, app.editEmail), {active:a}); else { const i=app.mockDB.findIndex(x=>x.email===app.editEmail); if(i>-1)app.mockDB[i].active=a; app.saveLocal(); app.goToAdmin(); } app.showToast('Salvo!'); app.closeUserDetail(); },
             addRace: () => { if(!app.editUser.races) app.editUser.races=[]; app.editUser.races.push({name:'Novo Objetivo', date:'', workouts:[]}); app.openRace(app.editUser.races.length-1); },
@@ -975,15 +1171,15 @@
                 const l=document.getElementById('adm-workouts-list'); l.innerHTML=''; 
                 wks.forEach((w, i)=>{ 
                     const d=document.createElement('div'); 
-                    d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px; flex-direction:column;"; 
+                    d.style.cssText="background:var(--bg); border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px; flex-direction:column;"; 
                     d.innerHTML=`
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <span style="font-weight:700; color:#AAA; font-size:12px;">TREINO ${i+1}</span>
                         <button onclick="this.parentElement.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>
                     </div>
-                    <input class="edt-t" value="${w.title}" placeholder="Título" style="width:100%; border:none; border-bottom:1px solid #EEE; padding:5px 0; font-weight:700; font-size:14px; outline:none;">
-                    <input class="edt-d" value="${w.desc}" placeholder="Detalhes..." style="width:100%; border:none; border-bottom:1px solid #EEE; padding:5px 0; font-size:12px; color:#666; outline:none;">
-                    <input class="edt-v" value="${w.video||''}" placeholder="URL do Vídeo (Ex: https://github.com/user/repo/video.mp4)" style="width:100%; border:none; padding:5px 0; font-size:11px; color:var(--text-light); outline:none;">
+                    <input class="edt-t" value="${w.title}" placeholder="Título" style="width:100%; border:none; border-bottom:1px solid #EEE; padding:5px 0; font-weight:700; font-size:14px; outline:none; background:transparent;">
+                    <input class="edt-d" value="${w.desc}" placeholder="Detalhes..." style="width:100%; border:none; border-bottom:1px solid #EEE; padding:5px 0; font-size:12px; color:#666; outline:none; background:transparent;">
+                    <input class="edt-v" value="${w.video||''}" placeholder="URL do Vídeo (Ex: https://github.com/user/repo/video.mp4)" style="width:100%; border:none; padding:5px 0; font-size:11px; color:var(--text-light); outline:none; background:transparent;">
                     `; 
                     l.appendChild(d); 
                 }); 
@@ -991,15 +1187,15 @@
             addWorkout: () => { 
                 const l=document.getElementById('adm-workouts-list'); const i=l.children.length+1; 
                 const d=document.createElement('div'); 
-                d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px; flex-direction:column;"; 
+                d.style.cssText="background:var(--bg); border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px; flex-direction:column;"; 
                 d.innerHTML=`
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="font-weight:700; color:#AAA; font-size:12px;">TREINO ${i}</span>
                     <button onclick="this.parentElement.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>
                 </div>
-                <input class="edt-t" placeholder="Título" style="width:100%; border:none; border-bottom:1px solid #EEE; padding:5px 0; font-weight:700; font-size:14px; outline:none;">
-                <input class="edt-d" placeholder="Detalhes..." style="width:100%; border:none; border-bottom:1px solid #EEE; padding:5px 0; font-size:12px; color:#666; outline:none;">
-                <input class="edt-v" placeholder="URL do Vídeo" style="width:100%; border:none; padding:5px 0; font-size:11px; color:var(--text-light); outline:none;">
+                <input class="edt-t" placeholder="Título" style="width:100%; border:none; border-bottom:1px solid #EEE; padding:5px 0; font-weight:700; font-size:14px; outline:none; background:transparent;">
+                <input class="edt-d" placeholder="Detalhes..." style="width:100%; border:none; border-bottom:1px solid #EEE; padding:5px 0; font-size:12px; color:#666; outline:none; background:transparent;">
+                <input class="edt-v" placeholder="URL do Vídeo" style="width:100%; border:none; padding:5px 0; font-size:11px; color:var(--text-light); outline:none; background:transparent;">
                 `; 
                 l.appendChild(d); 
             },
@@ -1022,15 +1218,15 @@
                 for(let i=0; i<tpls.length; i++){ 
                     const t=tpls[i]; 
                     const d=document.createElement('div'); 
-                    d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px; flex-direction:column;"; 
+                    d.style.cssText="background:var(--bg); border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px; flex-direction:column;"; 
                     d.innerHTML=`
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <span style="font-weight:700; color:#AAA; font-size:12px;">TREINO ${l.children.length+1}</span>
                         <button onclick="this.parentElement.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>
                     </div>
-                    <input class="edt-t" value="${t.t}" style="width:100%; border:none; border-bottom:1px solid #EEE; padding:5px 0; font-weight:700; font-size:14px; outline:none;">
-                    <input class="edt-d" value="${t.d}" style="width:100%; border:none; border-bottom:1px solid #EEE; padding:5px 0; font-size:12px; color:#666; outline:none;">
-                    <input class="edt-v" value="" placeholder="URL do Vídeo" style="width:100%; border:none; padding:5px 0; font-size:11px; color:var(--text-light); outline:none;">
+                    <input class="edt-t" value="${t.t}" style="width:100%; border:none; border-bottom:1px solid #EEE; padding:5px 0; font-weight:700; font-size:14px; outline:none; background:transparent;">
+                    <input class="edt-d" value="${t.d}" style="width:100%; border:none; border-bottom:1px solid #EEE; padding:5px 0; font-size:12px; color:#666; outline:none; background:transparent;">
+                    <input class="edt-v" value="" placeholder="URL do Vídeo" style="width:100%; border:none; padding:5px 0; font-size:11px; color:var(--text-light); outline:none; background:transparent;">
                     `; 
                     l.appendChild(d); 
                 } 
