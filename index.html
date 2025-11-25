@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -117,21 +116,69 @@
         .cal-day.has-workout .cal-dot { background: var(--text-main); }
         .cal-day.active.has-workout .cal-dot { background: white; }
         
-        /* Cartões Home */
-        .home-card {
-            background-color: var(--surface); 
+        /* Cartões Home e Treino */
+        .home-card, .workout-card {
+            background-color: white; 
             border-radius: 24px; 
             padding: 24px; 
             color: var(--text-main); 
             position: relative; 
             overflow: hidden; 
             box-shadow: var(--shadow);
-            min-height: 180px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
             border: 1px solid var(--border);
+            margin-bottom: 20px;
         }
+        
+        /* Estilos Específicos do Card de Treino */
+        .workout-card.done-style {
+            opacity: 0.8;
+            background-color: #FAFAFA;
+        }
+        .workout-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        .workout-number {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .workout-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .workout-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .btn-video {
+            flex: 1;
+            background: var(--surface);
+            color: var(--text-main);
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-video:active { transform: scale(0.98); }
+
         .progress-content { display: flex; justify-content: space-between; align-items: center; height: 100%; }
         .motivation-quote { font-family: 'Playfair Display', serif; font-size: 20px; line-height: 1.4; margin-top: 10px; font-style: italic; text-align: center; z-index: 1; }
         .quote-mark { font-size: 24px; color: var(--text-light); position: absolute; top: 20px; left: 20px; }
@@ -145,7 +192,6 @@
         .recipe-img { 
             width: 100%; height: 160px; background-color: #EEE; background-size: cover; background-position: center; position: relative; 
         }
-        /* Coração removido */
         .recipe-info { padding: 12px; }
         .recipe-title { 
             font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; line-height: 1.2; 
@@ -176,6 +222,10 @@
         .toast { background: rgba(0,0,0,0.9); color: white; padding: 12px 20px; border-radius: 50px; font-size: 13px; opacity: 0; transform: translateY(-20px); transition: 0.3s; }
         .toast.show { opacity: 1; transform: translateY(0); }
         
+        /* Video Player Modal Style */
+        .video-wrapper { width: 100%; max-width: 800px; aspect-ratio: 16/9; background: black; border-radius: 12px; overflow: hidden; position: relative; }
+        .video-wrapper video, .video-wrapper iframe { width: 100%; height: 100%; border: none; }
+
         /* Upload Imagens */
         .img-upload-area { width: 100%; height: 180px; background: var(--surface); border: 2px dashed var(--border); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; position: relative; margin-bottom: 20px; }
         .img-upload-area img { width: 100%; height: 100%; object-fit: cover; display: none; }
@@ -439,6 +489,16 @@
     <div id="view-admin" class="screen" style="background: var(--bg);"><div class="header" style="background: white; border-bottom: 1px solid var(--border); padding: 20px 24px;"><h3>Painel Treinador</h3><div style="margin-top: 15px; display: flex; gap: 15px;"><button onclick="app.adminTab('users')" class="btn-icon active" id="adm-tab-users"><i class="fa-solid fa-users"></i></button><button onclick="app.adminTab('quotes')" class="btn-icon" id="adm-tab-quotes"><i class="fa-solid fa-quote-right"></i></button><button onclick="app.adminTab('recipes')" class="btn-icon" id="adm-tab-recipes"><i class="fa-solid fa-utensils"></i></button><button onclick="app.logout()" style="border: none; background: none; color: var(--red); font-weight: bold; font-size: 12px; margin-left: auto;">Sair</button></div></div><div id="admin-content-users" style="padding: 24px; overflow-y: auto; flex: 1;"><div id="admin-list" style="display: flex; flex-direction: column; gap: 10px;"></div></div><div id="admin-content-quotes" class="hidden" style="padding: 24px; overflow-y: auto; flex: 1;"><div class="card"><div class="input-group" style="margin-bottom: 10px;"><label class="label">Nova Frase</label><textarea id="new-quote-text" class="input" style="height: 60px;"></textarea></div><button onclick="app.addQuote()" class="btn btn-primary" style="padding: 10px;">ADICIONAR</button></div><div id="admin-quotes-list" style="display: flex; flex-direction: column; gap: 10px;"></div></div><div id="admin-content-recipes" class="hidden" style="padding: 24px; overflow-y: auto; flex: 1;"><div class="card"><h4 style="margin-top: 0;">Nova Receita</h4><div class="img-upload-area" onclick="document.getElementById('new-rec-file').click()"><img id="new-rec-preview"><i class="fa-solid fa-camera"></i><span>Tocar para enviar foto</span><input type="file" id="new-rec-file" accept="image/*" style="display: none;" onchange="app.handleRecipeImage(this)"></div><div class="input-group"><label class="label">Título</label><input id="new-rec-title" class="input"></div><div class="flex-row"><div class="input-group flex-1"><label class="label">Kcal</label><input id="new-rec-kcal" class="input" type="number"></div><div class="input-group flex-1"><label class="label">Minutos</label><input id="new-rec-time" class="input" type="number"></div></div><div class="flex-row"><div class="input-group flex-1"><label class="label">Prot</label><input id="new-rec-p" class="input" type="number"></div><div class="input-group flex-1"><label class="label">Carb</label><input id="new-rec-c" class="input" type="number"></div><div class="input-group flex-1"><label class="label">Gord</label><input id="new-rec-f" class="input" type="number"></div></div><div class="input-group"><label class="label">Ingredientes</label><textarea id="new-rec-ing" class="input"></textarea></div><div class="input-group"><label class="label">Passos</label><textarea id="new-rec-step" class="input"></textarea></div><button onclick="app.addRecipe()" class="btn btn-primary">SALVAR</button></div><div id="admin-recipes-list" style="display: flex; flex-direction: column; gap: 10px;"></div></div></div>
     <div id="modal-calendar-details" class="modal-overlay" style="display: none;"><div class="modal-card"><h3 id="modal-cal-date" style="margin-top: 0; text-align: center;">Data</h3><div id="modal-cal-content" style="margin: 20px 0; text-align: center;"></div><button onclick="document.getElementById('modal-calendar-details').classList.remove('active'); setTimeout(()=>document.getElementById('modal-calendar-details').style.display='none', 300);" class="btn btn-primary">Fechar</button></div></div>
     
+    <!-- Modal Video Player -->
+    <div id="modal-video-player" class="modal-overlay" style="display: none; align-items: center; justify-content: center;">
+        <div style="width: 95%; max-width: 800px; position: relative;">
+            <button onclick="app.closeVideo()" style="position: absolute; top: -40px; right: 0; color: white; background: none; border: none; font-size: 24px; cursor: pointer;"><i class="fa-solid fa-times"></i></button>
+            <div class="video-wrapper" id="video-content-area">
+                <!-- Video or Iframe injected here -->
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Editar Perfil -->
     <div id="modal-profile-settings" class="modal-overlay">
         <div class="modal-card">
@@ -759,12 +819,116 @@
             addRecipe: async () => { const t = document.getElementById('new-rec-title').value; const kcal = document.getElementById('new-rec-kcal').value; const time = document.getElementById('new-rec-time').value; const p = document.getElementById('new-rec-p').value; const c = document.getElementById('new-rec-c').value; const f = document.getElementById('new-rec-f').value; const ing = document.getElementById('new-rec-ing').value.split('\n').filter(i=>i.trim()); const step = document.getElementById('new-rec-step').value.split('\n').filter(i=>i.trim()); if(!t) return app.showToast('Título obrigatório', 'error'); if(!app.tempRecipeImg) return app.showToast('Imagem obrigatória', 'error'); const newR = { title:t, image:app.tempRecipeImg, kcal, time, p, c, f, ingredients:ing, steps:step, created: Date.now() }; if(!useMock && auth.currentUser) await setDoc(doc(getCollPath(recipesColl)), newR); else app.mockRecipes.push({id: Date.now().toString(), ...newR}); app.showToast('Receita adicionada!'); app.tempRecipeImg = null; document.getElementById('new-rec-preview').classList.remove('show'); document.querySelector('.img-upload-area i').style.display='block'; document.querySelector('.img-upload-area span').style.display='block'; document.querySelectorAll('#admin-content-recipes input, #admin-content-recipes textarea').forEach(i=>i.value=''); },
             deleteRecipe: async (id) => { if(!useMock && auth.currentUser) await deleteDoc(getDocPath(recipesColl, id)); else app.mockRecipes = app.mockRecipes.filter(r=>r.id!==id); app.showToast('Receita removida'); },
             
-            loadAppUI: () => { const u = app.currentUser; const races = u.races || []; const activeRace = races.length > 0 ? races[races.length - 1] : null; document.getElementById('user-firstname').innerText = u.name.split(' ')[0]; const letter = u.name.charAt(0).toUpperCase(); 
+            loadAppUI: () => { 
+                const u = app.currentUser; 
+                const races = u.races || []; 
+                const activeRace = races.length > 0 ? races[races.length - 1] : null; 
+                document.getElementById('user-firstname').innerText = u.name.split(' ')[0]; 
+                const letter = u.name.charAt(0).toUpperCase(); 
                 app.updateAvatarUI(u.avatar);
                 document.getElementById('profile-name').innerText = u.name; 
                 app.renderCalendar(); 
                 app.renderAppRecipes(); 
-                const cont = document.getElementById('workouts-container'); cont.innerHTML = ''; let done = 0; const workouts = activeRace ? (activeRace.workouts || []) : []; if(activeRace) { document.getElementById('hero-race-name').innerText = activeRace.name; document.getElementById('hero-status').innerText = `${workouts.length} Treinos`; } else { document.getElementById('hero-race-name').innerText = "Sem Objetivo"; document.getElementById('hero-status').innerText = "Crie um novo"; } if(workouts.length === 0) cont.innerHTML = '<div style="text-align:center; padding:40px; color:#AAA;">Nenhum treino.</div>'; else { workouts.forEach((w, i) => { if (w.done) done++; const next = !w.done && (i === 0 || workouts[i-1].done); let h = ''; if (w.done) h = `<div class="workout done"><div class="w-icon"><i class="fa-solid fa-check"></i></div><div class="w-card" style="display:flex; justify-content:space-between;"><span style="text-decoration:line-through; color:var(--text-light);">${w.title}</span><span style="color:var(--text-main); font-size:10px; font-weight:700;">FEITO</span></div></div>`; else if (next) h = `<div class="workout active"><div class="w-icon">${i+1}</div><div class="w-card" style="border-left:4px solid var(--text-main);"><span style="color:var(--text-main); font-size:10px; font-weight:700;">HOJE</span><h4 style="margin:5px 0;">${w.title}</h4><p style="font-size:12px; color:#666; margin-bottom:15px;">${w.desc}</p><button onclick="app.finishWorkout(${i})" class="btn btn-primary" style="padding:10px; font-size:12px;">CONCLUIR</button></div></div>`; else h = `<div class="workout" style="opacity:0.5;"><div class="w-icon">${i+1}</div><div class="w-card"><h4 style="margin:0; font-size:14px;">${w.title}</h4><span style="font-size:10px;">Bloqueado</span></div></div>`; cont.innerHTML += h; }); } const pct = workouts.length > 0 ? Math.round((done/workouts.length)*100) : 0; document.getElementById('dash-percent').innerText = `${pct}%`; const circle = document.getElementById('progress-ring-circle'); const circumference = 36 * 2 * Math.PI; circle.style.strokeDashoffset = circumference - (pct / 100) * circumference; const hList = document.getElementById('profile-history-list'); if(hList) { hList.innerHTML = ''; if(races.length===0) hList.innerHTML='<p style="text-align:center;font-size:12px;color:#AAA;">Sem histórico.</p>'; [...races].reverse().forEach(r=>{ const tW=r.workouts?.length||0; const dW=r.workouts?r.workouts.filter(k=>k.done).length:0; const p=tW>0?Math.round((dW/tW)*100):0; const isC=p===100; const ic=isC?'fa-medal':'fa-person-running'; const clr=isC?'#FBC02D':'#CCC'; hList.innerHTML+=`<div class="card" style="padding:15px; margin-bottom:10px; display:flex; align-items:center; gap:15px; border:1px solid #EEE;"><div style="width:40px; height:40px; background:${isC?'#FFF9C4':'#F5F5F5'}; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; color:${clr};"><i class="fa-solid ${ic}"></i></div><div style="flex:1;"><h4 style="margin:0; font-size:14px; color:var(--text-main);">${r.name}</h4><p style="margin:0; font-size:10px; color:var(--text-sec);">${r.date||''}</p></div><span style="font-size:12px; font-weight:bold; color:${isC?'var(--success)':'var(--text-main)'};">${p}%</span></div>`; }); } app.loadRandomQuote(); },
+                
+                const cont = document.getElementById('workouts-container'); 
+                cont.innerHTML = ''; 
+                let done = 0; 
+                const workouts = activeRace ? (activeRace.workouts || []) : []; 
+                
+                if(activeRace) { 
+                    document.getElementById('hero-race-name').innerText = activeRace.name; 
+                    document.getElementById('hero-status').innerText = `${workouts.length} Treinos`; 
+                } else { 
+                    document.getElementById('hero-race-name').innerText = "Sem Objetivo"; 
+                    document.getElementById('hero-status').innerText = "Crie um novo"; 
+                } 
+                
+                if(workouts.length === 0) cont.innerHTML = '<div style="text-align:center; padding:40px; color:#AAA;">Nenhum treino.</div>'; 
+                else { 
+                    workouts.forEach((w, i) => { 
+                        if (w.done) done++; 
+                        
+                        const isDone = w.done;
+                        const cardClass = isDone ? 'workout-card done-style' : 'workout-card';
+                        
+                        // Botão de Vídeo (Agora chama openVideo)
+                        const videoBtn = w.video 
+                            ? `<button onclick="app.openVideo('${w.video}')" class="btn-video"><i class="fa-solid fa-play"></i> Assistir Vídeo</button>` 
+                            : '';
+
+                        const doneBtn = isDone 
+                            ? `<button class="btn" style="background:var(--surface); color:var(--text-light); flex:1;" disabled>Concluído</button>`
+                            : `<button onclick="app.finishWorkout(${i})" class="btn btn-primary" style="flex:1;">Concluir</button>`;
+
+                        const statusIcon = isDone 
+                            ? `<i class="fa-solid fa-check-circle" style="color:var(--success); font-size:20px;"></i>` 
+                            : ``;
+
+                        const html = `
+                        <div class="${cardClass}">
+                            <div class="workout-card-header">
+                                <div>
+                                    <span class="workout-number">Treino ${i+1}</span>
+                                    <h3 class="workout-title">${w.title}</h3>
+                                </div>
+                                ${statusIcon}
+                            </div>
+                            <p style="color:var(--text-sec); font-size:13px; line-height:1.5;">${w.desc}</p>
+                            
+                            <div class="workout-actions">
+                                ${doneBtn}
+                                ${videoBtn}
+                            </div>
+                        </div>`;
+                        
+                        cont.innerHTML += html; 
+                    }); 
+                } 
+                
+                const pct = workouts.length > 0 ? Math.round((done/workouts.length)*100) : 0; 
+                document.getElementById('dash-percent').innerText = `${pct}%`; 
+                const circle = document.getElementById('progress-ring-circle'); 
+                const circumference = 36 * 2 * Math.PI; 
+                circle.style.strokeDashoffset = circumference - (pct / 100) * circumference; 
+                const hList = document.getElementById('profile-history-list'); if(hList) { hList.innerHTML = ''; if(races.length===0) hList.innerHTML='<p style="text-align:center;font-size:12px;color:#AAA;">Sem histórico.</p>'; [...races].reverse().forEach(r=>{ const tW=r.workouts?.length||0; const dW=r.workouts?r.workouts.filter(k=>k.done).length:0; const p=tW>0?Math.round((dW/tW)*100):0; const isC=p===100; const ic=isC?'fa-medal':'fa-person-running'; const clr=isC?'#FBC02D':'#CCC'; hList.innerHTML+=`<div class="card" style="padding:15px; margin-bottom:10px; display:flex; align-items:center; gap:15px; border:1px solid #EEE;"><div style="width:40px; height:40px; background:${isC?'#FFF9C4':'#F5F5F5'}; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; color:${clr};"><i class="fa-solid ${ic}"></i></div><div style="flex:1;"><h4 style="margin:0; font-size:14px; color:var(--text-main);">${r.name}</h4><p style="margin:0; font-size:10px; color:var(--text-sec);">${r.date||''}</p></div><span style="font-size:12px; font-weight:bold; color:${isC?'var(--success)':'var(--text-main)'};">${p}%</span></div>`; }); } app.loadRandomQuote(); 
+            },
+            
+            // Video Player Logic
+            openVideo: (url) => {
+                // Helper to fix GitHub links (blob -> raw)
+                let src = url;
+                if(src.includes('github.com') && src.includes('/blob/')) {
+                    src = src.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
+                }
+
+                const area = document.getElementById('video-content-area');
+                area.innerHTML = ''; // Clear previous
+
+                if(src.includes('youtube.com') || src.includes('youtu.be')) {
+                    // Simple YouTube handling
+                    let embedSrc = src;
+                    if(src.includes('watch?v=')) embedSrc = src.replace('watch?v=', 'embed/');
+                    if(src.includes('youtu.be/')) embedSrc = src.replace('youtu.be/', 'www.youtube.com/embed/');
+                    if(!embedSrc.includes('?')) embedSrc += '?autoplay=1'; else embedSrc += '&autoplay=1';
+                    
+                    area.innerHTML = `<iframe src="${embedSrc}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+                } else {
+                    // Native Video (MP4, GitHub Raw, etc)
+                    area.innerHTML = `<video controls autoplay playsinline><source src="${src}" type="video/mp4">Seu navegador não suporta vídeos.</video>`;
+                }
+
+                const m = document.getElementById('modal-video-player');
+                m.style.display = 'flex';
+                setTimeout(() => m.classList.add('active'), 10);
+            },
+            closeVideo: () => {
+                const m = document.getElementById('modal-video-player');
+                const area = document.getElementById('video-content-area');
+                area.innerHTML = ''; // Stop playback
+                m.classList.remove('active');
+                setTimeout(() => m.style.display = 'none', 300);
+            },
+
             finishWorkout: async (i) => { const races = app.currentUser.races; const activeIdx = races.length - 1; races[activeIdx].workouts[i].done = true; races[activeIdx].workouts[i].completedAt = new Date().toISOString().split('T')[0]; app.loadAppUI(); app.showToast('Treino concluído!', 'success'); if (!useMock && auth.currentUser) await updateDoc(getDocPath(usersColl, app.currentUser.email), { races: races }); else app.saveLocal(); },
             loadRandomQuote: async () => { let quote=""; try{const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${geminiApiKey}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:"Gere uma frase motivacional curta para mulheres atletas em português. Apenas a frase."}]}]})});const d=await r.json();quote=d.candidates?.[0]?.content?.parts?.[0]?.text?.trim();}catch(e){} const el=document.getElementById('daily-quote'); if(el) el.innerText=quote||"A disciplina é a ponte entre metas e realizações."; },
             showAddRaceModal: () => { document.getElementById('modal-add-race').style.display='flex'; setTimeout(()=>document.getElementById('modal-add-race').classList.add('active'),10); document.getElementById('new-race-name').value=''; document.getElementById('new-race-date').value=''; },
@@ -804,10 +968,70 @@
             addRace: () => { if(!app.editUser.races) app.editUser.races=[]; app.editUser.races.push({name:'Novo Objetivo', date:'', workouts:[]}); app.openRace(app.editUser.races.length-1); },
             openRace: (idx) => { app.editRaceIndex = idx; const r = app.editUser.races[idx]; document.getElementById('adm-race-name').value = r.name; document.getElementById('adm-race-date').value = r.date; app.renderWorkoutInputs(r.workouts); document.getElementById('admin-race-editor').classList.add('active'); },
             closeRaceEditor: () => document.getElementById('admin-race-editor').classList.remove('active'),
-            renderWorkoutInputs: (wks) => { const l=document.getElementById('adm-workouts-list'); l.innerHTML=''; wks.forEach((w, i)=>{ const d=document.createElement('div'); d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px;"; d.innerHTML=`<span style="font-weight:700; color:#AAA; font-size:12px; margin-top:5px;">${i+1}</span><div style="flex:1;"><input class="edt-t" value="${w.title}" placeholder="Título" style="width:100%; border:none; font-weight:700; font-size:12px; margin-bottom:5px; outline:none;"><input class="edt-d" value="${w.desc}" placeholder="Detalhes..." style="width:100%; border:none; font-size:11px; color:#666; outline:none;"></div><button onclick="this.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>`; l.appendChild(d); }); },
-            addWorkout: () => { const l=document.getElementById('adm-workouts-list'); const i=l.children.length+1; const d=document.createElement('div'); d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px;"; d.innerHTML=`<span style="font-weight:700; color:#AAA; font-size:12px; margin-top:5px;">${i}</span><div style="flex:1;"><input class="edt-t" placeholder="Título" style="width:100%; border:none; font-weight:700; font-size:12px; margin-bottom:5px; outline:none;"><input class="edt-d" placeholder="Detalhes..." style="width:100%; border:none; font-size:11px; color:#666; outline:none;"></div><button onclick="this.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>`; l.appendChild(d); },
-            saveRaceData: async () => { const rN=document.getElementById('adm-race-name').value; const rD=document.getElementById('adm-race-date').value; const ts=document.querySelectorAll('.edt-t'); const ds=document.querySelectorAll('.edt-d'); const w=[]; ts.forEach((t,i)=>w.push({title:t.value, desc:ds[i].value, done:false})); app.editUser.races[app.editRaceIndex] = { name:rN, date:rD, workouts:w }; if(!useMock && auth.currentUser) await updateDoc(getDocPath(usersColl, app.editEmail), {races:app.editUser.races}); else { const idx=app.mockDB.findIndex(u=>u.email===app.editEmail); if(idx>-1) app.mockDB[idx].races=app.editUser.races; app.saveLocal(); } app.showToast('Treinos salvos!', 'success'); app.closeRaceEditor(); app.renderUserDetail(app.editUser); },
-            fillDefaults: () => { const l=document.getElementById('adm-workouts-list'); const tpls=[{t:'Dia 1: Corpo Todo', d:'Agachamento, Flexão, Afundo'}, {t:'Dia 2: Cardio', d:'30min Corrida'}]; for(let i=0; i<tpls.length; i++){ const t=tpls[i]; const d=document.createElement('div'); d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px;"; d.innerHTML=`<span style="font-weight:700; color:#AAA; font-size:12px; margin-top:5px;">${l.children.length+1}</span><div style="flex:1;"><input class="edt-t" value="${t.t}" style="width:100%; border:none; font-weight:700; font-size:12px; margin-bottom:5px; outline:none;"><input class="edt-d" value="${t.d}" style="width:100%; border:none; font-size:11px; color:#666; outline:none;"></div><button onclick="this.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>`; l.appendChild(d); } }
+            renderWorkoutInputs: (wks) => { 
+                const l=document.getElementById('adm-workouts-list'); l.innerHTML=''; 
+                wks.forEach((w, i)=>{ 
+                    const d=document.createElement('div'); 
+                    d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px; flex-direction:column;"; 
+                    d.innerHTML=`
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-weight:700; color:#AAA; font-size:12px;">TREINO ${i+1}</span>
+                        <button onclick="this.parentElement.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>
+                    </div>
+                    <input class="edt-t" value="${w.title}" placeholder="Título" style="width:100%; border:none; border-bottom:1px solid #EEE; padding:5px 0; font-weight:700; font-size:14px; outline:none;">
+                    <input class="edt-d" value="${w.desc}" placeholder="Detalhes..." style="width:100%; border:none; border-bottom:1px solid #EEE; padding:5px 0; font-size:12px; color:#666; outline:none;">
+                    <input class="edt-v" value="${w.video||''}" placeholder="URL do Vídeo (Ex: https://github.com/user/repo/video.mp4)" style="width:100%; border:none; padding:5px 0; font-size:11px; color:var(--text-light); outline:none;">
+                    `; 
+                    l.appendChild(d); 
+                }); 
+            },
+            addWorkout: () => { 
+                const l=document.getElementById('adm-workouts-list'); const i=l.children.length+1; 
+                const d=document.createElement('div'); 
+                d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px; flex-direction:column;"; 
+                d.innerHTML=`
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-weight:700; color:#AAA; font-size:12px;">TREINO ${i}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>
+                </div>
+                <input class="edt-t" placeholder="Título" style="width:100%; border:none; border-bottom:1px solid #EEE; padding:5px 0; font-weight:700; font-size:14px; outline:none;">
+                <input class="edt-d" placeholder="Detalhes..." style="width:100%; border:none; border-bottom:1px solid #EEE; padding:5px 0; font-size:12px; color:#666; outline:none;">
+                <input class="edt-v" placeholder="URL do Vídeo" style="width:100%; border:none; padding:5px 0; font-size:11px; color:var(--text-light); outline:none;">
+                `; 
+                l.appendChild(d); 
+            },
+            saveRaceData: async () => { 
+                const rN=document.getElementById('adm-race-name').value; 
+                const rD=document.getElementById('adm-race-date').value; 
+                const ts=document.querySelectorAll('.edt-t'); 
+                const ds=document.querySelectorAll('.edt-d'); 
+                const vs=document.querySelectorAll('.edt-v');
+                const w=[]; 
+                ts.forEach((t,i)=>w.push({title:t.value, desc:ds[i].value, video:vs[i].value, done:false})); 
+                app.editUser.races[app.editRaceIndex] = { name:rN, date:rD, workouts:w }; 
+                if(!useMock && auth.currentUser) await updateDoc(getDocPath(usersColl, app.editEmail), {races:app.editUser.races}); 
+                else { const idx=app.mockDB.findIndex(u=>u.email===app.editEmail); if(idx>-1) app.mockDB[idx].races=app.editUser.races; app.saveLocal(); } 
+                app.showToast('Treinos salvos!', 'success'); app.closeRaceEditor(); app.renderUserDetail(app.editUser); 
+            },
+            fillDefaults: () => { 
+                const l=document.getElementById('adm-workouts-list'); 
+                const tpls=[{t:'Dia 1: Corpo Todo', d:'Agachamento, Flexão, Afundo', v:''}, {t:'Dia 2: Cardio', d:'30min Corrida', v:''}]; 
+                for(let i=0; i<tpls.length; i++){ 
+                    const t=tpls[i]; 
+                    const d=document.createElement('div'); 
+                    d.style.cssText="background:#FFF; border:1px solid #EEE; padding:10px; border-radius:10px; display:flex; gap:10px; margin-bottom:10px; flex-direction:column;"; 
+                    d.innerHTML=`
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-weight:700; color:#AAA; font-size:12px;">TREINO ${l.children.length+1}</span>
+                        <button onclick="this.parentElement.parentElement.remove()" style="color:var(--red); background:none; border:none; font-weight:bold;">X</button>
+                    </div>
+                    <input class="edt-t" value="${t.t}" style="width:100%; border:none; border-bottom:1px solid #EEE; padding:5px 0; font-weight:700; font-size:14px; outline:none;">
+                    <input class="edt-d" value="${t.d}" style="width:100%; border:none; border-bottom:1px solid #EEE; padding:5px 0; font-size:12px; color:#666; outline:none;">
+                    <input class="edt-v" value="" placeholder="URL do Vídeo" style="width:100%; border:none; padding:5px 0; font-size:11px; color:var(--text-light); outline:none;">
+                    `; 
+                    l.appendChild(d); 
+                } 
+            }
         };
         document.addEventListener('DOMContentLoaded', app.init);
     </script>
