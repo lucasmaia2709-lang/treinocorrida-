@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Strong Girl Society</title>
+    <title>Running Challenge</title>
     
     <!-- Fontes e Ícones -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -120,7 +120,7 @@
         .home-card, .workout-card {
             background-color: white; 
             border-radius: 24px; 
-            padding: 24px; 
+            padding: 20px; /* Reduzi de 24 para 20 para ficar mais compacto */
             color: var(--text-main); 
             position: relative; 
             overflow: hidden; 
@@ -179,7 +179,7 @@
         }
         .btn-video:active { transform: scale(0.98); }
 
-        .progress-content { display: flex; justify-content: space-between; align-items: center; height: 100%; }
+        .progress-content { display: flex; flex-direction: column; justify-content: center; height: 100%; }
         .motivation-quote { font-family: 'Playfair Display', serif; font-size: 20px; line-height: 1.4; margin-top: 10px; font-style: italic; text-align: center; z-index: 1; }
         .quote-mark { font-size: 24px; color: var(--text-light); position: absolute; top: 20px; left: 20px; }
 
@@ -267,8 +267,8 @@
     <!-- 0. LANDING -->
     <div id="view-landing" class="screen active" style="align-items: center; justify-content: center; padding: 40px; text-align: center;">
         <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; width:100%;">
-            <h1 class="serif-font" style="font-size: 32px; margin-bottom: 5px;">STRONG GIRL</h1>
-            <p style="color: var(--text-sec); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 0;">SOCIETY</p>
+            <h1 class="serif-font" style="font-size: 32px; margin-bottom: 5px;">Running </h1>
+            <p style="color: var(--text-sec); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-top: 0;">Challenge</p>
         </div>
         <div style="width: 100%; margin-bottom: 40px;">
             <button onclick="app.goToRegister()" class="btn btn-primary" style="margin-bottom: 20px;">Começar Jornada</button>
@@ -333,7 +333,7 @@
                              <img id="header-avatar-img" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
                              <span id="header-avatar-text" class="serif-font" style="font-size:18px;">L</span>
                         </div>
-                        <div class="serif-font" style="font-weight: 700;">STRONG GIRL SOCIETY</div>
+                        <div class="serif-font" style="font-weight: 700;">Running Challenge</div>
                         <i class="fa-regular fa-bell" style="font-size: 24px;"></i>
                     </div>
                     <h1 class="serif-font" style="font-size: 32px; margin: 0;">Olá <span id="user-firstname">Atleta</span> 👋🏼</h1>
@@ -350,22 +350,24 @@
                     <div class="calendar-strip" id="calendar-strip"></div>
                 </div>
 
-                <!-- Progresso -->
+                <!-- Progresso (Compacto e com Barra Verde) -->
                 <div style="padding: 0 24px; margin-bottom: 30px;">
-                    <div class="home-card">
+                    <div class="home-card" style="min-height: auto; padding-bottom: 20px;">
                         <div class="progress-content">
-                            <div style="flex: 1; z-index: 1;">
-                                <h2 id="hero-race-name" class="serif-font" style="font-size: 22px; margin: 0 0 5px 0;">Objetivo</h2>
-                                <div id="hero-status" style="background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1); display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px;">Carregando...</div>
-                                <button onclick="app.nav('workouts')" style="margin-top: 20px; background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer;">VER TREINOS</button>
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%; margin-bottom: 5px;">
+                                <div>
+                                    <h2 id="hero-race-name" class="serif-font" style="font-size: 20px; margin: 0;">Objetivo</h2>
+                                    <p id="hero-details" style="font-size: 12px; color: var(--text-sec); margin: 5px 0 0 0;">0 de 0 treinos realizados</p>
+                                </div>
+                                <span id="hero-percent" class="serif-font" style="font-size: 24px; font-weight: 700; color: var(--primary);">0%</span>
                             </div>
-                            <div style="position: relative; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
-                                <svg width="80" height="80" style="position: absolute; top:0; left:0; transform: rotate(-90deg);">
-                                   <circle cx="40" cy="40" r="36" stroke="rgba(0,0,0,0.1)" stroke-width="4" fill="transparent"/>
-                                   <circle id="progress-ring-circle" cx="40" cy="40" r="36" stroke="var(--primary)" stroke-width="4" fill="transparent" stroke-dasharray="226" stroke-dashoffset="226" style="transition: 0.3s;"/>
-                                </svg>
-                                <span id="dash-percent" class="serif-font" style="font-size: 20px;">0%</span>
+                            
+                            <!-- Barra Verde Discreta -->
+                            <div style="width: 100%; height: 6px; background: #F2F2F7; border-radius: 3px; margin: 15px 0; overflow: hidden;">
+                                <div id="hero-prog-bar" style="width: 0%; height: 100%; background: var(--success); border-radius: 3px; transition: width 0.5s ease;"></div>
                             </div>
+
+                            <button onclick="app.nav('workouts')" style="width: 100%; background: var(--text-main); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 600; font-size: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;">Continuar Treino</button>
                         </div>
                     </div>
                 </div>
@@ -837,10 +839,8 @@
                 
                 if(activeRace) { 
                     document.getElementById('hero-race-name').innerText = activeRace.name; 
-                    document.getElementById('hero-status').innerText = `${workouts.length} Treinos`; 
                 } else { 
                     document.getElementById('hero-race-name').innerText = "Sem Objetivo"; 
-                    document.getElementById('hero-status').innerText = "Crie um novo"; 
                 } 
                 
                 if(workouts.length === 0) cont.innerHTML = '<div style="text-align:center; padding:40px; color:#AAA;">Nenhum treino.</div>'; 
@@ -885,11 +885,14 @@
                     }); 
                 } 
                 
-                const pct = workouts.length > 0 ? Math.round((done/workouts.length)*100) : 0; 
-                document.getElementById('dash-percent').innerText = `${pct}%`; 
-                const circle = document.getElementById('progress-ring-circle'); 
-                const circumference = 36 * 2 * Math.PI; 
-                circle.style.strokeDashoffset = circumference - (pct / 100) * circumference; 
+                // ATUALIZADO: Cálculo e UI da Barra Verde
+                const total = workouts.length;
+                const pct = total > 0 ? Math.round((done/total)*100) : 0; 
+                
+                document.getElementById('hero-percent').innerText = `${pct}%`; 
+                document.getElementById('hero-details').innerText = `${done} de ${total} treinos realizados`;
+                document.getElementById('hero-prog-bar').style.width = `${pct}%`;
+
                 const hList = document.getElementById('profile-history-list'); if(hList) { hList.innerHTML = ''; if(races.length===0) hList.innerHTML='<p style="text-align:center;font-size:12px;color:#AAA;">Sem histórico.</p>'; [...races].reverse().forEach(r=>{ const tW=r.workouts?.length||0; const dW=r.workouts?r.workouts.filter(k=>k.done).length:0; const p=tW>0?Math.round((dW/tW)*100):0; const isC=p===100; const ic=isC?'fa-medal':'fa-person-running'; const clr=isC?'#FBC02D':'#CCC'; hList.innerHTML+=`<div class="card" style="padding:15px; margin-bottom:10px; display:flex; align-items:center; gap:15px; border:1px solid #EEE;"><div style="width:40px; height:40px; background:${isC?'#FFF9C4':'#F5F5F5'}; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; color:${clr};"><i class="fa-solid ${ic}"></i></div><div style="flex:1;"><h4 style="margin:0; font-size:14px; color:var(--text-main);">${r.name}</h4><p style="margin:0; font-size:10px; color:var(--text-sec);">${r.date||''}</p></div><span style="font-size:12px; font-weight:bold; color:${isC?'var(--success)':'var(--text-main)'};">${p}%</span></div>`; }); } app.loadRandomQuote(); 
             },
             
