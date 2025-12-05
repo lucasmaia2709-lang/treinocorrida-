@@ -12,9 +12,6 @@
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/553/553416.png">
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/553/553416.png">
 
-    <!-- Manifesto Android -->
-    <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIlJ1bm5pbmcgQ2hhbGxlbmdlIiwKICAic2hvcnRfbmFtZSI6ICJSdW4gQXBwIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNGRkZGRkYiLAogICJ0aGVtZV9jb2xvciI6ICIjMDAwMDAwIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9jZG4taWNvbnXMcG5nLmZsYXRpY29uLmNvbS81MTIvNTUzLzU1MzQxNi5wbmciLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3BuZyIKICAgIH0KICBdCn0=">
-
     <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,6 +33,7 @@
             --orange: #FF9500;
             --border: #E5E5EA;
             --shadow: 0 4px 20px rgba(0,0,0,0.04);
+            --nav-height: 70px;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -44,9 +42,21 @@
         
         h1, h2, h3, .serif { font-family: var(--font-serif); }
 
+        /* SCREENS */
         .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg); display: none; flex-direction: column; overflow-y: auto; overflow-x: hidden; z-index: 10; padding-bottom: 90px; padding-top: env(safe-area-inset-top); }
         .screen.active { display: flex; animation: fadeIn 0.3s ease; }
         .screen.full-screen { z-index: 200; padding-bottom: 0; background: var(--bg); }
+        
+        /* Ajuste para tela de detalhes respeitar a navbar */
+        .screen.detail-view { z-index: 150; padding-bottom: 90px; background: var(--bg); }
+        
+        /* Ajuste para Admin Fixo */
+        #view-admin.screen.full-screen.active {
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
+        }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .input-group { margin-bottom: 15px; width: 100%; }
@@ -57,6 +67,8 @@
         .btn { width: 100%; padding: 16px; border-radius: var(--radius); border: none; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: var(--font-main); transition: 0.2s; -webkit-user-select: none; }
         .btn-primary { background-color: var(--primary); color: #FFFFFF; box-shadow: var(--shadow); }
         .btn-text { background: none; color: var(--text-sec); font-size: 14px; padding: 10px; }
+        .btn-danger { background-color: #ffe5e5; color: var(--red); }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
         
         /* CALENDÁRIO */
         .calendar-wrapper { padding: 0 20px 20px; }
@@ -71,13 +83,14 @@
         .cal-cell.has-workout .cal-dot { background: var(--text-sec); }
         .cal-cell.done .cal-dot { background: var(--success); }
         .cal-cell.done { background: rgba(52, 199, 89, 0.1); color: var(--success); }
+        .cal-note-indicator { position: absolute; top: 2px; right: 2px; width: 4px; height: 4px; background: var(--orange); border-radius: 50%; }
 
         /* CARDS */
         .card { background: #FFF; border-radius: var(--radius); padding: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 20px; }
         
         /* RECIPE CARD */
-        .recipe-card { display: flex; flex-direction: column; overflow: hidden; }
-        .recipe-img { width: 100%; height: 180px; background-size: cover; background-position: center; border-radius: var(--radius); margin-bottom: 10px; }
+        .recipe-card { display: flex; flex-direction: column; overflow: hidden; background: #FFF; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); cursor: pointer; }
+        .recipe-img { width: 100%; height: 180px; background-size: cover; background-position: center; margin-bottom: 10px; background-color: #EEE; }
         .recipe-meta { font-size: 11px; color: var(--text-sec); text-transform: uppercase; font-weight: 600; }
         
         /* NEWS CARD */
@@ -87,8 +100,8 @@
         .news-date { font-size: 11px; color: var(--text-sec); margin-bottom: 5px; text-transform: uppercase; font-weight: 600; }
         .news-title { font-size: 18px; font-weight: 700; margin: 0 0 8px 0; line-height: 1.3; }
 
-        /* NAV BAR */
-        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 10px max(10px, env(safe-area-inset-bottom)); z-index: 100; }
+        /* NAV BAR - Z-Index Aumentado para 300 para ficar acima de views de detalhe */
+        .nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 10px max(10px, env(safe-area-inset-bottom)); z-index: 300; }
         .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; background: none; border: none; color: #999; cursor: pointer; }
         .nav-item i { font-size: 20px; transition: 0.2s; }
         .nav-item span { font-size: 9px; font-weight: 500; }
@@ -96,18 +109,35 @@
         .nav-item.active i { transform: translateY(-2px); }
 
         .hidden { display: none !important; }
-        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-50px); background: #333; color: #FFF; padding: 12px 24px; border-radius: 50px; font-size: 13px; opacity: 0; transition: 0.3s; z-index: 5000; pointer-events: none; }
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-50px); background: #333; color: #FFF; padding: 12px 24px; border-radius: 50px; font-size: 13px; opacity: 0; transition: 0.3s; z-index: 5000; pointer-events: none; text-align: center; min-width: 200px; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         
         .header-avatar { width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: var(--surface); cursor: pointer; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 600; }
 
         .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
         .modal-overlay.active { display: flex; animation: fadeIn 0.2s; }
-        .modal-card { width: 90%; max-width: 400px; background: var(--bg); border-radius: 24px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
+        .modal-card { width: 90%; max-width: 400px; background: var(--bg); border-radius: 24px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
         
-        /* ADMIN TABS */
-        .admin-tab-btn { flex:1; padding:10px; border:none; background:none; cursor:pointer; font-size:12px; font-weight:600; color:#888; border-bottom: 2px solid transparent; }
+        /* ADMIN TABS FIXAS */
+        .admin-header { background: #111; color: #FFF; padding: 20px; flex-shrink: 0; }
+        .admin-tabs-wrapper { background: #f5f5f5; border-bottom: 1px solid #ddd; overflow-x: auto; flex-shrink: 0; display: flex; }
+        .admin-content-scroll { flex: 1; overflow-y: auto; padding-bottom: 50px; }
+        .admin-tab-btn { flex:1; min-width: 80px; padding:15px; border:none; background:none; cursor:pointer; font-size:12px; font-weight:600; color:#888; border-bottom: 2px solid transparent; white-space: nowrap; }
         .admin-tab-btn.active { color: #111; border-color: #111; }
+        
+        .progress-container { width: 100%; background-color: rgba(255,255,255,0.2); border-radius: 10px; height: 6px; margin-top: 15px; overflow: hidden; }
+        .progress-bar { height: 100%; background-color: var(--success); transition: width 0.3s; }
+
+        /* CHECKBOX CUSTOM */
+        .check-toggle { width: 20px; height: 20px; accent-color: var(--primary); cursor: pointer; }
+
+        /* ADMIN ACCORDION */
+        .adm-row-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 5px 0; }
+        .adm-nested { display: none; padding-left: 15px; border-left: 2px solid #EEE; margin-left: 5px; margin-top: 5px; }
+        .adm-nested.open { display: block; animation: fadeIn 0.2s; }
+        .adm-item-box { background: #fff; border: 1px solid #eee; padding: 10px; border-radius: 10px; margin-bottom: 8px; }
+        .adm-btn-small { padding: 4px 8px; font-size: 10px; border-radius: 4px; border: 1px solid #ddd; background: none; cursor: pointer; }
+        .adm-action-btn { color:#666; border:none; background:none; font-size:12px; padding:5px; cursor:pointer; }
     </style>
 </head>
 <body>
@@ -175,9 +205,9 @@
             <div id="tab-home" class="tab-content">
                 <div class="calendar-wrapper">
                     <div class="calendar-header">
-                        <button onclick="app.changeMonth(-1)" style="border:none; bg:none; padding:10px;"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button onclick="app.changeMonth(-1)" style="border:none; background:none; padding:10px; cursor:pointer;"><i class="fa-solid fa-chevron-left"></i></button>
                         <span id="cal-month-title" class="calendar-title">Mês</span>
-                        <button onclick="app.changeMonth(1)" style="border:none; bg:none; padding:10px;"><i class="fa-solid fa-chevron-right"></i></button>
+                        <button onclick="app.changeMonth(1)" style="border:none; background:none; padding:10px; cursor:pointer;"><i class="fa-solid fa-chevron-right"></i></button>
                     </div>
                     <div class="calendar-grid" style="margin-bottom: 5px;">
                         <div class="cal-head-day">D</div><div class="cal-head-day">S</div><div class="cal-head-day">T</div><div class="cal-head-day">Q</div><div class="cal-head-day">Q</div><div class="cal-head-day">S</div><div class="cal-head-day">S</div>
@@ -204,12 +234,12 @@
             <div id="tab-social" class="tab-content hidden" style="padding: 0 20px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin: 20px 0;">
                     <h2 style="margin:0;">Comunidade</h2>
-                    <button onclick="app.openCreatePost()" class="btn-primary" style="width: auto; padding: 8px 16px; border-radius: 20px; font-size: 12px;"><i class="fa-solid fa-plus"></i> Novo</button>
+                    <button onclick="app.openCreatePost()" class="btn-primary" style="width: auto; padding: 8px 16px; border-radius: 20px; font-size: 12px; border:none; cursor:pointer;"><i class="fa-solid fa-plus"></i> Novo</button>
                 </div>
                 <div id="social-feed"></div>
             </div>
 
-            <!-- RECEITAS (RESTAURADO) -->
+            <!-- RECEITAS -->
             <div id="tab-recipes" class="tab-content hidden" style="padding: 0 20px;">
                 <h2 style="margin: 20px 0;">Receitas</h2>
                 <div id="recipes-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;"></div>
@@ -222,11 +252,11 @@
             </div>
         </div>
 
-        <!-- MENU (5 ITENS AGORA) -->
+        <!-- MENU (REORDENADO) -->
         <div class="nav-bar">
-            <button class="nav-item active" onclick="app.nav('home')" data-tab="home"><i class="fa-solid fa-house"></i><span>Home</span></button>
-            <button class="nav-item" onclick="app.nav('workouts')" data-tab="workouts"><i class="fa-solid fa-person-running"></i><span>Treinos</span></button>
             <button class="nav-item" onclick="app.nav('social')" data-tab="social"><i class="fa-solid fa-users"></i><span>Social</span></button>
+            <button class="nav-item" onclick="app.nav('workouts')" data-tab="workouts"><i class="fa-solid fa-person-running"></i><span>Treinos</span></button>
+            <button class="nav-item active" onclick="app.nav('home')" data-tab="home"><i class="fa-solid fa-house"></i><span>Home</span></button>
             <button class="nav-item" onclick="app.nav('recipes')" data-tab="recipes"><i class="fa-solid fa-utensils"></i><span>Receitas</span></button>
             <button class="nav-item" onclick="app.nav('news')" data-tab="news"><i class="fa-solid fa-bullhorn"></i><span>News</span></button>
         </div>
@@ -237,12 +267,12 @@
     <!-- PERFIL -->
     <div id="view-profile" class="screen full-screen">
         <div style="padding: 20px; display: flex; justify-content: space-between; align-items: center;">
-            <button onclick="app.closeProfile()" style="border:none; background:none; font-size:24px;"><i class="fa-solid fa-times"></i></button>
+            <button onclick="app.closeProfile()" style="border:none; background:none; font-size:24px; cursor:pointer;"><i class="fa-solid fa-times"></i></button>
             <h3 style="margin:0;">Meu Perfil</h3>
-            <button onclick="app.logout()" style="border:none; background:none; color:var(--red); font-weight:600;">Sair</button>
+            <button onclick="app.logout()" style="border:none; background:none; color:var(--red); font-weight:600; cursor:pointer;">Sair</button>
         </div>
         <div style="padding: 20px; text-align: center;">
-            <div style="width: 100px; height: 100px; border-radius: 50%; background: #EEE; margin: 0 auto 20px; overflow: hidden; position: relative;" onclick="document.getElementById('profile-upload').click()">
+            <div style="width: 100px; height: 100px; border-radius: 50%; background: #EEE; margin: 0 auto 20px; overflow: hidden; position: relative; cursor:pointer;" onclick="document.getElementById('profile-upload').click()">
                 <img id="profile-img-big" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
                 <div style="position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.5); color: white; font-size: 10px; padding: 4px;">ALTERAR</div>
             </div>
@@ -250,7 +280,6 @@
             <h2 id="profile-name-big" style="margin:0;">Nome</h2>
             <p id="profile-email-big" style="color: var(--text-sec); font-size: 14px;">email</p>
             
-            <!-- BOTÃO NOVO OBJETIVO RESTAURADO -->
             <button onclick="app.showAddRaceModal()" class="btn btn-primary" style="margin-top: 20px;">+ NOVO OBJETIVO</button>
 
             <div class="card" style="margin-top: 30px; text-align: left;">
@@ -260,10 +289,10 @@
         </div>
     </div>
 
-    <!-- DETALHE DA RECEITA -->
-    <div id="view-recipe-detail" class="screen full-screen">
-        <button onclick="document.getElementById('view-recipe-detail').classList.remove('active')" style="position:absolute; top:20px; left:20px; z-index:10; background:white; border:none; width:40px; height:40px; border-radius:50%; box-shadow:0 5px 15px rgba(0,0,0,0.2);"><i class="fa-solid fa-arrow-left"></i></button>
-        <div id="rec-det-img" style="width:100%; height:300px; background:grey; background-size:cover; background-position:center;"></div>
+    <!-- DETALHE DA RECEITA (MODIFICADO: detail-view em vez de full-screen) -->
+    <div id="view-recipe-detail" class="screen detail-view">
+        <button onclick="app.closeRecipeDetail()" style="position:absolute; top:20px; left:20px; z-index:10; background:white; border:none; width:40px; height:40px; border-radius:50%; box-shadow:0 5px 15px rgba(0,0,0,0.2); cursor:pointer;"><i class="fa-solid fa-arrow-left"></i></button>
+        <div id="rec-det-img" style="width:100%; height:300px; background:grey; background-size:cover; background-position:center; background-color: #EEE;"></div>
         <div style="background:var(--bg); border-radius:30px 30px 0 0; margin-top:-30px; padding:30px; position:relative; min-height:500px;">
             <h1 id="rec-det-title" class="serif" style="margin:0 0 10px 0;">Titulo</h1>
             <p id="rec-det-meta" style="color:var(--text-sec); margin-bottom:20px;">0 kcal</p>
@@ -279,14 +308,14 @@
         </div>
     </div>
 
-    <!-- MODAIS -->
+    <!-- MODAIS DE CRIAÇÃO/INTERAÇÃO -->
     <div id="view-create-post" class="screen full-screen">
         <div style="padding: 15px 20px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border);">
-            <button onclick="app.closeCreatePost()" class="btn-text" style="padding:0;">Cancelar</button>
+            <button onclick="app.closeCreatePost()" class="btn-text" style="padding:0; cursor:pointer;">Cancelar</button>
             <strong>Criar Post</strong>
-            <button onclick="app.submitPost()" style="border:none; background:var(--primary); color:white; padding: 6px 15px; border-radius: 20px; font-weight:600;">Postar</button>
+            <button onclick="app.submitPost()" style="border:none; background:var(--primary); color:white; padding: 6px 15px; border-radius: 20px; font-weight:600; cursor:pointer;">Postar</button>
         </div>
-        <textarea id="post-text" style="width:100%; height:150px; border:none; padding:20px; font-family:var(--font-main); font-size:16px; outline:none;" placeholder="No que você está pensando?"></textarea>
+        <textarea id="post-text" style="width:100%; height:150px; border:none; padding:20px; font-family:var(--font-main); font-size:16px; outline:none; resize:none;" placeholder="No que você está pensando?"></textarea>
         <div style="padding: 20px;">
             <div id="post-img-preview" style="width:100%; height:200px; background:#f0f0f0; border-radius:10px; display:none; background-size:cover; background-position:center;"></div>
             <button onclick="document.getElementById('post-file').click()" class="btn" style="border:1px solid var(--border); margin-top:20px;"><i class="fa-solid fa-camera"></i>&nbsp; Adicionar Foto</button>
@@ -296,11 +325,89 @@
 
     <div id="modal-video" class="modal-overlay">
         <div style="width: 100%; max-width: 800px; aspect-ratio: 16/9; background: #000; position: relative;">
-            <button onclick="document.getElementById('modal-video').classList.remove('active')" style="position: absolute; top: -40px; right: 10px; color: white; background: none; border: none; font-size: 24px;">✕</button>
+            <button onclick="document.getElementById('modal-video').classList.remove('active'); document.getElementById('video-container').innerHTML='';" style="position: absolute; top: -40px; right: 10px; color: white; background: none; border: none; font-size: 24px; cursor:pointer;">✕</button>
             <div id="video-container" style="width:100%; height:100%;"></div>
         </div>
     </div>
+    
+    <!-- MODAL DETALHE DO DIA (CALENDÁRIO) -->
+    <div id="modal-day-detail" class="modal-overlay">
+        <div class="modal-card">
+            <h3 id="day-det-title">Detalhes do Dia</h3>
+            <div id="day-det-content"></div>
+            <textarea id="day-det-note" class="input" placeholder="Anotações / Feedback do treino..." style="height:100px; resize:none; margin-top:10px;"></textarea>
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button onclick="document.getElementById('modal-day-detail').classList.remove('active')" class="btn">Fechar</button>
+                <button onclick="app.saveDayNote()" class="btn btn-primary">Salvar Nota</button>
+            </div>
+        </div>
+    </div>
 
+    <!-- MODAIS UI GENÉRICOS (Substituem alert/confirm/prompt) -->
+    <div id="modal-prompt" class="modal-overlay">
+        <div class="modal-card">
+            <h3 id="prompt-title">Entrada</h3>
+            <input id="prompt-input" class="input">
+            <div style="display:flex; gap:10px;">
+                <button id="prompt-cancel" class="btn">Cancelar</button>
+                <button id="prompt-confirm" class="btn btn-primary">OK</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Novo Modal de Opção (Template vs Vazio) -->
+    <div id="modal-option" class="modal-overlay">
+        <div class="modal-card">
+            <h3 id="opt-title">Escolha</h3>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <button id="opt-1" class="btn btn-primary">Opção 1</button>
+                <button id="opt-2" class="btn">Opção 2</button>
+                <button id="opt-cancel" class="btn btn-text">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-confirm" class="modal-overlay">
+        <div class="modal-card">
+            <h3 id="confirm-title">Tem certeza?</h3>
+            <p id="confirm-text" style="color:var(--text-sec); font-size:14px;"></p>
+            <div style="display:flex; gap:10px;">
+                <button id="confirm-cancel" class="btn">Não</button>
+                <button id="confirm-ok" class="btn btn-danger">Sim</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- NOVO MODAL: ADICIONAR TREINO MANUALMENTE (SUBSTITUI PROMPT) -->
+    <div id="modal-add-single-workout" class="modal-overlay">
+        <div class="modal-card">
+            <h3 id="modal-workout-title">Novo Treino</h3>
+            <input id="new-w-title" class="input" placeholder="Título (Ex: Trote Leve)" style="margin-bottom:10px;">
+            <input id="new-w-desc" class="input" placeholder="Descrição (Ex: 30min zona 2)" style="margin-bottom:10px;">
+            <input id="new-w-video" class="input" placeholder="Link do Vídeo (Opcional)" style="margin-bottom:10px;">
+            <div style="display:flex; gap:10px;">
+                <button onclick="app.saveSingleWorkout()" class="btn btn-primary">Salvar</button>
+                <button onclick="document.getElementById('modal-add-single-workout').classList.remove('active')" class="btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOVO MODAL: SELECIONAR MODELO (COM LISTA E RADIO) -->
+    <div id="modal-select-template" class="modal-overlay">
+        <div class="modal-card">
+            <h3>Selecionar Modelo</h3>
+            <p style="font-size:12px; color:#666; margin-bottom:10px;">Escolha um modelo da lista:</p>
+            <div id="template-select-list" style="max-height: 200px; overflow-y: auto; border:1px solid #eee; border-radius:10px; padding:10px; margin-bottom:15px;">
+                <!-- Lista gerada via JS -->
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button onclick="app.confirmTemplateImport()" class="btn btn-primary">Importar</button>
+                <button onclick="document.getElementById('modal-select-template').classList.remove('active')" class="btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAIS DE NEGÓCIO -->
     <div id="modal-admin-auth" class="modal-overlay">
         <div class="modal-card" style="text-align: center;">
             <h3>Acesso Treinador</h3>
@@ -312,7 +419,6 @@
         </div>
     </div>
     
-    <!-- MODAL ADICIONAR OBJETIVO (PERFIL) -->
     <div id="modal-add-race" class="modal-overlay">
         <div class="modal-card">
             <h3>Novo Objetivo</h3>
@@ -323,98 +429,117 @@
         </div>
     </div>
 
-    <!-- PAINEL ADMIN COMPLETO -->
+    <!-- PAINEL ADMIN COMPLETO (FIXED HEADER) -->
     <div id="view-admin" class="screen full-screen">
-        <div style="padding: 20px; background: #111; color: #FFF; display: flex; justify-content: space-between;">
-            <span>ADMIN</span>
-            <button onclick="app.closeAdmin()" style="color: #FFF; background: none; border: none;">Sair</button>
+        <div class="admin-header">
+            <div style="display: flex; justify-content: space-between;">
+                <span>ADMIN</span>
+                <button onclick="app.closeAdmin()" style="color: #FFF; background: none; border: none; cursor:pointer;">Sair</button>
+            </div>
         </div>
-        <div style="display: flex; border-bottom: 1px solid #ddd; background: #f5f5f5;">
+        
+        <div class="admin-tabs-wrapper">
             <button onclick="app.admTab('users')" id="btn-adm-users" class="admin-tab-btn active">Usuários</button>
+            <button onclick="app.admTab('templates')" id="btn-adm-templates" class="admin-tab-btn">Modelos</button>
             <button onclick="app.admTab('news')" id="btn-adm-news" class="admin-tab-btn">Notícias</button>
             <button onclick="app.admTab('recipes')" id="btn-adm-recipes" class="admin-tab-btn">Receitas</button>
             <button onclick="app.admTab('quotes')" id="btn-adm-quotes" class="admin-tab-btn">Frases</button>
         </div>
         
-        <!-- Tab Usuários -->
-        <div id="adm-content-users" style="padding: 20px;">
-            <h3>Usuários</h3>
-            <div id="adm-users-list"></div>
-        </div>
-        
-        <!-- Tab Notícias -->
-        <div id="adm-content-news" class="hidden" style="padding: 20px;">
-            <h3>Publicar Novidade</h3>
-            <div class="card">
-                <input id="news-title" class="input" placeholder="Título" style="margin-bottom:10px;">
-                <textarea id="news-body" class="input" placeholder="Texto..." style="margin-bottom:10px; height:100px;"></textarea>
-                <button onclick="document.getElementById('news-file').click()" class="btn" style="border:1px solid #CCC; margin-bottom:10px;">Foto</button>
-                <input type="file" id="news-file" hidden onchange="app.handleNewsImg(this)">
-                <img id="news-preview" style="width:100%; height:100px; object-fit:cover; display:none; margin-bottom:10px;">
-                <button onclick="app.postNews()" class="btn btn-primary">PUBLICAR</button>
+        <div class="admin-content-scroll">
+            <!-- Tab Usuários -->
+            <div id="adm-content-users" style="padding: 20px;">
+                <h3>Usuários</h3>
+                <div id="adm-users-list"></div>
             </div>
-            <div id="adm-news-history"></div>
-        </div>
-
-        <!-- Tab Receitas (RESTAURADO) -->
-        <div id="adm-content-recipes" class="hidden" style="padding: 20px;">
-            <h3>Adicionar Receita</h3>
-            <div class="card">
-                <input id="adm-rec-title" class="input" placeholder="Título" style="margin-bottom:10px;">
-                <div style="display:flex; gap:5px; margin-bottom:10px;">
-                    <input id="adm-rec-kcal" class="input" placeholder="Kcal" type="number">
-                    <input id="adm-rec-time" class="input" placeholder="Min" type="number">
+            
+            <!-- Tab Templates (Modelos) -->
+            <div id="adm-content-templates" class="hidden" style="padding: 20px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h3>Modelos de Treino</h3>
+                    <button onclick="app.admAddTemplateInline()" class="btn-primary" style="padding:5px 15px; font-size:12px; border-radius:20px;">+ Novo</button>
                 </div>
-                <div style="display:flex; gap:5px; margin-bottom:10px;">
-                    <input id="adm-rec-p" class="input" placeholder="P (g)" type="number">
-                    <input id="adm-rec-c" class="input" placeholder="C (g)" type="number">
-                    <input id="adm-rec-f" class="input" placeholder="G (g)" type="number">
+                <p style="color:#888; font-size:12px; margin-bottom:20px;">Gerencie seus modelos de treino.</p>
+                <div id="adm-templates-list"></div>
+            </div>
+            
+            <!-- Tab Notícias -->
+            <div id="adm-content-news" class="hidden" style="padding: 20px;">
+                <h3>Publicar Novidade</h3>
+                <div class="card">
+                    <input id="news-title" class="input" placeholder="Título" style="margin-bottom:10px;">
+                    <textarea id="news-body" class="input" placeholder="Texto..." style="margin-bottom:10px; height:100px; resize:none;"></textarea>
+                    <button onclick="document.getElementById('news-file').click()" class="btn" style="border:1px solid #CCC; margin-bottom:10px;">Foto</button>
+                    <input type="file" id="news-file" hidden onchange="app.handleNewsImg(this)">
+                    <img id="news-preview" style="width:100%; height:100px; object-fit:cover; display:none; margin-bottom:10px;">
+                    <button onclick="app.postNews()" class="btn btn-primary">PUBLICAR</button>
                 </div>
-                <textarea id="adm-rec-ing" class="input" placeholder="Ingredientes (um por linha)" style="height:80px; margin-bottom:10px;"></textarea>
-                <textarea id="adm-rec-steps" class="input" placeholder="Passos (um por linha)" style="height:80px; margin-bottom:10px;"></textarea>
-                
-                <button onclick="document.getElementById('adm-rec-file').click()" class="btn" style="border:1px solid #CCC; margin-bottom:10px;">Foto da Receita</button>
-                <input type="file" id="adm-rec-file" hidden onchange="app.handleRecImg(this)">
-                <img id="adm-rec-preview" style="width:100%; height:100px; object-fit:cover; display:none; margin-bottom:10px;">
-                
-                <button onclick="app.postRecipe()" class="btn btn-primary">SALVAR RECEITA</button>
+                <div id="adm-news-history"></div>
             </div>
-            <div id="adm-recipes-list"></div>
-        </div>
 
-        <!-- Tab Frases (RESTAURADO) -->
-        <div id="adm-content-quotes" class="hidden" style="padding: 20px;">
-            <h3>Frases Motivacionais</h3>
-            <div class="card">
-                <textarea id="adm-quote-text" class="input" placeholder="Digite a frase..." style="margin-bottom:10px;"></textarea>
-                <button onclick="app.postQuote()" class="btn btn-primary">ADICIONAR</button>
-            </div>
-            <div id="adm-quotes-list"></div>
-        </div>
-
-        <!-- Detalhe Usuário Admin -->
-        <div id="adm-user-detail" class="modal-overlay">
-            <div class="modal-card">
-                <h3 id="adm-u-name">Nome</h3>
-                <p id="adm-u-email" style="color:#888; margin-bottom: 20px;">email</p>
-                <label style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
-                    <input type="checkbox" id="adm-u-active"> Acesso Liberado
-                </label>
-                <hr>
-                <h4>Objetivos/Treinos</h4>
-                <div id="adm-u-races"></div>
-                <button onclick="app.admAddRace()" class="btn" style="margin-top:10px; border:1px dashed #999;">+ Adicionar Objetivo</button>
-                <div style="margin-top: 20px; display: flex; gap: 10px;">
-                    <button onclick="app.admSaveUser()" class="btn btn-primary">Salvar</button>
-                    <button onclick="document.getElementById('adm-user-detail').classList.remove('active')" class="btn">Fechar</button>
+            <!-- Tab Receitas -->
+            <div id="adm-content-recipes" class="hidden" style="padding: 20px;">
+                <h3>Adicionar Receita</h3>
+                <div class="card">
+                    <input id="adm-rec-title" class="input" placeholder="Título" style="margin-bottom:10px;">
+                    <div style="display:flex; gap:5px; margin-bottom:10px;">
+                        <input id="adm-rec-kcal" class="input" placeholder="Kcal" type="number">
+                        <input id="adm-rec-time" class="input" placeholder="Min" type="number">
+                    </div>
+                    <div style="display:flex; gap:5px; margin-bottom:10px;">
+                        <input id="adm-rec-p" class="input" placeholder="P (g)" type="number">
+                        <input id="adm-rec-c" class="input" placeholder="C (g)" type="number">
+                        <input id="adm-rec-f" class="input" placeholder="G (g)" type="number">
+                    </div>
+                    <textarea id="adm-rec-ing" class="input" placeholder="Ingredientes (um por linha)" style="height:80px; margin-bottom:10px; resize:none;"></textarea>
+                    <textarea id="adm-rec-steps" class="input" placeholder="Passos (um por linha)" style="height:80px; margin-bottom:10px; resize:none;"></textarea>
+                    
+                    <button onclick="document.getElementById('adm-rec-file').click()" class="btn" style="border:1px solid #CCC; margin-bottom:10px;">Foto da Receita</button>
+                    <input type="file" id="adm-rec-file" hidden onchange="app.handleRecImg(this)">
+                    <img id="adm-rec-preview" style="width:100%; height:100px; object-fit:cover; display:none; margin-bottom:10px;">
+                    
+                    <button onclick="app.postRecipe()" class="btn btn-primary">SALVAR RECEITA</button>
                 </div>
+                <div id="adm-recipes-list"></div>
             </div>
+
+            <!-- Tab Frases -->
+            <div id="adm-content-quotes" class="hidden" style="padding: 20px;">
+                <h3>Frases Motivacionais</h3>
+                <div class="card">
+                    <textarea id="adm-quote-text" class="input" placeholder="Digite a frase..." style="margin-bottom:10px; resize:none;"></textarea>
+                    <button onclick="app.postQuote()" class="btn btn-primary">ADICIONAR</button>
+                </div>
+                <div id="adm-quotes-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detalhe Usuário Admin -->
+    <div id="adm-user-detail" class="modal-overlay">
+        <div class="modal-card">
+            <h3 id="adm-u-name">Nome</h3>
+            <p id="adm-u-email" style="color:#888; margin-bottom: 20px;">email</p>
+            <label style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+                <input type="checkbox" id="adm-u-active"> Acesso Liberado
+            </label>
+            <hr style="width:100%; border:0; border-top:1px solid #EEE;">
+            <h4>Objetivos/Treinos</h4>
+            <div id="adm-u-races"></div>
+            <button onclick="app.admAddRace()" class="btn" style="margin-top:10px; border:1px dashed #999;">+ Adicionar Objetivo</button>
+            
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button onclick="app.admSaveUser()" class="btn btn-primary" style="flex:1;">Salvar</button>
+                <button onclick="document.getElementById('adm-user-detail').classList.remove('active')" class="btn" style="flex:1;">Fechar</button>
+            </div>
+            <!-- Botão de Excluir -->
+            <button onclick="app.admDeleteUser()" class="btn btn-danger" style="margin-top:10px; background:transparent; border:1px solid var(--red); color:var(--red);">Excluir Aluno</button>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, getDoc, onSnapshot, updateDoc, deleteDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = { apiKey: "AIzaSyAZc5IXA3PRIadz87sysrC_7lLZZG-7Izw", authDomain: "app-corrida-d3568.firebaseapp.com", projectId: "app-corrida-d3568", storageBucket: "app-corrida-d3568.firebasestorage.app", messagingSenderId: "690843260846", appId: "1:690843260846:web:e32be21759c9e813bada3f", measurementId: "G-26RNCCZYED" };
@@ -426,26 +551,51 @@
         const C_USERS = 'expliq_users_v9';
         const C_POSTS = 'expliq_posts_v9';
         const C_NEWS = 'expliq_news_v9';
-        const C_RECIPES = 'expliq_recipes_v9'; // Restaurado
-        const C_QUOTES = 'expliq_quotes_v9'; // Restaurado
+        const C_RECIPES = 'expliq_recipes_v9';
+        const C_QUOTES = 'expliq_quotes_v9';
+        const C_TEMPLATES = 'expliq_templates_v9';
 
         let currentUser = null;
         let mockMode = false;
         let currentMonth = new Date();
-        let editUserEmail = null;
+        let editUserEmail = null; 
         let tempImgBase64 = null;
         let tempRecImg = null;
         let allRecipes = [];
+        let selectedDayDate = null; 
+        
+        // Estado para controlar acordeões abertos
+        let expandedUsers = new Set();
+        let expandedRaces = new Set();
+        let expandedTemplates = new Set(); // Novo estado para templates
+        
+        // Estado temporário para edição de treino inline
+        let currentAdmUser = null;
+        let currentAdmRaceIdx = null;
+        let isEditingTemplate = false;
+        let currentTemplateId = null;
+        let editingWorkoutIndex = null; // NOVO: Indice do treino sendo editado
 
         window.app = {
             init: async () => {
-                try { await signInAnonymously(auth); } catch(e) { mockMode = true; }
-                const savedEmail = localStorage.getItem('session_email');
-                if(savedEmail) app.loadUser(savedEmail);
-                else app.screen('view-landing');
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        app.loadUser(user.email);
+                    } else {
+                        app.screen('view-landing');
+                    }
+                });
                 app.renderCalendar();
             },
+            
+            // FUNÇÃO DE ESCAPE PARA PREVENIR ERROS DE SINTAXE
+            escape: (str) => {
+                if (!str) return '';
+                // Trata aspas simples e duplas
+                return str.toString().replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, ' ');
+            },
 
+            // --- UI HELPER FUNCTIONS ---
             screen: (id) => { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); const el = document.getElementById(id); if(el) el.classList.add('active'); },
             nav: (tab) => {
                 document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
@@ -455,11 +605,49 @@
                 if(tab === 'home') app.renderHome();
                 if(tab === 'workouts') app.renderWorkoutsList();
                 if(tab === 'social') app.loadFeed();
-                if(tab === 'recipes') app.loadRecipes(); // Novo
+                if(tab === 'recipes') app.loadRecipes();
                 if(tab === 'news') app.loadNews();
             },
-
             toast: (msg) => { const t = document.getElementById('toast-container'); t.innerHTML = `<div class="toast show">${msg}</div>`; setTimeout(() => t.innerHTML='', 3000); },
+            
+            showPrompt: (title, callback) => {
+                const el = document.getElementById('modal-prompt');
+                document.getElementById('prompt-title').innerText = title;
+                const inp = document.getElementById('prompt-input');
+                inp.value = '';
+                el.classList.add('active');
+                inp.focus();
+                const okBtn = document.getElementById('prompt-confirm');
+                const cancelBtn = document.getElementById('prompt-cancel');
+                okBtn.replaceWith(okBtn.cloneNode(true));
+                cancelBtn.replaceWith(cancelBtn.cloneNode(true));
+                document.getElementById('prompt-confirm').onclick = () => { const val = document.getElementById('prompt-input').value; if(val) callback(val); el.classList.remove('active'); };
+                document.getElementById('prompt-cancel').onclick = () => el.classList.remove('active');
+            },
+            
+            showConfirm: (text, callback) => {
+                const el = document.getElementById('modal-confirm');
+                document.getElementById('confirm-text').innerText = text;
+                el.classList.add('active');
+                const okBtn = document.getElementById('confirm-ok');
+                const cancelBtn = document.getElementById('confirm-cancel');
+                okBtn.replaceWith(okBtn.cloneNode(true));
+                cancelBtn.replaceWith(cancelBtn.cloneNode(true));
+                document.getElementById('confirm-ok').onclick = () => { callback(); el.classList.remove('active'); };
+                document.getElementById('confirm-cancel').onclick = () => el.classList.remove('active');
+            },
+
+            showOption: (title, opt1Txt, opt2Txt, cb1, cb2) => {
+                const el = document.getElementById('modal-option');
+                document.getElementById('opt-title').innerText = title;
+                document.getElementById('opt-1').innerText = opt1Txt;
+                document.getElementById('opt-2').innerText = opt2Txt;
+                el.classList.add('active');
+                document.getElementById('opt-1').onclick = () => { cb1(); el.classList.remove('active'); };
+                document.getElementById('opt-2').onclick = () => { cb2(); el.classList.remove('active'); };
+                document.getElementById('opt-cancel').onclick = () => el.classList.remove('active');
+            },
+
             goToLogin: () => app.screen('view-login'),
             goToRegister: () => app.screen('view-register'),
             goToLanding: () => app.screen('view-landing'),
@@ -469,35 +657,52 @@
                 const name = document.getElementById('reg-name').value;
                 const email = document.getElementById('reg-email').value.toLowerCase();
                 const pass = document.getElementById('reg-pass').value;
-                const newUser = { name, email, pass, active: false, avatar: null, races: [], created: Date.now() };
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, email), newUser);
-                localStorage.setItem('session_email', email);
-                app.screen('view-pending');
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+                    const user = userCredential.user;
+                    const newUser = { name, email, active: false, avatar: null, races: [], notes: {}, created: Date.now() };
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, email), newUser);
+                    await signOut(auth);
+                    app.toast("Cadastro realizado! Faça login para entrar.");
+                    app.screen('view-login');
+                } catch(err) { 
+                    let msg = 'Erro ao cadastrar.';
+                    if(err.code === 'auth/email-already-in-use') msg = 'Email já registado. Por favor, faça login.';
+                    else if(err.code === 'auth/weak-password') msg = 'Senha muito fraca.';
+                    app.toast(msg); 
+                }
             },
 
             handleLogin: async (e) => {
                 e.preventDefault();
                 const email = document.getElementById('log-email').value.toLowerCase();
                 const pass = document.getElementById('log-pass').value;
-                const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, email));
-                if(snap.exists()) {
-                    const u = snap.data();
-                    if(u.pass === pass) {
-                        if(u.active) { localStorage.setItem('session_email', email); app.loadUser(email); } 
-                        else { app.screen('view-pending'); }
-                    } else { app.toast('Senha incorreta'); }
-                } else { app.toast('Usuário não encontrado'); }
+                try {
+                    const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+                    const user = userCredential.user;
+                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', C_USERS, user.email);
+                    const snap = await getDoc(docRef);
+                    if (!snap.exists()) {
+                        const newUser = { name: "Aluno(a)", email: user.email, active: false, avatar: null, races: [], notes: {}, created: Date.now() };
+                        await setDoc(docRef, newUser);
+                        app.toast("Conta reativada. Aguarde aprovação.");
+                    }
+                } catch(err) { app.toast('Email ou senha inválidos.'); }
             },
 
             forgotPassword: () => {
-                const email = prompt("Digite seu email:");
-                if(email) sendPasswordResetEmail(auth, email).then(()=>alert("Enviado!")).catch(e=>alert(e.message));
+                app.showPrompt("Digite seu email para recuperar:", (email) => {
+                    sendPasswordResetEmail(auth, email)
+                    .then(() => app.toast("Email de recuperação enviado!"))
+                    .catch(e => app.toast("Erro: " + e.message));
+                });
             },
 
             loadUser: (email) => {
                 onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, email), (doc) => {
                     if(doc.exists()) {
                         currentUser = doc.data();
+                        if (document.getElementById('view-admin').classList.contains('active')) return;
                         if(!currentUser.active) { app.screen('view-pending'); return; }
                         const av = currentUser.avatar;
                         const himg = document.getElementById('header-avatar-img');
@@ -510,7 +715,8 @@
                 });
             },
 
-            logout: () => { localStorage.removeItem('session_email'); currentUser = null; app.screen('view-landing'); },
+            logout: () => { signOut(auth).then(() => { currentUser = null; app.screen('view-landing'); }); },
+            
             openProfile: () => {
                 if(!currentUser) return;
                 app.screen('view-profile');
@@ -535,23 +741,17 @@
                 });
             },
             
-            // PERFIL: NOVO OBJETIVO
             showAddRaceModal: () => document.getElementById('modal-add-race').classList.add('active'),
             addStudentRace: async () => {
                 const name = document.getElementById('new-race-name').value;
                 const date = document.getElementById('new-race-date').value;
                 if(!name) return;
-                const workouts = [
-                    {title: 'Corrida Leve', desc: '30 min trote', video: '', done: false},
-                    {title: 'Fortalecimento', desc: 'Pernas e Core', video: '', done: false},
-                    {title: 'Descanso', desc: 'Recuperação ativa', video: '', done: false},
-                    {title: 'Tiro Curto', desc: '10x 100m', video: '', done: false},
-                ];
+                const workouts = []; 
                 const races = currentUser.races || [];
                 races.push({ name, date, workouts, created: new Date().toISOString() });
                 await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, currentUser.email), { races });
                 document.getElementById('modal-add-race').classList.remove('active');
-                app.toast('Objetivo criado!');
+                app.toast('Objetivo criado! Aguarde o professor lançar os treinos.');
                 app.openProfile();
             },
 
@@ -565,11 +765,14 @@
                 document.getElementById('cal-month-title').innerText = currentMonth.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
                 const grid = document.getElementById('calendar-days');
                 grid.innerHTML = '';
+                
                 const activeRace = (currentUser.races && currentUser.races.length) ? currentUser.races[currentUser.races.length-1] : null;
                 const workouts = activeRace ? activeRace.workouts : [];
+                const notes = currentUser.notes || {};
                 let projectionIndex = 0;
                 const pendingWorkouts = workouts.filter(w => !w.done);
                 const todayStr = new Date().toISOString().split('T')[0];
+
                 for(let i=0; i<firstDay; i++) { grid.innerHTML += `<div class="cal-cell other-month"></div>`; }
                 for(let d=1; d<=daysInMonth; d++) {
                     const dateObj = new Date(y, m, d);
@@ -580,28 +783,88 @@
                     let dotHtml = '';
                     let workoutData = null;
                     const doneHere = workouts.find(w => w.done && w.completedAt === dateStr);
-                    if(doneHere) { cellClass += ' done'; dotHtml = `<div class="cal-dot"></div>`; workoutData = doneHere; } 
+                    if(doneHere) { cellClass += ' done'; dotHtml += `<div class="cal-dot"></div>`; workoutData = doneHere; } 
                     else if (dateObj >= new Date().setHours(0,0,0,0)) {
-                        if(projectionIndex < pendingWorkouts.length) { cellClass += ' has-workout'; dotHtml = `<div class="cal-dot"></div>`; workoutData = pendingWorkouts[projectionIndex]; projectionIndex++; }
+                        if(projectionIndex < pendingWorkouts.length) { cellClass += ' has-workout'; dotHtml += `<div class="cal-dot"></div>`; workoutData = pendingWorkouts[projectionIndex]; projectionIndex++; }
                     }
+                    if(notes[dateStr]) { dotHtml += `<div class="cal-note-indicator"></div>`; }
                     const el = document.createElement('div');
                     el.className = cellClass;
                     el.innerText = d;
                     el.innerHTML += dotHtml;
-                    if(workoutData) el.onclick = () => app.renderTodayCard(workoutData);
+                    el.onclick = () => app.openDayDetail(dateStr, workoutData);
                     grid.appendChild(el);
                 }
             },
+            
+            openDayDetail: (dateStr, workoutData) => {
+                selectedDayDate = dateStr;
+                const modal = document.getElementById('modal-day-detail');
+                document.getElementById('day-det-title').innerText = `Dia ${dateStr.split('-').reverse().join('/')}`;
+                let content = '';
+                if(workoutData) {
+                    content = `<div style="background:#f5f5f5; padding:15px; border-radius:10px; margin-bottom:15px;">
+                        <h4 style="margin:0 0 5px 0;">${workoutData.title}</h4>
+                        <p style="margin:0; font-size:13px; color:#666;">${workoutData.desc}</p>
+                        ${workoutData.done ? '<strong style="color:var(--success); font-size:12px;">Concluído</strong>' : '<span style="color:var(--orange); font-size:12px;">Pendente</span>'}
+                    </div>`;
+                } else { content = `<p style="color:#999; text-align:center; margin-bottom:15px;">Sem treino registrado para este dia.</p>`; }
+                document.getElementById('day-det-content').innerHTML = content;
+                const notes = currentUser.notes || {};
+                document.getElementById('day-det-note').value = notes[dateStr] || '';
+                modal.classList.add('active');
+            },
+
+            saveDayNote: async () => {
+                const note = document.getElementById('day-det-note').value;
+                const notes = currentUser.notes || {};
+                if(note.trim() === '') delete notes[selectedDayDate];
+                else notes[selectedDayDate] = note;
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, currentUser.email), { notes });
+                app.toast("Nota salva!");
+                document.getElementById('modal-day-detail').classList.remove('active');
+                app.renderCalendar();
+            },
+
             renderHome: () => { app.renderCalendar(); app.renderTodayCard(); app.loadQuote(); },
             renderTodayCard: (specificWorkout = null) => {
                 const activeRace = (currentUser.races && currentUser.races.length) ? currentUser.races[currentUser.races.length-1] : null;
-                if(!activeRace) { document.getElementById('today-workout-card').innerHTML = '<div class="card"><p>Nenhum plano ativo.</p></div>'; return; }
-                const next = specificWorkout || activeRace.workouts.find(w => !w.done);
+                if(!activeRace || activeRace.workouts.length === 0) { 
+                    document.getElementById('today-workout-card').innerHTML = `
+                        <div class="card" style="text-align:center; padding:30px;">
+                            <i class="fa-regular fa-clock" style="font-size:32px; color:var(--orange); margin-bottom:15px;"></i>
+                            <p>Aguardando seu professor lançar os treinos...</p>
+                        </div>`; 
+                    return; 
+                }
+                const todayStr = new Date().toISOString().split('T')[0];
+                let target = specificWorkout;
+                if (!target) target = activeRace.workouts.find(w => w.done && w.completedAt === todayStr);
+                if (!target) target = activeRace.workouts.find(w => !w.done);
                 const container = document.getElementById('today-workout-card');
-                if(next) {
-                    const doneBtn = next.done ? `<button class="btn" style="background:white; color:var(--success); flex:1;" disabled>Feito</button>` : `<button onclick="app.finishWorkout('${next.title}')" class="btn" style="background:white; color:black; flex:1;">Concluir</button>`;
-                    container.innerHTML = `<div class="card" style="background: var(--primary); color: white; border: none;"><div style="display:flex; justify-content:space-between; align-items:flex-start;"><div><h2 style="margin:0; font-size:20px;">${next.title}</h2><p style="opacity:0.8; font-size:14px; margin-top:5px;">${next.desc}</p></div><i class="fa-solid fa-person-running" style="font-size:24px; opacity:0.5;"></i></div><div style="margin-top: 20px; display:flex; gap:10px;">${doneBtn}${next.video ? `<button onclick="app.playVideo('${next.video}')" class="btn" style="background:rgba(255,255,255,0.2); color:white; width:50px;"><i class="fa-solid fa-play"></i></button>` : ''}</div></div>`;
-                } else { container.innerHTML = `<div class="card" style="text-align:center; color:var(--success);"><i class="fa-solid fa-check-circle" style="font-size:30px; margin-bottom:10px;"></i><br>Todos os treinos concluídos!</div>`; }
+                const totalW = activeRace.workouts.length;
+                const doneW = activeRace.workouts.filter(w => w.done).length;
+                const pct = totalW > 0 ? (doneW / totalW) * 100 : 0;
+                const raceDate = activeRace.date ? new Date(activeRace.date).toLocaleDateString() : 'Sem data';
+                let cardHtml = '';
+                
+                // Safe strings with escape
+                const safeTitle = target ? app.escape(target.title) : '';
+                const safeVideo = target && target.video ? app.escape(target.video) : '';
+                
+                if(target) {
+                    const doneBtn = target.done ? `<button class="btn" style="background:white; color:var(--success); flex:1;" disabled>Feito</button>` : `<button onclick="app.finishWorkout('${safeTitle}')" class="btn" style="background:white; color:black; flex:1;">Concluir</button>`;
+                    cardHtml = `<div class="card" style="background: var(--primary); color: white; border: none;">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start;"><div><h2 style="margin:0; font-size:20px;">${target.title}</h2><p style="opacity:0.8; font-size:14px; margin-top:5px;">${target.desc}</p></div><i class="fa-solid fa-person-running" style="font-size:24px; opacity:0.5;"></i></div>
+                        <div style="margin-top: 20px; display:flex; gap:10px;">${doneBtn}${safeVideo ? `<button onclick="app.playVideo('${safeVideo}')" class="btn" style="background:rgba(255,255,255,0.2); color:white; padding:0 15px; display:flex; align-items:center; gap:5px;"><i class="fa-solid fa-play"></i> Vídeo</button>` : ''}</div>
+                    </div>`;
+                } else {
+                    cardHtml = `<div class="card" style="text-align:center; color:var(--success);"><i class="fa-solid fa-check-circle" style="font-size:30px; margin-bottom:10px;"></i><br>Todos os treinos concluídos!</div>`;
+                }
+                container.innerHTML = cardHtml + `
+                    <div style="margin-top:15px; font-size:12px; display:flex; justify-content:space-between;"><span>${doneW}/${totalW} Treinos</span> <span>Meta: ${raceDate}</span></div>
+                    <div class="progress-container"><div class="progress-bar" style="width:${pct}%"></div></div>
+                `;
             },
             finishWorkout: async (wTitle) => {
                 const races = [...currentUser.races];
@@ -617,7 +880,6 @@
                 }
             },
             loadQuote: () => {
-                // Tenta carregar do banco de frases admin primeiro
                 onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', C_QUOTES), (s)=>{
                     const quotes = [];
                     s.forEach(d=>quotes.push(d.data().text));
@@ -630,8 +892,19 @@
             },
             playVideo: (url) => {
                 let embed = url;
-                if(url.includes('youtu')) { const id = url.split('/').pop().split('?')[0]; embed = `https://www.youtube.com/embed/${id}?autoplay=1`; document.getElementById('video-container').innerHTML = `<iframe src="${embed}" style="width:100%; height:100%; border:0;" allow="autoplay; fullscreen"></iframe>`; } 
-                else { document.getElementById('video-container').innerHTML = `<video src="${url}" controls autoplay style="width:100%; height:100%;"></video>`; }
+                // GitHub Raw Treatment
+                if (url.includes('github.com') && url.includes('/blob/')) {
+                    embed = url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
+                    document.getElementById('video-container').innerHTML = `<video src="${embed}" controls autoplay style="width:100%; height:100%;"></video>`;
+                }
+                else if(url.includes('youtu')) { 
+                    const id = url.split('/').pop().split('?')[0]; 
+                    embed = `https://www.youtube.com/embed/${id}?autoplay=1`; 
+                    document.getElementById('video-container').innerHTML = `<iframe src="${embed}" style="width:100%; height:100%; border:0;" allow="autoplay; fullscreen"></iframe>`; 
+                } 
+                else { 
+                    document.getElementById('video-container').innerHTML = `<video src="${url}" controls autoplay style="width:100%; height:100%;"></video>`; 
+                }
                 document.getElementById('modal-video').classList.add('active');
             },
             renderWorkoutsList: () => {
@@ -642,7 +915,12 @@
                 activeRace.workouts.forEach((w, i) => {
                     const color = w.done ? 'var(--success)' : '#CCC';
                     const icon = w.done ? 'fa-check' : 'fa-circle';
-                    list.innerHTML += `<div class="card" style="display:flex; align-items:center; gap: 15px; opacity: ${w.done?0.6:1};"><div style="color:${color}; font-size:20px;"><i class="fa-solid ${icon}"></i></div><div style="flex:1;"><h4 style="margin:0;">${w.title}</h4><p style="margin:0; font-size:12px; color:var(--text-sec);">${w.desc}</p></div>${w.video ? `<button onclick="app.playVideo('${w.video}')" style="border:none; bg:none; color:var(--primary);"><i class="fa-solid fa-play"></i></button>` : ''}</div>`;
+                    const safeVideo = w.video ? app.escape(w.video) : '';
+                    list.innerHTML += `<div class="card" style="display:flex; align-items:center; gap: 15px; opacity: ${w.done?0.6:1};">
+                        <div style="color:${color}; font-size:20px;"><i class="fa-solid ${icon}"></i></div>
+                        <div style="flex:1;"><h4 style="margin:0;">${w.title}</h4><p style="margin:0; font-size:12px; color:var(--text-sec);">${w.desc}</p></div>
+                        ${safeVideo ? `<button onclick="app.playVideo('${safeVideo}')" style="border:1px solid var(--primary); background:transparent; color:var(--primary); padding: 5px 10px; border-radius: 15px; cursor:pointer; display:flex; align-items:center; gap:5px; font-size:12px;"><i class="fa-solid fa-play"></i> Vídeo</button>` : ''}
+                    </div>`;
                 });
             },
             loadFeed: () => {
@@ -653,10 +931,28 @@
                     snap.forEach(d => posts.push({id:d.id, ...d.data()}));
                     posts.sort((a,b) => b.created - a.created);
                     posts.forEach(p => {
-                        // CORREÇÃO: p.image (legacy) OU p.img (novo)
                         const imgUrl = p.img || p.image; 
-                        feed.innerHTML += `<div class="card" style="padding:0; overflow:hidden;"><div style="padding:15px; display:flex; align-items:center; gap:10px;"><div style="width:32px; height:32px; border-radius:50%; background:#EEE; overflow:hidden;">${p.avatar ? `<img src="${p.avatar}" style="width:100%;height:100%;">` : ''}</div><strong style="font-size:14px;">${p.userName}</strong></div>${imgUrl ? `<img src="${imgUrl}" style="width:100%; max-height:400px; object-fit:cover;">` : ''}<div style="padding:15px;"><p style="margin:0;">${p.text}</p><p style="font-size:10px; color:#999; margin-top:10px;">${new Date(p.created).toLocaleDateString()}</p></div></div>`;
+                        let deleteBtn = '';
+                        if (currentUser && p.email === currentUser.email) {
+                            deleteBtn = `<button onclick="app.deletePost('${p.id}')" style="border:none; background:none; color:var(--red); font-size:14px; margin-left:auto;"><i class="fa-solid fa-trash"></i></button>`;
+                        }
+                        feed.innerHTML += `
+                        <div class="card" style="padding:0; overflow:hidden;">
+                            <div style="padding:15px; display:flex; align-items:center; gap:10px;">
+                                <div style="width:32px; height:32px; border-radius:50%; background:#EEE; overflow:hidden;">${p.avatar ? `<img src="${p.avatar}" style="width:100%;height:100%;">` : ''}</div>
+                                <strong style="font-size:14px;">${p.userName}</strong>
+                                ${deleteBtn}
+                            </div>
+                            ${imgUrl ? `<img src="${imgUrl}" style="width:100%; max-height:400px; object-fit:cover;">` : ''}
+                            <div style="padding:15px;"><p style="margin:0;">${p.text}</p><p style="font-size:10px; color:#999; margin-top:10px;">${new Date(p.created).toLocaleDateString()}</p></div>
+                        </div>`;
                     });
+                });
+            },
+            deletePost: async (postId) => {
+                app.showConfirm("Excluir sua publicação?", async () => {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', C_POSTS, postId));
+                    app.toast("Publicação removida.");
                 });
             },
             openCreatePost: () => app.screen('view-create-post'),
@@ -665,11 +961,16 @@
             submitPost: async () => {
                 const text = document.getElementById('post-text').value;
                 if(!text && !tempImgBase64) return;
-                await setDoc(doc(collection(db, 'artifacts', appId, 'public', 'data', C_POSTS)), { userName: currentUser.name, avatar: currentUser.avatar, text: text, img: tempImgBase64, created: Date.now() });
+                await setDoc(doc(collection(db, 'artifacts', appId, 'public', 'data', C_POSTS)), { 
+                    userName: currentUser.name, 
+                    email: currentUser.email, 
+                    avatar: currentUser.avatar, 
+                    text: text, 
+                    img: tempImgBase64, 
+                    created: Date.now() 
+                });
                 document.getElementById('post-text').value = ''; tempImgBase64 = null; document.getElementById('post-img-preview').style.display = 'none'; app.closeCreatePost();
             },
-
-            // --- RECEITAS (RESTAURADO) ---
             loadRecipes: () => {
                 onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', C_RECIPES), (snap) => {
                     const l = document.getElementById('recipes-list');
@@ -678,8 +979,7 @@
                     snap.forEach(d => {
                         const r = {id: d.id, ...d.data()};
                         allRecipes.push(r);
-                        // Suporte a campo 'image' ou 'img'
-                        const rImg = r.img || r.image || '';
+                        const rImg = r.img || r.image || 'https://via.placeholder.com/300x200?text=No+Image';
                         l.innerHTML += `<div class="recipe-card" onclick="app.openRecipeDetail('${r.id}')"><div class="recipe-img" style="background-image:url('${rImg}')"></div><div style="padding:5px;"><strong>${r.title}</strong><div class="recipe-meta">${r.kcal} kcal | ${r.time} min</div></div></div>`;
                     });
                 });
@@ -687,38 +987,48 @@
             openRecipeDetail: (id) => {
                 const r = allRecipes.find(x => x.id === id);
                 if(!r) return;
-                const rImg = r.img || r.image || '';
+                const rImg = r.img || r.image || 'https://via.placeholder.com/300x200?text=No+Image';
                 document.getElementById('rec-det-img').style.backgroundImage = `url('${rImg}')`;
                 document.getElementById('rec-det-title').innerText = r.title;
                 document.getElementById('rec-det-meta').innerText = `${r.kcal} kcal | ${r.time} min`;
                 document.getElementById('rec-det-p').innerText = r.p || 0;
                 document.getElementById('rec-det-c').innerText = r.c || 0;
                 document.getElementById('rec-det-f').innerText = r.f || 0;
-                
                 const ul = document.getElementById('rec-det-ing'); ul.innerHTML = '';
                 if(r.ingredients) (Array.isArray(r.ingredients) ? r.ingredients : r.ingredients.split('\n')).forEach(i => ul.innerHTML+=`<li>${i}</li>`);
-                
                 const st = document.getElementById('rec-det-steps'); st.innerHTML = '';
                 if(r.steps) (Array.isArray(r.steps) ? r.steps : r.steps.split('\n')).forEach((s, i) => st.innerHTML+=`<p><strong>${i+1}.</strong> ${s}</p>`);
-                
-                app.screen('view-recipe-detail');
+                document.getElementById('view-recipe-detail').classList.add('active');
             },
-
+            closeRecipeDetail: () => {
+                document.getElementById('view-recipe-detail').classList.remove('active');
+            },
             loadNews: () => {
                 onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', C_NEWS), (snap) => {
                     const feed = document.getElementById('news-feed'); feed.innerHTML = '';
                     const news = []; snap.forEach(d => news.push(d.data())); news.sort((a,b) => b.created - a.created);
-                    news.forEach(n => { feed.innerHTML += `<div class="card news-card">${n.img ? `<img src="${n.img}" class="news-img">` : ''}<div class="news-content"><div class="news-date">${new Date(n.created).toLocaleDateString()}</div><h3 class="news-title">${n.title}</h3><div class="news-body">${n.body}</div></div></div>`; });
+                    news.forEach(n => { 
+                        feed.innerHTML += `
+                        <div class="card news-card">
+                            ${n.img ? `<img src="${n.img}" class="news-img">` : ''}
+                            <div class="news-content">
+                                <div class="news-date">${new Date(n.created).toLocaleDateString()}</div>
+                                <h3 class="news-title">${n.title}</h3>
+                                <div class="news-body">${n.body}</div>
+                            </div>
+                        </div>`; 
+                    });
                 });
             },
 
+            // ADMIN LOGIC
             showAdminAuth: () => document.getElementById('modal-admin-auth').classList.add('active'),
             checkAdminAuth: () => {
                 if(document.getElementById('admin-pass-input').value === 'admin123') { document.getElementById('modal-admin-auth').classList.remove('active'); app.loadAdmin(); } 
-                else { alert('Senha incorreta'); }
+                else { app.toast('Senha incorreta'); }
             },
             closeAdmin: () => app.screen('view-landing'),
-            loadAdmin: () => { app.screen('view-admin'); app.admTab('users'); },
+            loadAdmin: () => { document.getElementById('view-admin').classList.add('active'); app.admTab('users'); },
             admTab: (t) => {
                 document.querySelectorAll('[id^="adm-content"]').forEach(e=>e.classList.add('hidden'));
                 document.getElementById('adm-content-'+t).classList.remove('hidden');
@@ -728,60 +1038,434 @@
                 if(t === 'news') app.admLoadNewsHistory();
                 if(t === 'recipes') app.admLoadRecipes();
                 if(t === 'quotes') app.admLoadQuotes();
-            },
-            admLoadUsers: () => {
-                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', C_USERS), (snap) => {
-                    const list = document.getElementById('adm-users-list'); list.innerHTML = '';
-                    snap.forEach(d => {
-                        const u = d.data(); const color = u.active ? 'var(--success)' : 'var(--orange)';
-                        list.innerHTML += `<div class="card" onclick="app.admOpenUser('${u.email}')" style="display:flex; justify-content:space-between; align-items:center;"><span>${u.name}</span><i class="fa-solid fa-circle" style="color:${color}; font-size:10px;"></i></div>`;
-                    });
-                });
-            },
-            admOpenUser: async (email) => {
-                editUserEmail = email;
-                const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, email));
-                const u = snap.data();
-                document.getElementById('adm-u-name').innerText = u.name;
-                document.getElementById('adm-u-email').innerText = u.email;
-                document.getElementById('adm-u-active').checked = u.active;
-                const c = document.getElementById('adm-u-races'); c.innerHTML = '';
-                (u.races || []).forEach((r, i) => { c.innerHTML += `<div style="background:#f9f9f9; padding:10px; margin-bottom:5px; font-size:12px;"><strong>${r.name}</strong> (${r.workouts.length} treinos)<button onclick="app.admDelRace(${i})" style="color:red; border:none; float:right;">X</button></div>`; });
-                document.getElementById('adm-user-detail').classList.add('active');
-            },
-            admSaveUser: async () => { const active = document.getElementById('adm-u-active').checked; await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, editUserEmail), { active }); document.getElementById('adm-user-detail').classList.remove('active'); },
-            admAddRace: async () => {
-                const name = prompt("Nome do Objetivo:"); if(!name) return;
-                const workouts = [{title: 'Corrida Leve', desc: '30 min trote', video: '', done: false}, {title: 'Fortalecimento', desc: 'Pernas e Core', video: '', done: false}, {title: 'Descanso', desc: 'Recuperação ativa', video: '', done: false}, {title: 'Tiro Curto', desc: '10x 100m', video: '', done: false}];
-                const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, editUserEmail));
-                const u = snap.data(); const races = u.races || []; races.push({ name, workouts, created: new Date().toISOString() });
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, editUserEmail), { races });
-                app.admOpenUser(editUserEmail);
-            },
-            admDelRace: async (idx) => {
-                if(!confirm('Deletar?')) return;
-                const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, editUserEmail));
-                const u = snap.data(); u.races.splice(idx, 1);
-                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, editUserEmail), { races: u.races });
-                app.admOpenUser(editUserEmail);
+                if(t === 'templates') app.admLoadTemplates();
             },
             
-            // ADMIN NEWS
+            // --- NOVO: ADMIN ACORDEÃO PARA USUÁRIOS ---
+            admLoadUsers: () => {
+                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', C_USERS), (snap) => {
+                    const list = document.getElementById('adm-users-list'); 
+                    
+                    let html = '';
+                    snap.forEach(d => {
+                        const u = d.data(); 
+                        const docId = d.id;
+                        const safeId = app.escape(docId); // ESCAPE DO ID PARA EVITAR ERROS DE SINTAXE
+                        const isUserOpen = expandedUsers.has(docId) ? 'open' : '';
+                        const checked = u.active ? 'checked' : '';
+                        
+                        let goalsHtml = '';
+                        if(u.races && u.races.length > 0) {
+                            u.races.forEach((r, rIdx) => {
+                                const raceKey = `${docId}-${rIdx}`;
+                                const isRaceOpen = expandedRaces.has(raceKey) ? 'open' : '';
+                                
+                                let workoutsHtml = '';
+                                if(r.workouts && r.workouts.length > 0) {
+                                    r.workouts.forEach((w, wIdx) => {
+                                        workoutsHtml += `
+                                        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee; padding:5px 0;">
+                                            <span style="font-size:12px;">${w.title}</span>
+                                            <button onclick="app.admDeleteWorkoutInline('${safeId}', ${rIdx}, ${wIdx})" style="color:var(--red); border:none; background:none; cursor:pointer;"><i class="fa-solid fa-times"></i></button>
+                                        </div>`;
+                                    });
+                                } else {
+                                    workoutsHtml = '<p style="font-size:11px; color:#999;">Sem treinos.</p>';
+                                }
+
+                                // Botões de ação no fim da lista de treinos
+                                workoutsHtml += `
+                                <div style="display:flex; gap:5px; margin-top:10px; justify-content:flex-end;">
+                                    <button onclick="app.admAddWorkoutInline('${safeId}', ${rIdx}')" class="adm-btn-small" style="background:#f0f0f0;">+ Treino</button>
+                                    <button onclick="app.admImportTemplateInline('${safeId}', ${rIdx})" class="adm-btn-small" style="background:#f0f0f0;">+ Modelo</button>
+                                </div>`;
+
+                                goalsHtml += `
+                                <div class="adm-item-box">
+                                    <div class="adm-row-header" onclick="app.admToggleGoal('${raceKey}')">
+                                        <strong>${r.name}</strong>
+                                        <i class="fa-solid fa-chevron-down" style="font-size:12px; opacity:0.5;"></i>
+                                    </div>
+                                    <div id="goal-content-${raceKey}" class="adm-nested ${isRaceOpen}">
+                                        ${workoutsHtml}
+                                        <div style="text-align:right; margin-top:5px;">
+                                            <button onclick="app.admDelRaceInline('${safeId}', ${rIdx})" style="font-size:10px; color:red; border:none; background:none; cursor:pointer;">Excluir Objetivo</button>
+                                        </div>
+                                    </div>
+                                </div>`;
+                            });
+                        } else {
+                            goalsHtml = '<p style="font-size:12px; color:#999; padding:10px;">Sem objetivos cadastrados.</p>';
+                        }
+
+                        html += `
+                        <div class="card" style="padding:10px; margin-bottom:10px;">
+                            <div style="display:flex; align-items:center; gap:10px; padding-bottom:5px;">
+                                <input type="checkbox" class="check-toggle" ${checked} onchange="app.admToggleStatus('${safeId}', this.checked)">
+                                <div style="flex:1; cursor:pointer;" onclick="app.admToggleUser('${safeId}')">
+                                    <span style="font-weight:600; font-size:14px;">${u.name}</span>
+                                    <br><span style="font-size:11px; color:#888;">${u.email}</span>
+                                </div>
+                                <button onclick="app.admDeleteUserQuick('${safeId}')" style="border:none; background:none; color:var(--red); cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                            <div id="user-content-${docId}" class="adm-nested ${isUserOpen}" style="border-left:none; padding-left:0; margin-top:10px;">
+                                ${goalsHtml}
+                                <button onclick="app.admAddRaceInline('${safeId}')" style="width:100%; border:1px dashed #ddd; background:none; padding:8px; font-size:12px; margin-top:5px; color:#666; cursor:pointer;">+ Novo Objetivo</button>
+                            </div>
+                        </div>`;
+                    });
+                    list.innerHTML = html;
+                });
+            },
+            
+            admToggleUser: (docId) => {
+                if(expandedUsers.has(docId)) expandedUsers.delete(docId);
+                else expandedUsers.add(docId);
+                const el = document.getElementById(`user-content-${docId}`);
+                if(el) el.classList.toggle('open');
+            },
+            admToggleGoal: (key) => {
+                if(expandedRaces.has(key)) expandedRaces.delete(key);
+                else expandedRaces.add(key);
+                const el = document.getElementById(`goal-content-${key}`);
+                if(el) el.classList.toggle('open');
+            },
+            
+            admToggleStatus: async (docId, status) => {
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, docId), { active: status });
+                app.toast(status ? "Aluno aprovado" : "Aluno bloqueado");
+            },
+            
+            // INLINE ACTIONS REFACTORED
+            admAddWorkoutInline: (docId, rIdx) => {
+                currentAdmUser = docId;
+                currentAdmRaceIdx = rIdx;
+                isEditingTemplate = false; 
+                editingWorkoutIndex = null; // Reset
+                document.getElementById('modal-workout-title').innerText = "Novo Treino";
+                document.getElementById('new-w-title').value = '';
+                document.getElementById('new-w-desc').value = '';
+                document.getElementById('new-w-video').value = '';
+                document.getElementById('modal-add-single-workout').classList.add('active');
+            },
+            
+            saveSingleWorkout: async () => {
+                const title = document.getElementById('new-w-title').value;
+                const desc = document.getElementById('new-w-desc').value;
+                const video = document.getElementById('new-w-video').value;
+                if(!title) return app.toast('Título obrigatório');
+                
+                try {
+                    if (isEditingTemplate) {
+                        // ---- MODELOS ----
+                        const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', C_TEMPLATES, currentTemplateId));
+                        const t = snap.data();
+                        
+                        if (editingWorkoutIndex !== null) {
+                            // EDITAR existente
+                            t.workouts[editingWorkoutIndex] = { title, desc, video, done: false };
+                            app.toast("Treino atualizado");
+                        } else {
+                            // CRIAR novo
+                            t.workouts.push({ title, desc, video, done: false });
+                            app.toast("Treino adicionado ao modelo");
+                        }
+                        await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', C_TEMPLATES, currentTemplateId), { workouts: t.workouts });
+                        
+                    } else {
+                        // ---- ALUNOS ----
+                        // Garante que currentAdmUser está definido
+                        if (!currentAdmUser || currentAdmRaceIdx === null) {
+                             throw new Error("Erro de referência do usuário.");
+                        }
+
+                        const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, currentAdmUser));
+                        if (!snap.exists()) throw new Error("Usuário não encontrado.");
+
+                        const u = snap.data();
+                        
+                        // Inicializa array se não existir (segurança)
+                        if (!u.races[currentAdmRaceIdx].workouts) u.races[currentAdmRaceIdx].workouts = [];
+
+                        u.races[currentAdmRaceIdx].workouts.push({title, desc, video, done:false});
+                        await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, currentAdmUser), { races: u.races });
+                        app.toast("Treino adicionado ao aluno");
+                    }
+                    document.getElementById('modal-add-single-workout').classList.remove('active');
+                } catch(e) {
+                    console.error(e);
+                    app.toast("Erro ao salvar treino: " + e.message);
+                }
+            },
+
+            admImportTemplateInline: (docId, rIdx) => {
+                currentAdmUser = docId;
+                currentAdmRaceIdx = rIdx;
+                
+                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', C_TEMPLATES), (s) => {
+                    const list = document.getElementById('template-select-list');
+                    list.innerHTML = '';
+                    if(s.empty) { list.innerHTML = '<p>Nenhum modelo cadastrado.</p>'; return; }
+                    
+                    s.forEach(d => {
+                        const t = d.data();
+                        list.innerHTML += `
+                        <label style="display:flex; align-items:center; padding:5px; border-bottom:1px solid #eee; cursor:pointer;">
+                            <input type="radio" name="selected_template" value="${d.id}" style="margin-right:10px;">
+                            <div>
+                                <strong>${t.name}</strong><br>
+                                <span style="font-size:10px; color:#888;">${t.workouts.length} treinos</span>
+                            </div>
+                        </label>`;
+                    });
+                    document.getElementById('modal-select-template').classList.add('active');
+                });
+            },
+            
+            confirmTemplateImport: async () => {
+                const selected = document.querySelector('input[name="selected_template"]:checked');
+                if(!selected) return app.toast('Selecione um modelo');
+                
+                const templateId = selected.value;
+                const tSnap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', C_TEMPLATES, templateId));
+                const tData = tSnap.data();
+                
+                const uSnap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, currentAdmUser));
+                const u = uSnap.data();
+                
+                u.races[currentAdmRaceIdx].workouts.push(...tData.workouts);
+                
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, currentAdmUser), { races: u.races });
+                app.toast("Modelo importado!");
+                document.getElementById('modal-select-template').classList.remove('active');
+            },
+
+            admDeleteWorkoutInline: async (docId, rIdx, wIdx) => {
+                app.showConfirm("Remover este treino?", async () => {
+                    try {
+                        const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, docId));
+                        const u = snap.data();
+                        u.races[rIdx].workouts.splice(wIdx, 1);
+                        await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, docId), { races: u.races });
+                        app.toast("Treino removido.");
+                    } catch(e) {
+                        app.toast("Erro ao remover treino.");
+                    }
+                });
+            },
+            admAddRaceInline: async (docId) => {
+                app.showPrompt("Nome do Objetivo:", async (name) => {
+                    if(!name) return;
+                    const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, docId));
+                    const u = snap.data();
+                    const races = u.races || [];
+                    races.push({ name, date: '', workouts: [], created: new Date().toISOString() });
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, docId), { races });
+                    app.toast("Objetivo criado");
+                });
+            },
+            admDelRaceInline: async (docId, rIdx) => {
+                app.showConfirm("Apagar objetivo e seus treinos?", async () => {
+                    try {
+                        const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, docId));
+                        const u = snap.data();
+                        u.races.splice(rIdx, 1);
+                        await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, docId), { races: u.races });
+                        app.toast("Objetivo removido.");
+                    } catch(e) {
+                        app.toast("Erro ao remover objetivo.");
+                    }
+                });
+            },
+            
+            admDeleteUserQuick: async (docId) => {
+                app.showConfirm(`Apagar permanentemente?`, async () => {
+                     await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', C_USERS, docId));
+                     app.toast("Aluno excluído.");
+                });
+            },
+
+            admAddRace: async () => {
+                // ... fallback
+            },
+
+            admInsertRace: async (name, workouts) => {
+                // ... legacy
+            },
+
+            admDelRace: async (idx) => {
+                // ... legacy
+            },
+            
+            // --- ADMIN TEMPLATES REFATORADO (ACORDEÃO + EDIÇÃO + REORDENAÇÃO) ---
+            admLoadTemplates: () => {
+                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', C_TEMPLATES), (snap) => {
+                    const list = document.getElementById('adm-templates-list'); list.innerHTML = '';
+                    
+                    if (snap.empty) {
+                        list.innerHTML = '<p style="text-align:center; color:#999;">Nenhum modelo criado.</p>';
+                        return;
+                    }
+
+                    let html = '';
+                    snap.forEach(d => {
+                        const t = d.data();
+                        const tId = d.id;
+                        const isTplOpen = expandedTemplates.has(tId) ? 'open' : '';
+
+                        let workoutsHtml = '';
+                        if(t.workouts && t.workouts.length > 0) {
+                            t.workouts.forEach((w, wIdx) => {
+                                // Botões de controle de ordem
+                                const upDisabled = wIdx === 0 ? 'opacity:0.3;' : '';
+                                const downDisabled = wIdx === t.workouts.length - 1 ? 'opacity:0.3;' : '';
+
+                                workoutsHtml += `
+                                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee; padding:8px 0;">
+                                    <div style="flex:1;">
+                                        <span style="font-size:13px; font-weight:600;">${w.title}</span><br>
+                                        <span style="font-size:11px; color:#666;">${w.desc}</span>
+                                        ${w.video ? '<i class="fa-solid fa-video" style="font-size:10px; margin-left:5px; color:blue;"></i>' : ''}
+                                    </div>
+                                    <div style="display:flex; gap:5px;">
+                                        <!-- REORDENAÇÃO -->
+                                        <button onclick="app.admMoveWorkout('${tId}', ${wIdx}, -1)" style="border:1px solid #ddd; background:none; padding:2px 6px; ${upDisabled}"><i class="fa-solid fa-arrow-up"></i></button>
+                                        <button onclick="app.admMoveWorkout('${tId}', ${wIdx}, 1)" style="border:1px solid #ddd; background:none; padding:2px 6px; ${downDisabled}"><i class="fa-solid fa-arrow-down"></i></button>
+                                        
+                                        <!-- EDIÇÃO -->
+                                        <button onclick="app.admEditWorkoutFromTemplate('${tId}', ${wIdx})" style="border:1px solid #ddd; background:none; padding:2px 6px;"><i class="fa-solid fa-pencil"></i></button>
+                                        
+                                        <!-- EXCLUSÃO -->
+                                        <button onclick="app.admDeleteWorkoutFromTemplate('${tId}', ${wIdx})" style="color:var(--red); border:none; background:none; font-weight:bold; margin-left:5px;">X</button>
+                                    </div>
+                                </div>`;
+                            });
+                        } else {
+                            workoutsHtml = '<p style="font-size:11px; color:#999;">Sem treinos neste modelo.</p>';
+                        }
+
+                        html += `
+                        <div class="card" style="padding:10px; margin-bottom:10px;">
+                            <div class="adm-row-header" onclick="app.admToggleTemplate('${tId}')">
+                                <span style="font-weight:600;">${t.name}</span>
+                                <div>
+                                    <span style="font-size:11px; color:#888; margin-right:10px;">${t.workouts.length} treinos</span>
+                                    <i class="fa-solid fa-chevron-down" style="font-size:12px; opacity:0.5;"></i>
+                                </div>
+                            </div>
+                            <div id="tpl-content-${tId}" class="adm-nested ${isTplOpen}">
+                                ${workoutsHtml}
+                                <div style="display:flex; gap:5px; margin-top:10px; justify-content:space-between;">
+                                    <button onclick="app.admAddWorkoutToTemplateInline('${tId}')" class="adm-btn-small" style="background:#f0f0f0;">+ Treino</button>
+                                    <button onclick="app.admDelTemplate('${tId}')" style="color:red; border:none; background:none; font-size:11px;">Excluir Modelo</button>
+                                </div>
+                            </div>
+                        </div>`;
+                    });
+                    list.innerHTML = html;
+                });
+            },
+
+            admToggleTemplate: (tId) => {
+                if(expandedTemplates.has(tId)) expandedTemplates.delete(tId);
+                else expandedTemplates.add(tId);
+                const el = document.getElementById(`tpl-content-${tId}`);
+                if(el) el.classList.toggle('open');
+            },
+
+            admAddTemplateInline: async () => {
+                app.showPrompt("Nome do Novo Modelo:", async (name) => {
+                    if(!name) return;
+                    await setDoc(doc(collection(db, 'artifacts', appId, 'public', 'data', C_TEMPLATES)), { name, workouts: [] });
+                    app.toast("Modelo criado");
+                });
+            },
+
+            // ABRIR MODAL PARA CRIAR NOVO TREINO NO MODELO
+            admAddWorkoutToTemplateInline: (tId) => {
+                isEditingTemplate = true;
+                currentTemplateId = tId;
+                editingWorkoutIndex = null; // Resetar índice para indicar CRIAÇÃO
+                
+                document.getElementById('modal-workout-title').innerText = "Novo Treino";
+                document.getElementById('new-w-title').value = '';
+                document.getElementById('new-w-desc').value = '';
+                document.getElementById('new-w-video').value = '';
+                document.getElementById('modal-add-single-workout').classList.add('active');
+            },
+
+            // ABRIR MODAL PARA EDITAR TREINO EXISTENTE NO MODELO
+            admEditWorkoutFromTemplate: async (tId, wIdx) => {
+                isEditingTemplate = true;
+                currentTemplateId = tId;
+                editingWorkoutIndex = wIdx; // Setar índice para indicar EDIÇÃO
+                
+                // Buscar dados atuais para preencher o modal
+                const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', C_TEMPLATES, tId));
+                const w = snap.data().workouts[wIdx];
+                
+                document.getElementById('modal-workout-title').innerText = "Editar Treino";
+                document.getElementById('new-w-title').value = w.title;
+                document.getElementById('new-w-desc').value = w.desc;
+                document.getElementById('new-w-video').value = w.video || '';
+                document.getElementById('modal-add-single-workout').classList.add('active');
+            },
+            
+            // MOVER TREINO (REORDENAR)
+            admMoveWorkout: async (tId, wIdx, direction) => {
+                const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', C_TEMPLATES, tId));
+                const t = snap.data();
+                const workouts = t.workouts;
+                
+                const newIdx = wIdx + direction;
+                if (newIdx < 0 || newIdx >= workouts.length) return; // Limites
+                
+                // Swap
+                const temp = workouts[wIdx];
+                workouts[wIdx] = workouts[newIdx];
+                workouts[newIdx] = temp;
+                
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', C_TEMPLATES, tId), { workouts: workouts });
+            },
+
+            admDeleteWorkoutFromTemplate: async (tId, wIdx) => {
+                if(!confirm("Remover treino do modelo?")) return;
+                const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', C_TEMPLATES, tId));
+                const t = snap.data();
+                t.workouts.splice(wIdx, 1);
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', C_TEMPLATES, tId), { workouts: t.workouts });
+            },
+
+            admDelTemplate: async (id) => {
+                app.showConfirm("Apagar modelo?", async () => await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', C_TEMPLATES, id)));
+            },
+            
             handleNewsImg: (input) => { app.processImage(input, (b64) => { tempImgBase64 = b64; const img = document.getElementById('news-preview'); img.src = b64; img.style.display = 'block'; }); },
             postNews: async () => {
                 const title = document.getElementById('news-title').value; const body = document.getElementById('news-body').value;
-                if(!title || !body) return alert('Preencha tudo');
+                if(!title || !body) return app.toast('Preencha tudo');
                 await setDoc(doc(collection(db, 'artifacts', appId, 'public', 'data', C_NEWS)), { title, body, img: tempImgBase64, created: Date.now() });
-                alert('Publicado!'); document.getElementById('news-title').value=''; document.getElementById('news-body').value=''; document.getElementById('news-preview').style.display='none'; tempImgBase64 = null; app.admLoadNewsHistory();
+                app.toast('Publicado!'); document.getElementById('news-title').value=''; document.getElementById('news-body').value=''; document.getElementById('news-preview').style.display='none'; tempImgBase64 = null; app.admLoadNewsHistory();
             },
             admLoadNewsHistory: () => {
                 onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', C_NEWS), (snap) => {
                     const div = document.getElementById('adm-news-history'); div.innerHTML = '';
-                    snap.forEach(d => { div.innerHTML += `<div style="padding:10px; border-bottom:1px solid #CCC;">${d.data().title}</div>`; });
+                    snap.forEach(d => { 
+                        div.innerHTML += `
+                        <div style="padding:10px; border-bottom:1px solid #CCC; display:flex; justify-content:space-between; align-items:center;">
+                            <span>${d.data().title}</span>
+                            <button onclick="app.admDeleteNews('${d.id}')" style="color:red; border:none; background:none; font-weight:bold; cursor:pointer;">X</button>
+                        </div>`; 
+                    });
                 });
             },
+            admDeleteNews: async (id) => {
+                if(confirm("Apagar esta notícia?")) {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', C_NEWS, id));
+                    app.toast("Notícia removida.");
+                }
+            },
 
-            // ADMIN RECIPES
             handleRecImg: (input) => { app.processImage(input, (b64) => { tempRecImg = b64; const img = document.getElementById('adm-rec-preview'); img.src = b64; img.style.display = 'block'; }); },
             postRecipe: async () => {
                 const title = document.getElementById('adm-rec-title').value;
@@ -793,13 +1477,12 @@
                 const ing = document.getElementById('adm-rec-ing').value.split('\n');
                 const steps = document.getElementById('adm-rec-steps').value.split('\n');
                 
-                if(!title || !tempRecImg) return alert('Titulo e Imagem obrigatorios');
+                if(!title || !tempRecImg) return app.toast('Titulo e Imagem obrigatorios');
                 await setDoc(doc(collection(db, 'artifacts', appId, 'public', 'data', C_RECIPES)), {
                     title, kcal, time, p, c, f, ingredients: ing, steps: steps, img: tempRecImg, created: Date.now()
                 });
-                alert('Receita Salva');
+                app.toast('Receita Salva');
                 app.admLoadRecipes();
-                // Limpar form... (simplificado)
             },
             admLoadRecipes: () => {
                 onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', C_RECIPES), (s) => {
@@ -807,9 +1490,8 @@
                     s.forEach(d=>{ l.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee;">${d.data().title} <button onclick="app.admDelRec('${d.id}')" style="color:red;float:right;border:none;">X</button></div>` });
                 });
             },
-            admDelRec: async (id) => { if(confirm('Apagar?')) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', C_RECIPES, id)); },
+            admDelRec: async (id) => { app.showConfirm('Apagar receita?', async () => await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', C_RECIPES, id))); },
 
-            // ADMIN QUOTES
             postQuote: async () => {
                 const text = document.getElementById('adm-quote-text').value;
                 if(!text) return;
@@ -823,7 +1505,7 @@
                     s.forEach(d=>{ l.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee;">"${d.data().text}" <button onclick="app.admDelQuote('${d.id}')" style="color:red;float:right;border:none;">X</button></div>` });
                 });
             },
-            admDelQuote: async (id) => { if(confirm('Apagar?')) await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', C_QUOTES, id)); },
+            admDelQuote: async (id) => { app.showConfirm('Apagar frase?', async () => await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', C_QUOTES, id))); },
 
             processImage: (input, callback) => {
                 if(input.files && input.files[0]) {
