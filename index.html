@@ -23,17 +23,17 @@
 
     <style>
         :root {
-            /* PALETA PERSONALIZADA (SEM PRETO) */
-            --bg: #dbffae;         /* Fundo Verde Principal */
+            /* PALETA ATUALIZADA (FUNDO AZUL) */
+            --bg: #aaccef;         /* Fundo Azul Principal */
             
             --primary: #ff8a41;    /* Laranja (Ação/Botões/Destaques) */
-            --secondary: #aaccef;  /* Azul Claro (Detalhes) */
+            --secondary: #dbffae;  /* Verde (Detalhes secundários) */
             
             --surface: #FFFFFF;    /* Branco (Cards/Menu) */
             
-            /* SUBSTITUIÇÃO DO PRETO/CINZA */
-            --text-main: #2b4c7e;  /* Azul Profundo (Legível e dentro da paleta) */
-            --text-sec: #e67e22;   /* Laranja Escuro (Para textos secundários) */
+            /* CORES DE TEXTO */
+            --text-main: #2b4c7e;  /* Azul Profundo (Mantido para contraste) */
+            --text-sec: #e67e22;   /* Laranja Escuro */
             
             --radius: 20px;
             
@@ -41,10 +41,10 @@
             --font-main: 'Bodoni Moda', serif; 
             --font-logo: 'Playfair Display', serif;
             
-            --success: #2ecc71;    /* Verde mais vibrante */
+            --success: #2ecc71;
             --red: #e74c3c;
             --border: #edf2f7;
-            --shadow: 0 8px 25px rgba(43, 76, 126, 0.1); /* Sombra azulada */
+            --shadow: 0 8px 25px rgba(43, 76, 126, 0.1);
             --nav-height: 80px;
         }
 
@@ -107,7 +107,7 @@
             overflow: hidden; 
             display: flex;
             flex-direction: column;
-            background: #f8fff0; /* Fundo muito levemente verde para o admin */
+            background: #f0f8ff; /* Fundo muito levemente azulado para o admin */
         }
 
         /* HEADER PRINCIPAL DO APP */
@@ -136,7 +136,7 @@
         .input-group { margin-bottom: 20px; width: 100%; }
         .label { display: block; font-size: 11px; font-weight: 700; color: var(--primary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
         .input { width: 100%; padding: 18px; border-radius: var(--radius); border: 2px solid transparent; background-color: #FFF; font-size: 16px; color: var(--text-main); outline: none; font-family: var(--font-main); transition: 0.2s; -webkit-appearance: none; box-shadow: var(--shadow); }
-        .input:focus { border-color: var(--secondary); }
+        .input:focus { border-color: var(--primary); }
         
         /* Botões */
         .btn { width: 100%; padding: 18px; border-radius: var(--radius); border: none; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: var(--font-main); transition: 0.2s; -webkit-user-select: none; letter-spacing: 0.5px; }
@@ -151,7 +151,7 @@
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .calendar-title { font-weight: 700; font-size: 24px; text-transform: capitalize; color: var(--text-main); }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; width: 100%; }
-        .cal-head-day { font-size: 10px; color: var(--text-sec); text-align: center; font-weight: 700; padding-bottom: 5px; text-transform: uppercase; }
+        .cal-head-day { font-size: 10px; color: var(--text-main); opacity: 0.7; text-align: center; font-weight: 700; padding-bottom: 5px; text-transform: uppercase; }
         .cal-cell { aspect-ratio: 1/1; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; color: var(--text-main); position: relative; cursor: pointer; border: 1px solid transparent; background: #FFF; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .cal-cell.today { border: 2px solid var(--primary); color: var(--primary); font-weight: 800; }
         .cal-cell.other-month { opacity: 0.4; background: rgba(255,255,255,0.5); }
@@ -159,7 +159,7 @@
         .cal-cell.has-workout .cal-dot { background: var(--text-sec); }
         .cal-cell.done .cal-dot { background: var(--success); }
         .cal-cell.done { background: #e0f7fa; color: var(--text-main); }
-        .cal-note-indicator { position: absolute; top: 3px; right: 3px; width: 5px; height: 5px; background: var(--secondary); border-radius: 50%; }
+        .cal-note-indicator { position: absolute; top: 3px; right: 3px; width: 5px; height: 5px; background: var(--primary); border-radius: 50%; }
 
         /* CARDS */
         .card { background: var(--surface); border-radius: var(--radius); padding: 25px; border: none; box-shadow: var(--shadow); margin-bottom: 20px; }
@@ -174,25 +174,25 @@
         .news-card { overflow: hidden; padding: 0; display: flex; flex-direction: column; border: none; box-shadow: var(--shadow); border-radius: var(--radius); background: #FFF; margin-bottom: 20px; }
         .news-img { width: 100%; height: 220px; object-fit: cover; background: #EEE; }
         .news-content { padding: 25px; }
-        .news-date { font-size: 11px; color: var(--secondary); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; }
+        .news-date { font-size: 11px; color: var(--text-sec); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; }
         .news-title { font-size: 18px; font-weight: 700; margin: 0 0 10px 0; line-height: 1.2; font-family: var(--font-logo); color: var(--text-main); }
 
-        /* NAV BAR */
+        /* NAV BAR CORRIGIDA (DOCKADA NO FUNDO) */
         .nav-bar { 
             position: fixed; 
-            bottom: 20px; 
-            left: 20px; 
-            right: 20px;
-            width: calc(100% - 40px);
-            height: 70px;
+            bottom: 0; /* Colada ao fundo */
+            left: 0; 
+            width: 100%; /* Largura total */
+            height: auto;
             background: #FFFFFF; 
-            border-radius: 35px;
+            border-radius: 20px 20px 0 0; /* Apenas cantos superiores arredondados */
             display: flex; 
             justify-content: space-around; 
             align-items: center;
-            padding: 0 10px;
+            /* Padding ajustado para incluir a área segura do iPhone */
+            padding: 15px 10px calc(15px + env(safe-area-inset-bottom));
             z-index: 300; 
-            box-shadow: 0 10px 30px rgba(43, 76, 126, 0.1);
+            box-shadow: 0 -5px 20px rgba(43, 76, 126, 0.1);
         }
         .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; background: none; border: none; color: #cbd5e0; cursor: pointer; }
         .nav-item i { font-size: 24px; transition: 0.3s; margin-bottom: 2px; }
@@ -220,7 +220,7 @@
         
         .progress-container { 
             width: 100%; 
-            background-color: rgba(0,0,0,0.05); 
+            background-color: rgba(255,255,255,0.3); 
             border-radius: 12px; 
             height: 14px; 
             margin-top: 20px; 
@@ -229,10 +229,10 @@
         }
         .progress-bar { 
             height: 100%; 
-            background: linear-gradient(90deg, var(--primary) 0%, #ff6b6b 100%); 
+            background: #FFF; /* Barra branca no fundo colorido */
             transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
             border-radius: 12px;
-            box-shadow: 0 0 10px rgba(255, 138, 65, 0.4); 
+            box-shadow: 0 0 10px rgba(255,255,255, 0.4); 
         }
 
         .check-toggle { width: 22px; height: 22px; accent-color: var(--primary); cursor: pointer; }
@@ -328,9 +328,9 @@
                 </div>
                 <!-- NOVO CARD DE MOTIVAÇÃO ESTILIZADO -->
                 <div style="padding: 20px;">
-                    <div class="card" style="background: linear-gradient(135deg, #dbffae 0%, #aaccef 100%); color: var(--text-main); border: none; padding: 30px; text-align: center; margin-bottom: 20px;">
+                    <div class="card" style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: var(--text-main); border: none; padding: 30px; text-align: center; margin-bottom: 20px;">
                         <h3 style="font-size: 14px; margin: 0 0 20px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; color:var(--text-main);">Motivação do Dia</h3>
-                        <i class="fa-solid fa-quote-left" style="color: rgba(43, 76, 126, 0.2); font-size: 32px;"></i>
+                        <i class="fa-solid fa-quote-left" style="color: rgba(255,255,255,0.5); font-size: 32px;"></i>
                         <p id="daily-quote" class="serif" style="font-style: italic; font-size: 20px; margin: 20px 0 10px; line-height: 1.4; color:var(--text-main);">Carregando...</p>
                     </div>
                 </div>
@@ -380,7 +380,7 @@
     <div id="view-profile" class="screen full-screen">
         <div style="padding: 20px; display: flex; justify-content: space-between; align-items: center;">
             <button onclick="app.closeProfile()" style="border:none; background:none; font-size:24px; cursor:pointer; color:var(--text-main);"><i class="fa-solid fa-times"></i></button>
-            <h3 style="margin:0; color:var(--text-main);">Meu Perfil</h3>
+            <h3 style="margin:0;">Meu Perfil</h3>
             <button onclick="app.logout()" style="border:none; background:none; color:var(--red); font-weight:600; cursor:pointer;">Sair</button>
         </div>
         <div style="padding: 20px; text-align: center;">
@@ -409,13 +409,13 @@
             <h1 id="rec-det-title" class="serif" style="margin:0 0 10px 0; color:var(--text-main);">Titulo</h1>
             <p id="rec-det-meta" style="color:var(--text-sec); margin-bottom:20px;">0 kcal</p>
             <div style="display:flex; gap:10px; margin-bottom:20px;">
-                <div style="background:#FFF; padding:15px; border-radius:15px; flex:1; text-align:center;"><strong id="rec-det-p" style="font-size:18px; color:var(--text-main);">0</strong><br><small style="color:var(--text-sec);">Prot</small></div>
-                <div style="background:#FFF; padding:15px; border-radius:15px; flex:1; text-align:center;"><strong id="rec-det-c" style="font-size:18px; color:var(--text-main);">0</strong><br><small style="color:var(--text-sec);">Carb</small></div>
-                <div style="background:#FFF; padding:15px; border-radius:15px; flex:1; text-align:center;"><strong id="rec-det-f" style="font-size:18px; color:var(--text-main);">0</strong><br><small style="color:var(--text-sec);">Gord</small></div>
+                <div style="background:#FFF; padding:15px; border-radius:15px; flex:1; text-align:center;"><strong id="rec-det-p" style="font-size:18px; color:var(--text-main);">0</strong><br><small>Prot</small></div>
+                <div style="background:#FFF; padding:15px; border-radius:15px; flex:1; text-align:center;"><strong id="rec-det-c" style="font-size:18px; color:var(--text-main);">0</strong><br><small>Carb</small></div>
+                <div style="background:#FFF; padding:15px; border-radius:15px; flex:1; text-align:center;"><strong id="rec-det-f" style="font-size:18px; color:var(--text-main);">0</strong><br><small>Gord</small></div>
             </div>
-            <h3 style="color:var(--primary);">Ingredientes</h3>
+            <h3>Ingredientes</h3>
             <ul id="rec-det-ing" style="padding-left:20px; color:var(--text-main);"></ul>
-            <h3 style="color:var(--primary);">Modo de Preparo</h3>
+            <h3>Modo de Preparo</h3>
             <div id="rec-det-steps" style="color:var(--text-main); line-height:1.6;"></div>
         </div>
     </div>
@@ -552,8 +552,8 @@
     <div id="view-admin" class="screen full-screen">
         <div class="admin-header">
             <div style="display: flex; justify-content: space-between;">
-                <span style="color:var(--text-main); font-weight:700;">ADMIN</span>
-                <button onclick="app.closeAdmin()" style="color: var(--text-main); background: none; border: none; cursor:pointer;">Sair</button>
+                <span>ADMIN</span>
+                <button onclick="app.closeAdmin()" style="color: #333; background: none; border: none; cursor:pointer;">Sair</button>
             </div>
         </div>
         
@@ -568,23 +568,23 @@
         <div class="admin-content-scroll">
             <!-- Tab Usuários -->
             <div id="adm-content-users" style="padding: 20px;">
-                <h3 style="color:var(--text-main);">Usuários</h3>
+                <h3>Usuários</h3>
                 <div id="adm-users-list"></div>
             </div>
             
             <!-- Tab Templates (Modelos) -->
             <div id="adm-content-templates" class="hidden" style="padding: 20px;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <h3 style="color:var(--text-main);">Modelos de Treino</h3>
+                    <h3>Modelos de Treino</h3>
                     <button onclick="app.admAddTemplateInline()" class="btn-primary" style="padding:5px 15px; font-size:12px; border-radius:20px;">+ Novo</button>
                 </div>
-                <p style="color:var(--text-sec); font-size:12px; margin-bottom:20px;">Gerencie seus modelos de treino.</p>
+                <p style="color:#888; font-size:12px; margin-bottom:20px;">Gerencie seus modelos de treino.</p>
                 <div id="adm-templates-list"></div>
             </div>
             
             <!-- Tab Notícias -->
             <div id="adm-content-news" class="hidden" style="padding: 20px;">
-                <h3 style="color:var(--text-main);">Publicar Novidade</h3>
+                <h3>Publicar Novidade</h3>
                 <div class="card">
                     <input id="news-title" class="input" placeholder="Título" style="margin-bottom:10px;">
                     <textarea id="news-body" class="input" placeholder="Texto..." style="margin-bottom:10px; height:100px; resize:none;"></textarea>
@@ -598,7 +598,7 @@
 
             <!-- Tab Receitas -->
             <div id="adm-content-recipes" class="hidden" style="padding: 20px;">
-                <h3 style="color:var(--text-main);">Adicionar Receita</h3>
+                <h3>Adicionar Receita</h3>
                 <div class="card">
                     <input id="adm-rec-title" class="input" placeholder="Título" style="margin-bottom:10px;">
                     <div style="display:flex; gap:5px; margin-bottom:10px;">
@@ -624,7 +624,7 @@
 
             <!-- Tab Frases -->
             <div id="adm-content-quotes" class="hidden" style="padding: 20px;">
-                <h3 style="color:var(--text-main);">Frases Motivacionais</h3>
+                <h3>Frases Motivacionais</h3>
                 <div class="card">
                     <textarea id="adm-quote-text" class="input" placeholder="Digite a frase..." style="margin-bottom:10px; resize:none;"></textarea>
                     <button onclick="app.postQuote()" class="btn btn-primary">ADICIONAR</button>
@@ -637,19 +637,19 @@
     <!-- Detalhe Usuário Admin -->
     <div id="adm-user-detail" class="modal-overlay">
         <div class="modal-card">
-            <h3 id="adm-u-name" style="color:var(--text-main);">Nome</h3>
-            <p id="adm-u-email" style="color:var(--text-sec); margin-bottom: 20px;">email</p>
+            <h3 id="adm-u-name">Nome</h3>
+            <p id="adm-u-email" style="color:#888; margin-bottom: 20px;">email</p>
             <label style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
                 <input type="checkbox" id="adm-u-active"> Acesso Liberado
             </label>
             <hr style="width:100%; border:0; border-top:1px solid #EEE;">
-            <h4 style="color:var(--text-main);">Objetivos/Treinos</h4>
+            <h4>Objetivos/Treinos</h4>
             <div id="adm-u-races"></div>
-            <button onclick="app.admAddRace()" class="btn" style="margin-top:10px; border:1px dashed #999; color:var(--text-main);">+ Adicionar Objetivo</button>
+            <button onclick="app.admAddRace()" class="btn" style="margin-top:10px; border:1px dashed #999;">+ Adicionar Objetivo</button>
             
             <div style="margin-top: 20px; display: flex; gap: 10px;">
                 <button onclick="app.admSaveUser()" class="btn btn-primary" style="flex:1;">Salvar</button>
-                <button onclick="document.getElementById('adm-user-detail').classList.remove('active')" class="btn" style="flex:1; border:1px solid var(--text-sec); color:var(--text-main);">Fechar</button>
+                <button onclick="document.getElementById('adm-user-detail').classList.remove('active')" class="btn" style="flex:1;">Fechar</button>
             </div>
             <!-- Botão de Excluir -->
             <button onclick="app.admDeleteUser()" class="btn btn-danger" style="margin-top:10px; background:transparent; border:1px solid var(--red); color:var(--red);">Excluir Aluno</button>
@@ -849,7 +849,7 @@
                     const done = r.workouts.filter(w=>w.done).length;
                     const total = r.workouts.length;
                     const pct = total > 0 ? Math.round((done/total)*100) : 0;
-                    hList.innerHTML += `<div style="margin-bottom:15px;"><div style="display:flex; justify-content:space-between; margin-bottom:5px;"><strong style="font-size:14px; color:var(--text-main);">${r.name}</strong> <span style="font-size:12px; font-weight:600; color:var(--primary);">${pct}%</span></div><div style="height:6px; background:#eee; border-radius:3px; overflow:hidden;"><div style="width:${pct}%; height:100%; background:var(--primary);"></div></div></div>`;
+                    hList.innerHTML += `<div style="margin-bottom:15px;"><div style="display:flex; justify-content:space-between; margin-bottom:5px;"><strong style="font-size:14px;">${r.name}</strong> <span style="font-size:12px; font-weight:600; color:var(--primary);">${pct}%</span></div><div style="height:6px; background:#eee; border-radius:3px; overflow:hidden;"><div style="width:${pct}%; height:100%; background:var(--primary);"></div></div></div>`;
                 });
             },
             closeProfile: () => app.screen('view-app'),
@@ -935,11 +935,11 @@
                 let content = '';
                 if(workoutData) {
                     content = `<div style="background:#f5f5f5; padding:15px; border-radius:10px; margin-bottom:15px;">
-                        <h4 style="margin:0 0 5px 0; color:var(--text-main);">${workoutData.title}</h4>
-                        <p style="margin:0; font-size:13px; color:var(--text-sec);">${workoutData.desc}</p>
+                        <h4 style="margin:0 0 5px 0;">${workoutData.title}</h4>
+                        <p style="margin:0; font-size:13px; color:#666;">${workoutData.desc}</p>
                         ${workoutData.done ? '<strong style="color:var(--success); font-size:12px;">Concluído</strong>' : '<span style="color:var(--orange); font-size:12px;">Pendente</span>'}
                     </div>`;
-                } else { content = `<p style="color:var(--text-sec); text-align:center; margin-bottom:15px;">Sem treino registrado para este dia.</p>`; }
+                } else { content = `<p style="color:#999; text-align:center; margin-bottom:15px;">Sem treino registrado para este dia.</p>`; }
                 document.getElementById('day-det-content').innerHTML = content;
                 const notes = currentUser.notes || {};
                 document.getElementById('day-det-note').value = notes[dateStr] || '';
@@ -961,7 +961,7 @@
                 app.renderCalendar(); 
                 app.renderTodayCard(); 
                 app.loadQuote(); 
-                app.loadHomeNews(); 
+                app.loadHomeNews(); // NEW: Load latest news for home page
             },
             
             loadHomeNews: () => {
@@ -978,13 +978,13 @@
                     if(news.length > 0) {
                         const n = news[0];
                         container.innerHTML = `
-                            <h3 style="font-size: 16px; margin: 0 0 15px; color:var(--text-main);">Última Novidade</h3>
+                            <h3 style="font-size: 16px; margin: 0 0 15px;">Última Novidade</h3>
                             <div class="card news-card" style="margin-bottom:0;">
                                 ${n.img ? `<img src="${n.img}" class="news-img" style="height:150px;">` : ''}
                                 <div class="news-content" style="padding:15px;">
                                     <div class="news-date" style="font-size:10px;">${new Date(n.created).toLocaleDateString()}</div>
                                     <h3 class="news-title" style="font-size:16px;">${n.title}</h3>
-                                    <div class="news-body" style="font-size:13px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color:var(--text-main);">${n.body}</div>
+                                    <div class="news-body" style="font-size:13px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${n.body}</div>
                                 </div>
                             </div>
                         `;
@@ -1040,7 +1040,7 @@
                         dateDisplay = `<span style="font-size:12px; color:rgba(255,255,255,0.7); margin-left:8px; font-weight:400;">${dParts[2]}/${dParts[1]}</span>`;
                     }
 
-                    cardHtml = `<div class="card" style="background: linear-gradient(135deg, var(--bg) 0%, var(--secondary) 100%); color: var(--text-main); border: none; padding:30px;">
+                    cardHtml = `<div class="card" style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: var(--text-main); border: none; padding:30px;">
                         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:25px;">
                             <div>
                                 <h2 style="margin:0; font-size:24px; line-height:1.2; color:var(--text-main);">${target.title} ${dateDisplay}</h2>
