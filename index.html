@@ -10,9 +10,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content=".Nuts">
     
-    <!-- ÍCONE DO APP (MUDE O LINK ABAIXO PARA O SEU LINK DO GITHUB) -->
+    <!-- ÍCONE DO APP ATUALIZADO -->
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/lucasmaia2709-lang/treinocorrida-/refs/heads/main/logo.jpg">
-    <link rel="icon" type="image/png" href="hhttps://raw.githubusercontent.com/lucasmaia2709-lang/treinocorrida-/refs/heads/main/logo.jpg">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/lucasmaia2709-lang/treinocorrida-/refs/heads/main/logo.jpg">
 
     <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,27 +23,28 @@
 
     <style>
         :root {
-            /* NOVA PALETA DESCONTRAÍDA v2.1 */
+            /* PALETA PERSONALIZADA (SEM PRETO) */
             --bg: #dbffae;         /* Fundo Verde Principal */
             
-            --primary: #ff8a41;    /* Laranja (Ação/Botões) */
-            --secondary: #aaccef;  /* Azul (Detalhes) */
+            --primary: #ff8a41;    /* Laranja (Ação/Botões/Destaques) */
+            --secondary: #aaccef;  /* Azul Claro (Detalhes) */
             
             --surface: #FFFFFF;    /* Branco (Cards/Menu) */
-            --text-main: #333333; 
-            --text-sec: #8E8E93;
             
-            --radius: 20px;        /* Arredondamento maior para estilo descontraído */
+            /* SUBSTITUIÇÃO DO PRETO/CINZA */
+            --text-main: #2b4c7e;  /* Azul Profundo (Legível e dentro da paleta) */
+            --text-sec: #e67e22;   /* Laranja Escuro (Para textos secundários) */
+            
+            --radius: 20px;
             
             /* FONTES */
             --font-main: 'Bodoni Moda', serif; 
             --font-logo: 'Playfair Display', serif;
             
-            --success: #34C759;
-            --red: #FF3B30;
-            --orange: #FF9500;
-            --border: #f0f0f0;     /* Borda mais suave */
-            --shadow: 0 8px 25px rgba(0,0,0,0.06); /* Sombra suave para destacar do verde */
+            --success: #2ecc71;    /* Verde mais vibrante */
+            --red: #e74c3c;
+            --border: #edf2f7;
+            --shadow: 0 8px 25px rgba(43, 76, 126, 0.1); /* Sombra azulada */
             --nav-height: 80px;
         }
 
@@ -53,7 +54,7 @@
             margin: 0; 
             padding: 0; 
             font-family: var(--font-main); 
-            background-color: var(--bg); /* FUNDO VERDE APLICADO */
+            background-color: var(--bg); 
             color: var(--text-main); 
             width: 100vw;
             height: 100vh;
@@ -63,15 +64,16 @@
             flex-direction: column; 
         }
         
-        h1, h2, h3, h4, strong { font-weight: 700; letter-spacing: -0.5px; }
+        h1, h2, h3, h4, strong { font-weight: 700; letter-spacing: -0.5px; color: var(--primary); }
 
         /* Estilo especial para o Logo .Nuts */
         .brand-logo {
             font-family: var(--font-logo);
             font-weight: 700;
             font-size: 26px;
-            color: var(--text-main); 
+            color: var(--primary); 
             letter-spacing: -1px;
+            text-shadow: 1px 1px 0px #fff;
         }
 
         /* SCREENS */
@@ -81,7 +83,7 @@
             left: 0; 
             width: 100%; 
             height: 100%; 
-            background-color: var(--bg); /* FUNDO VERDE */
+            background-color: var(--bg); 
             display: none; 
             flex-direction: column; 
             z-index: 10; 
@@ -105,7 +107,7 @@
             overflow: hidden; 
             display: flex;
             flex-direction: column;
-            background: #FAFAFA; /* Admin mantém fundo claro para legibilidade */
+            background: #f8fff0; /* Fundo muito levemente verde para o admin */
         }
 
         /* HEADER PRINCIPAL DO APP */
@@ -115,7 +117,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: transparent; /* Transparente para mostrar o verde */
+            background: transparent; 
             position: sticky;
             top: 0;
             z-index: 50;
@@ -132,7 +134,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .input-group { margin-bottom: 20px; width: 100%; }
-        .label { display: block; font-size: 11px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .label { display: block; font-size: 11px; font-weight: 700; color: var(--primary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
         .input { width: 100%; padding: 18px; border-radius: var(--radius); border: 2px solid transparent; background-color: #FFF; font-size: 16px; color: var(--text-main); outline: none; font-family: var(--font-main); transition: 0.2s; -webkit-appearance: none; box-shadow: var(--shadow); }
         .input:focus { border-color: var(--secondary); }
         
@@ -141,22 +143,22 @@
         .btn-primary { background-color: var(--primary); color: #FFF; box-shadow: 0 5px 15px rgba(255, 138, 65, 0.4); }
         .btn-primary:active { transform: scale(0.98); }
         .btn-text { background: none; color: var(--text-sec); font-size: 14px; padding: 10px; }
-        .btn-danger { background-color: #FFF0F0; color: var(--red); }
-        .btn-outline { background: transparent; border: 2px solid var(--text-main); color: var(--text-main); }
+        .btn-danger { background-color: #ffe6e6; color: var(--red); }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
         
         /* CALENDÁRIO */
         .calendar-wrapper { padding: 0 20px 20px; }
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .calendar-title { font-weight: 700; font-size: 24px; text-transform: capitalize; color: var(--text-main); }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; width: 100%; }
-        .cal-head-day { font-size: 10px; color: #555; text-align: center; font-weight: 700; padding-bottom: 5px; text-transform: uppercase; }
+        .cal-head-day { font-size: 10px; color: var(--text-sec); text-align: center; font-weight: 700; padding-bottom: 5px; text-transform: uppercase; }
         .cal-cell { aspect-ratio: 1/1; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; color: var(--text-main); position: relative; cursor: pointer; border: 1px solid transparent; background: #FFF; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .cal-cell.today { border: 2px solid var(--primary); color: var(--primary); font-weight: 800; }
         .cal-cell.other-month { opacity: 0.4; background: rgba(255,255,255,0.5); }
         .cal-dot { width: 5px; height: 5px; border-radius: 50%; margin-top: 3px; }
         .cal-cell.has-workout .cal-dot { background: var(--text-sec); }
         .cal-cell.done .cal-dot { background: var(--success); }
-        .cal-cell.done { background: #E8F5E9; color: var(--success); }
+        .cal-cell.done { background: #e0f7fa; color: var(--text-main); }
         .cal-note-indicator { position: absolute; top: 3px; right: 3px; width: 5px; height: 5px; background: var(--secondary); border-radius: 50%; }
 
         /* CARDS */
@@ -173,9 +175,9 @@
         .news-img { width: 100%; height: 220px; object-fit: cover; background: #EEE; }
         .news-content { padding: 25px; }
         .news-date { font-size: 11px; color: var(--secondary); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; }
-        .news-title { font-size: 18px; font-weight: 700; margin: 0 0 10px 0; line-height: 1.2; font-family: var(--font-logo); }
+        .news-title { font-size: 18px; font-weight: 700; margin: 0 0 10px 0; line-height: 1.2; font-family: var(--font-logo); color: var(--text-main); }
 
-        /* NAV BAR (Branca para destacar do fundo verde) */
+        /* NAV BAR */
         .nav-bar { 
             position: fixed; 
             bottom: 20px; 
@@ -190,33 +192,32 @@
             align-items: center;
             padding: 0 10px;
             z-index: 300; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(43, 76, 126, 0.1);
         }
-        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; background: none; border: none; color: #CCC; cursor: pointer; }
+        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; background: none; border: none; color: #cbd5e0; cursor: pointer; }
         .nav-item i { font-size: 24px; transition: 0.3s; margin-bottom: 2px; }
-        .nav-item span { font-size: 9px; font-weight: 700; letter-spacing: 0.5px; display: none; } /* Ocultar texto para visual mais limpo */
+        .nav-item span { font-size: 9px; font-weight: 700; letter-spacing: 0.5px; display: none; } 
         .nav-item.active { color: var(--primary); }
         .nav-item.active i { transform: scale(1.1); }
-        .nav-item.active span { display: block; } /* Mostrar texto só no ativo se quiser, ou manter oculto */
+        .nav-item.active span { display: block; } 
 
         .hidden { display: none !important; }
-        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-50px); background: #333; color: #FFF; padding: 12px 24px; border-radius: 50px; font-size: 13px; opacity: 0; transition: 0.3s; z-index: 5000; pointer-events: none; text-align: center; min-width: 200px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-50px); background: var(--text-main); color: #FFF; padding: 12px 24px; border-radius: 50px; font-size: 13px; opacity: 0; transition: 0.3s; z-index: 5000; pointer-events: none; text-align: center; min-width: 200px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         
-        .header-avatar { width: 42px; height: 42px; border-radius: 50%; overflow: hidden; background: #FFF; cursor: pointer; border: 2px solid var(--text-main); display: flex; align-items: center; justify-content: center; font-weight: 600; color: #333; box-shadow: var(--shadow); }
+        .header-avatar { width: 42px; height: 42px; border-radius: 50%; overflow: hidden; background: #FFF; cursor: pointer; border: 2px solid var(--text-main); display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--text-main); box-shadow: var(--shadow); }
 
         .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.6); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
         .modal-overlay.active { display: flex; animation: fadeIn 0.2s; }
         .modal-card { width: 90%; max-width: 400px; background: #FFF; border-radius: 30px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; border: 1px solid rgba(0,0,0,0.05); }
         
-        /* ADMIN TABS FIXAS */
-        .admin-header { background: #FFF; color: #333; padding: 20px; padding-top: max(20px, env(safe-area-inset-top)); flex-shrink: 0; border-bottom: 1px solid #EEE; }
+        /* ADMIN TABS */
+        .admin-header { background: #FFF; color: var(--text-main); padding: 20px; padding-top: max(20px, env(safe-area-inset-top)); flex-shrink: 0; border-bottom: 1px solid #EEE; }
         .admin-tabs-wrapper { background: #FFF; border-bottom: 1px solid #ddd; overflow-x: auto; flex-shrink: 0; display: flex; }
-        .admin-content-scroll { flex: 1; overflow-y: auto; padding-bottom: 50px; background: #FAFAFA; }
-        .admin-tab-btn { flex:1; min-width: 80px; padding:15px; border:none; background:none; cursor:pointer; font-size:12px; font-weight:600; color:#888; border-bottom: 2px solid transparent; white-space: nowrap; }
+        .admin-content-scroll { flex: 1; overflow-y: auto; padding-bottom: 50px; background: #f8fff0; }
+        .admin-tab-btn { flex:1; min-width: 80px; padding:15px; border:none; background:none; cursor:pointer; font-size:12px; font-weight:600; color: var(--text-sec); border-bottom: 2px solid transparent; white-space: nowrap; }
         .admin-tab-btn.active { color: var(--primary); border-color: var(--primary); }
         
-        /* BARRA DE PROGRESSO CHAMATIVA */
         .progress-container { 
             width: 100%; 
             background-color: rgba(0,0,0,0.05); 
@@ -234,16 +235,14 @@
             box-shadow: 0 0 10px rgba(255, 138, 65, 0.4); 
         }
 
-        /* CHECKBOX CUSTOM */
         .check-toggle { width: 22px; height: 22px; accent-color: var(--primary); cursor: pointer; }
 
-        /* ADMIN ACCORDION */
-        .adm-row-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 8px 0; }
-        .adm-nested { display: none; padding-left: 15px; border-left: 2px solid var(--primary); margin-left: 5px; margin-top: 5px; }
+        .adm-row-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 8px 0; color: var(--text-main); }
+        .adm-nested { display: none; padding-left: 15px; border-left: 2px solid var(--secondary); margin-left: 5px; margin-top: 5px; }
         .adm-nested.open { display: block; animation: fadeIn 0.2s; }
         .adm-item-box { background: #fff; border: 1px solid #eee; padding: 12px; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-        .adm-btn-small { padding: 6px 12px; font-size: 11px; border-radius: 8px; border: 1px solid #ddd; background: #FFF; cursor: pointer; font-weight: 600; }
-        .adm-action-btn { color:#666; border:none; background:none; font-size:12px; padding:5px; cursor:pointer; }
+        .adm-btn-small { padding: 6px 12px; font-size: 11px; border-radius: 8px; border: 1px solid #ddd; background: #FFF; cursor: pointer; font-weight: 600; color: var(--text-main); }
+        .adm-action-btn { color: var(--text-sec); border:none; background:none; font-size:12px; padding:5px; cursor:pointer; }
     </style>
 </head>
 <body>
@@ -252,11 +251,11 @@
 
     <!-- 0. LANDING -->
     <div id="view-landing" class="screen active" style="align-items: center; justify-content: center; padding: 40px; text-align: center;">
-        <h1 class="brand-logo" style="font-size: 80px; margin-bottom: 30px; color: #333;">.nuts</h1>
-        <p style="color: #555; letter-spacing: 2px; text-transform: uppercase; font-size: 12px; margin-top: 10px; font-weight: 600;">Your Journey Starts Here</p>
+        <h1 class="brand-logo" style="font-size: 80px; margin-bottom: 30px; color: var(--primary);">.nuts</h1>
+        <p style="color: var(--text-main); letter-spacing: 2px; text-transform: uppercase; font-size: 12px; margin-top: 10px; font-weight: 600;">Your Journey Starts Here</p>
         <div style="width: 100%; margin-top: 80px;">
-            <button onclick="app.goToRegister()" class="btn btn-primary" style="margin-bottom: 15px; background: #FFF; color: #333;">Começar Agora</button>
-            <button onclick="app.goToLogin()" class="btn btn-text" style="color: #333;">Já tenho conta</button>
+            <button onclick="app.goToRegister()" class="btn btn-primary" style="margin-bottom: 15px; background: #FFF; color: var(--primary); box-shadow:none; border:2px solid #FFF;">Começar Agora</button>
+            <button onclick="app.goToLogin()" class="btn btn-text" style="color: var(--text-main);">Já tenho conta</button>
         </div>
     </div>
 
@@ -264,19 +263,19 @@
     <div id="view-login" class="screen" style="justify-content: center; padding: 40px;">
         <button onclick="app.goToLanding()" style="position:absolute; top:50px; left:20px; border:none; background:none; font-size:24px; color:var(--text-main);"><i class="fa-solid fa-arrow-left"></i></button>
         <button onclick="app.showAdminAuth()" style="position:absolute; top:50px; right:20px; border:none; background:none; color:var(--text-main); z-index: 50; padding: 10px;"><i class="fa-solid fa-lock"></i></button>
-        <h1 class="serif" style="font-size: 32px; margin-bottom: 40px; text-align:center;">Entrar</h1>
+        <h1 class="serif" style="font-size: 32px; margin-bottom: 40px; text-align:center; color: var(--text-main);">Entrar</h1>
         <form onsubmit="app.handleLogin(event)">
             <div class="input-group"><label class="label">Email</label><input type="email" id="log-email" class="input" required></div>
             <div class="input-group"><label class="label">Senha</label><input type="password" id="log-pass" class="input" required></div>
             <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Entrar</button>
         </form>
-        <p onclick="app.forgotPassword()" style="text-align: center; color: #555; font-size: 13px; margin-top: 20px; cursor: pointer; text-decoration: underline;">Esqueci minha senha</p>
+        <p onclick="app.forgotPassword()" style="text-align: center; color: var(--text-sec); font-size: 13px; margin-top: 20px; cursor: pointer; text-decoration: underline;">Esqueci minha senha</p>
     </div>
 
     <!-- 2. CADASTRO -->
     <div id="view-register" class="screen" style="justify-content: center; padding: 40px;">
-        <button onclick="app.goToLanding()" style="position:absolute; top:50px; left:20px; border:none; background:none; font-size:18px;"><i class="fa-solid fa-arrow-left"></i></button>
-        <h1 class="serif" style="font-size: 32px; margin-bottom: 40px; text-align:center;">Criar Conta</h1>
+        <button onclick="app.goToLanding()" style="position:absolute; top:50px; left:20px; border:none; background:none; font-size:18px; color:var(--text-main);"><i class="fa-solid fa-arrow-left"></i></button>
+        <h1 class="serif" style="font-size: 32px; margin-bottom: 40px; text-align:center; color: var(--text-main);">Criar Conta</h1>
         <form onsubmit="app.handleRegister(event)">
             <div class="input-group"><label class="label">Nome</label><input type="text" id="reg-name" class="input" required></div>
             <div class="input-group"><label class="label">Email</label><input type="email" id="reg-email" class="input" required></div>
@@ -289,7 +288,7 @@
     <div id="view-pending" class="screen" style="align-items: center; justify-content: center; padding: 40px; text-align: center;">
         <div style="background:#FFF; padding:40px; border-radius:30px; box-shadow:var(--shadow);">
             <i class="fa-regular fa-clock" style="font-size: 50px; color: var(--primary); margin-bottom: 20px;"></i>
-            <h2>Aprovação Pendente</h2>
+            <h2 style="color:var(--text-main);">Aprovação Pendente</h2>
             <p style="color: var(--text-sec); font-size: 14px;">Seu treinador precisa liberar seu acesso.</p>
             <button onclick="app.logout()" class="btn btn-outline" style="margin-top: 30px;">Sair</button>
         </div>
@@ -312,38 +311,41 @@
             <div id="tab-home" class="tab-content">
                 <div class="calendar-wrapper">
                     <div class="calendar-header">
-                        <button onclick="app.changeMonth(-1)" style="border:none; background:none; padding:10px; cursor:pointer;"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button onclick="app.changeMonth(-1)" style="border:none; background:none; padding:10px; cursor:pointer;"><i class="fa-solid fa-chevron-left" style="color:var(--text-main);"></i></button>
                         <span id="cal-month-title" class="calendar-title">Mês</span>
-                        <button onclick="app.changeMonth(1)" style="border:none; background:none; padding:10px; cursor:pointer;"><i class="fa-solid fa-chevron-right"></i></button>
+                        <button onclick="app.changeMonth(1)" style="border:none; background:none; padding:10px; cursor:pointer;"><i class="fa-solid fa-chevron-right" style="color:var(--text-main);"></i></button>
                     </div>
                     <div class="calendar-grid" style="margin-bottom: 5px;">
                         <div class="cal-head-day">D</div><div class="cal-head-day">S</div><div class="cal-head-day">T</div><div class="cal-head-day">Q</div><div class="cal-head-day">Q</div><div class="cal-head-day">S</div><div class="cal-head-day">S</div>
                     </div>
                     <div id="calendar-days" class="calendar-grid"></div>
                 </div>
-                <div style="padding: 20px; text-align: center;">
-                    <i class="fa-solid fa-quote-left" style="color: #888; font-size: 24px;"></i>
-                    <p id="daily-quote" class="serif" style="font-style: italic; font-size: 18px; margin: 15px 0;">Carregando...</p>
-                </div>
                 <div style="padding: 0 20px;">
-                    <h3 style="font-size: 18px; margin: 10px 0 15px;">Treino de Hoje</h3>
+                    <h3 style="font-size: 18px; margin: 10px 0 15px; color:var(--text-main);">Treino de Hoje</h3>
                     <div id="today-workout-card"></div>
                     <!-- LOCAL ONDE A NOTÍCIA SERÁ INSERIDA -->
                     <div id="home-latest-news" style="margin-top: 30px;"></div>
                 </div>
-                
+                <!-- NOVO CARD DE MOTIVAÇÃO ESTILIZADO -->
+                <div style="padding: 20px;">
+                    <div class="card" style="background: linear-gradient(135deg, #dbffae 0%, #aaccef 100%); color: var(--text-main); border: none; padding: 30px; text-align: center; margin-bottom: 20px;">
+                        <h3 style="font-size: 14px; margin: 0 0 20px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; color:var(--text-main);">Motivação do Dia</h3>
+                        <i class="fa-solid fa-quote-left" style="color: rgba(43, 76, 126, 0.2); font-size: 32px;"></i>
+                        <p id="daily-quote" class="serif" style="font-style: italic; font-size: 20px; margin: 20px 0 10px; line-height: 1.4; color:var(--text-main);">Carregando...</p>
+                    </div>
+                </div>
             </div>
 
             <!-- TREINOS -->
             <div id="tab-workouts" class="tab-content hidden" style="padding: 0 20px;">
-                <h2 style="margin: 20px 0;">Meu Plano</h2>
+                <h2 style="margin: 20px 0; color:var(--text-main);">Meu Plano</h2>
                 <div id="workouts-list"></div>
             </div>
 
             <!-- SOCIAL -->
             <div id="tab-social" class="tab-content hidden" style="padding: 0 20px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin: 20px 0;">
-                    <h2 style="margin:0;">Comunidade</h2>
+                    <h2 style="margin:0; color:var(--text-main);">Comunidade</h2>
                     <button onclick="app.openCreatePost()" class="btn-primary" style="width: auto; padding: 8px 16px; border-radius: 20px; font-size: 12px; border:none; cursor:pointer;"><i class="fa-solid fa-plus"></i> Novo</button>
                 </div>
                 <div id="social-feed"></div>
@@ -351,13 +353,13 @@
 
             <!-- RECEITAS -->
             <div id="tab-recipes" class="tab-content hidden" style="padding: 0 20px;">
-                <h2 style="margin: 20px 0;">Receitas</h2>
+                <h2 style="margin: 20px 0; color:var(--text-main);">Receitas</h2>
                 <div id="recipes-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;"></div>
             </div>
 
             <!-- NOVIDADES -->
             <div id="tab-news" class="tab-content hidden" style="padding: 0 20px;">
-                <h2 style="margin: 20px 0;">Novidades</h2>
+                <h2 style="margin: 20px 0; color:var(--text-main);">Novidades</h2>
                 <div id="news-feed"></div>
             </div>
         </div>
@@ -377,8 +379,8 @@
     <!-- PERFIL -->
     <div id="view-profile" class="screen full-screen">
         <div style="padding: 20px; display: flex; justify-content: space-between; align-items: center;">
-            <button onclick="app.closeProfile()" style="border:none; background:none; font-size:24px; cursor:pointer;"><i class="fa-solid fa-times"></i></button>
-            <h3 style="margin:0;">Meu Perfil</h3>
+            <button onclick="app.closeProfile()" style="border:none; background:none; font-size:24px; cursor:pointer; color:var(--text-main);"><i class="fa-solid fa-times"></i></button>
+            <h3 style="margin:0; color:var(--text-main);">Meu Perfil</h3>
             <button onclick="app.logout()" style="border:none; background:none; color:var(--red); font-weight:600; cursor:pointer;">Sair</button>
         </div>
         <div style="padding: 20px; text-align: center;">
@@ -387,13 +389,13 @@
                 <div style="position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.5); color: white; font-size: 10px; padding: 4px;">ALTERAR</div>
             </div>
             <input type="file" id="profile-upload" hidden accept="image/*" onchange="app.uploadAvatar(this)">
-            <h2 id="profile-name-big" style="margin:0; font-size:28px;">Nome</h2>
+            <h2 id="profile-name-big" style="margin:0; font-size:28px; color:var(--text-main);">Nome</h2>
             <p id="profile-email-big" style="color: var(--text-sec); font-size: 16px;">email</p>
             
             <button onclick="app.showAddRaceModal()" class="btn btn-primary" style="margin-top: 30px;">+ NOVO OBJETIVO</button>
 
             <div class="card" style="margin-top: 40px; text-align: left;">
-                <h4 style="margin-top:0;">Histórico</h4>
+                <h4 style="margin-top:0; color:var(--primary);">Histórico</h4>
                 <div id="profile-history"></div>
             </div>
         </div>
@@ -401,19 +403,19 @@
 
     <!-- DETALHE DA RECEITA (MODIFICADO: detail-view em vez de full-screen) -->
     <div id="view-recipe-detail" class="screen detail-view">
-        <button onclick="app.closeRecipeDetail()" style="position:absolute; top:40px; left:20px; z-index:10; background:white; border:none; width:45px; height:45px; border-radius:50%; box-shadow:0 5px 15px rgba(0,0,0,0.1); cursor:pointer; display:flex; justify-content:center; align-items:center;"><i class="fa-solid fa-arrow-left"></i></button>
+        <button onclick="app.closeRecipeDetail()" style="position:absolute; top:40px; left:20px; z-index:10; background:white; border:none; width:45px; height:45px; border-radius:50%; box-shadow:0 5px 15px rgba(0,0,0,0.1); cursor:pointer; display:flex; justify-content:center; align-items:center;"><i class="fa-solid fa-arrow-left" style="color:var(--text-main);"></i></button>
         <div id="rec-det-img" style="width:100%; height:350px; background:grey; background-size:cover; background-position:center; background-color: #EEE;"></div>
         <div style="background:var(--bg); border-radius:30px 30px 0 0; margin-top:-40px; padding:30px; position:relative; min-height:500px;">
-            <h1 id="rec-det-title" class="serif" style="margin:0 0 10px 0;">Titulo</h1>
+            <h1 id="rec-det-title" class="serif" style="margin:0 0 10px 0; color:var(--text-main);">Titulo</h1>
             <p id="rec-det-meta" style="color:var(--text-sec); margin-bottom:20px;">0 kcal</p>
             <div style="display:flex; gap:10px; margin-bottom:20px;">
-                <div style="background:#FFF; padding:15px; border-radius:15px; flex:1; text-align:center;"><strong id="rec-det-p" style="font-size:18px;">0</strong><br><small>Prot</small></div>
-                <div style="background:#FFF; padding:15px; border-radius:15px; flex:1; text-align:center;"><strong id="rec-det-c" style="font-size:18px;">0</strong><br><small>Carb</small></div>
-                <div style="background:#FFF; padding:15px; border-radius:15px; flex:1; text-align:center;"><strong id="rec-det-f" style="font-size:18px;">0</strong><br><small>Gord</small></div>
+                <div style="background:#FFF; padding:15px; border-radius:15px; flex:1; text-align:center;"><strong id="rec-det-p" style="font-size:18px; color:var(--text-main);">0</strong><br><small style="color:var(--text-sec);">Prot</small></div>
+                <div style="background:#FFF; padding:15px; border-radius:15px; flex:1; text-align:center;"><strong id="rec-det-c" style="font-size:18px; color:var(--text-main);">0</strong><br><small style="color:var(--text-sec);">Carb</small></div>
+                <div style="background:#FFF; padding:15px; border-radius:15px; flex:1; text-align:center;"><strong id="rec-det-f" style="font-size:18px; color:var(--text-main);">0</strong><br><small style="color:var(--text-sec);">Gord</small></div>
             </div>
-            <h3>Ingredientes</h3>
+            <h3 style="color:var(--primary);">Ingredientes</h3>
             <ul id="rec-det-ing" style="padding-left:20px; color:var(--text-main);"></ul>
-            <h3>Modo de Preparo</h3>
+            <h3 style="color:var(--primary);">Modo de Preparo</h3>
             <div id="rec-det-steps" style="color:var(--text-main); line-height:1.6;"></div>
         </div>
     </div>
@@ -422,10 +424,10 @@
     <div id="view-create-post" class="screen full-screen">
         <div style="padding: 15px 20px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-top:max(15px, env(safe-area-inset-top));">
             <button onclick="app.closeCreatePost()" class="btn-text" style="padding:10px; font-weight:600;">Cancelar</button>
-            <strong style="font-size:18px;">Criar Post</strong>
+            <strong style="font-size:18px; color:var(--text-main);">Criar Post</strong>
             <button onclick="app.submitPost()" style="border:none; background:var(--primary); color:white; padding: 8px 20px; border-radius: 20px; font-weight:600; cursor:pointer;">Postar</button>
         </div>
-        <textarea id="post-text" style="width:100%; height:200px; border:none; padding:25px; font-family:var(--font-main); font-size:18px; outline:none; resize:none; background:transparent;" placeholder="No que você está pensando?"></textarea>
+        <textarea id="post-text" style="width:100%; height:200px; border:none; padding:25px; font-family:var(--font-main); font-size:18px; outline:none; resize:none; background:transparent; color:var(--text-main);" placeholder="No que você está pensando?"></textarea>
         <div style="padding: 20px;">
             <div id="post-img-preview" style="width:100%; height:200px; background:#fff; border-radius:20px; display:none; background-size:cover; background-position:center; margin-bottom:20px;"></div>
             <button onclick="document.getElementById('post-file').click()" class="btn btn-outline" style="border-radius:30px; background:#fff;"><i class="fa-solid fa-camera"></i>&nbsp; Adicionar Foto</button>
@@ -443,7 +445,7 @@
     <!-- MODAL DETALHE DO DIA (CALENDÁRIO) -->
     <div id="modal-day-detail" class="modal-overlay">
         <div class="modal-card">
-            <h3 id="day-det-title">Detalhes do Dia</h3>
+            <h3 id="day-det-title" style="color:var(--primary);">Detalhes do Dia</h3>
             <div id="day-det-content"></div>
             <textarea id="day-det-note" class="input" placeholder="Anotações / Feedback do treino..." style="height:120px; resize:none; margin-top:15px;"></textarea>
             <div style="display:flex; gap:10px; margin-top:20px;">
@@ -456,7 +458,7 @@
     <!-- MODAIS UI GENÉRICOS (Substituem alert/confirm/prompt) -->
     <div id="modal-prompt" class="modal-overlay">
         <div class="modal-card">
-            <h3 id="prompt-title">Entrada</h3>
+            <h3 id="prompt-title" style="color:var(--text-main);">Entrada</h3>
             <input id="prompt-input" class="input">
             <div style="display:flex; gap:10px; margin-top:10px;">
                 <button id="prompt-cancel" class="btn btn-outline">Cancelar</button>
@@ -468,7 +470,7 @@
     <!-- Novo Modal de Opção (Template vs Vazio) -->
     <div id="modal-option" class="modal-overlay">
         <div class="modal-card">
-            <h3 id="opt-title">Escolha</h3>
+            <h3 id="opt-title" style="color:var(--text-main);">Escolha</h3>
             <div style="display:flex; flex-direction:column; gap:10px;">
                 <button id="opt-1" class="btn btn-primary">Opção 1</button>
                 <button id="opt-2" class="btn btn-outline">Opção 2</button>
@@ -479,7 +481,7 @@
 
     <div id="modal-confirm" class="modal-overlay">
         <div class="modal-card">
-            <h3 id="confirm-title">Tem certeza?</h3>
+            <h3 id="confirm-title" style="color:var(--text-main);">Tem certeza?</h3>
             <p id="confirm-text" style="color:var(--text-sec); font-size:15px; line-height:1.5;"></p>
             <div style="display:flex; gap:10px; margin-top:20px;">
                 <button id="confirm-cancel" class="btn btn-outline">Não</button>
@@ -491,7 +493,7 @@
     <!-- NOVO MODAL: ADICIONAR TREINO MANUALMENTE (SUBSTITUI PROMPT) -->
     <div id="modal-add-single-workout" class="modal-overlay">
         <div class="modal-card">
-            <h3 id="modal-workout-title">Novo Treino</h3>
+            <h3 id="modal-workout-title" style="color:var(--text-main);">Novo Treino</h3>
             <input id="new-w-title" class="input" placeholder="Título (Ex: Trote Leve)" style="margin-bottom:15px;">
             <input id="new-w-desc" class="input" placeholder="Descrição (Ex: 30min zona 2)" style="margin-bottom:15px;">
             <input id="new-w-video" class="input" placeholder="Link do Vídeo (Opcional)" style="margin-bottom:15px;">
@@ -505,8 +507,8 @@
     <!-- NOVO MODAL: SELECIONAR MODELO (COM LISTA E RADIO) -->
     <div id="modal-select-template" class="modal-overlay">
         <div class="modal-card">
-            <h3>Selecionar Modelo</h3>
-            <p style="font-size:13px; color:#666; margin-bottom:15px;">Escolha um modelo da lista:</p>
+            <h3 style="color:var(--text-main);">Selecionar Modelo</h3>
+            <p style="font-size:13px; color:var(--text-sec); margin-bottom:15px;">Escolha um modelo da lista:</p>
             <div id="template-select-list" style="max-height: 250px; overflow-y: auto; border:1px solid #eee; border-radius:15px; padding:10px; margin-bottom:20px;">
                 <!-- Lista gerada via JS -->
             </div>
@@ -527,10 +529,10 @@
     <!-- MODAIS DE NEGÓCIO -->
     <div id="modal-admin-auth" class="modal-overlay">
         <div class="modal-card" style="text-align: center;">
-            <h3>Acesso Treinador</h3>
-            <input type="password" id="admin-pass-input" class="input" placeholder="Senha" style="text-align: center; margin: 20px 0;">
+            <h3 style="margin-bottom:20px; color:var(--text-main);">Acesso Treinador</h3>
+            <input type="password" id="admin-pass-input" class="input" placeholder="Senha" style="text-align: center; margin-bottom: 25px;">
             <div style="display: flex; gap: 10px;">
-                <button onclick="document.getElementById('modal-admin-auth').classList.remove('active')" class="btn" style="background:#EEE; color:#333;">Cancelar</button>
+                <button onclick="document.getElementById('modal-admin-auth').classList.remove('active')" class="btn btn-outline">Cancelar</button>
                 <button onclick="app.checkAdminAuth()" class="btn btn-primary">Entrar</button>
             </div>
         </div>
@@ -538,7 +540,7 @@
     
     <div id="modal-add-race" class="modal-overlay">
         <div class="modal-card">
-            <h3>Novo Objetivo</h3>
+            <h3 style="color:var(--text-main);">Novo Objetivo</h3>
             <input id="new-race-name" class="input" placeholder="Nome (Ex: Maratona)" style="margin-bottom:10px;">
             <input type="date" id="new-race-date" class="input" style="margin-bottom:10px;">
             <button onclick="app.addStudentRace()" class="btn btn-primary">Criar</button>
@@ -550,8 +552,8 @@
     <div id="view-admin" class="screen full-screen">
         <div class="admin-header">
             <div style="display: flex; justify-content: space-between;">
-                <span>ADMIN</span>
-                <button onclick="app.closeAdmin()" style="color: #333; background: none; border: none; cursor:pointer;">Sair</button>
+                <span style="color:var(--text-main); font-weight:700;">ADMIN</span>
+                <button onclick="app.closeAdmin()" style="color: var(--text-main); background: none; border: none; cursor:pointer;">Sair</button>
             </div>
         </div>
         
@@ -566,23 +568,23 @@
         <div class="admin-content-scroll">
             <!-- Tab Usuários -->
             <div id="adm-content-users" style="padding: 20px;">
-                <h3 style="color:var(--text-main);">Gerenciar Alunos</h3>
+                <h3 style="color:var(--text-main);">Usuários</h3>
                 <div id="adm-users-list"></div>
             </div>
             
             <!-- Tab Templates (Modelos) -->
             <div id="adm-content-templates" class="hidden" style="padding: 20px;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <h3>Modelos de Treino</h3>
+                    <h3 style="color:var(--text-main);">Modelos de Treino</h3>
                     <button onclick="app.admAddTemplateInline()" class="btn-primary" style="padding:5px 15px; font-size:12px; border-radius:20px;">+ Novo</button>
                 </div>
-                <p style="color:#888; font-size:12px; margin-bottom:20px;">Gerencie seus modelos de treino.</p>
+                <p style="color:var(--text-sec); font-size:12px; margin-bottom:20px;">Gerencie seus modelos de treino.</p>
                 <div id="adm-templates-list"></div>
             </div>
             
             <!-- Tab Notícias -->
             <div id="adm-content-news" class="hidden" style="padding: 20px;">
-                <h3>Publicar Novidade</h3>
+                <h3 style="color:var(--text-main);">Publicar Novidade</h3>
                 <div class="card">
                     <input id="news-title" class="input" placeholder="Título" style="margin-bottom:10px;">
                     <textarea id="news-body" class="input" placeholder="Texto..." style="margin-bottom:10px; height:100px; resize:none;"></textarea>
@@ -596,7 +598,7 @@
 
             <!-- Tab Receitas -->
             <div id="adm-content-recipes" class="hidden" style="padding: 20px;">
-                <h3>Adicionar Receita</h3>
+                <h3 style="color:var(--text-main);">Adicionar Receita</h3>
                 <div class="card">
                     <input id="adm-rec-title" class="input" placeholder="Título" style="margin-bottom:10px;">
                     <div style="display:flex; gap:5px; margin-bottom:10px;">
@@ -622,7 +624,7 @@
 
             <!-- Tab Frases -->
             <div id="adm-content-quotes" class="hidden" style="padding: 20px;">
-                <h3>Frases Motivacionais</h3>
+                <h3 style="color:var(--text-main);">Frases Motivacionais</h3>
                 <div class="card">
                     <textarea id="adm-quote-text" class="input" placeholder="Digite a frase..." style="margin-bottom:10px; resize:none;"></textarea>
                     <button onclick="app.postQuote()" class="btn btn-primary">ADICIONAR</button>
@@ -635,19 +637,19 @@
     <!-- Detalhe Usuário Admin -->
     <div id="adm-user-detail" class="modal-overlay">
         <div class="modal-card">
-            <h3 id="adm-u-name">Nome</h3>
-            <p id="adm-u-email" style="color:#888; margin-bottom: 20px;">email</p>
+            <h3 id="adm-u-name" style="color:var(--text-main);">Nome</h3>
+            <p id="adm-u-email" style="color:var(--text-sec); margin-bottom: 20px;">email</p>
             <label style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
                 <input type="checkbox" id="adm-u-active"> Acesso Liberado
             </label>
             <hr style="width:100%; border:0; border-top:1px solid #EEE;">
-            <h4>Objetivos/Treinos</h4>
+            <h4 style="color:var(--text-main);">Objetivos/Treinos</h4>
             <div id="adm-u-races"></div>
-            <button onclick="app.admAddRace()" class="btn" style="margin-top:10px; border:1px dashed #999;">+ Adicionar Objetivo</button>
+            <button onclick="app.admAddRace()" class="btn" style="margin-top:10px; border:1px dashed #999; color:var(--text-main);">+ Adicionar Objetivo</button>
             
             <div style="margin-top: 20px; display: flex; gap: 10px;">
                 <button onclick="app.admSaveUser()" class="btn btn-primary" style="flex:1;">Salvar</button>
-                <button onclick="document.getElementById('adm-user-detail').classList.remove('active')" class="btn" style="flex:1;">Fechar</button>
+                <button onclick="document.getElementById('adm-user-detail').classList.remove('active')" class="btn" style="flex:1; border:1px solid var(--text-sec); color:var(--text-main);">Fechar</button>
             </div>
             <!-- Botão de Excluir -->
             <button onclick="app.admDeleteUser()" class="btn btn-danger" style="margin-top:10px; background:transparent; border:1px solid var(--red); color:var(--red);">Excluir Aluno</button>
@@ -847,7 +849,7 @@
                     const done = r.workouts.filter(w=>w.done).length;
                     const total = r.workouts.length;
                     const pct = total > 0 ? Math.round((done/total)*100) : 0;
-                    hList.innerHTML += `<div style="margin-bottom:15px;"><div style="display:flex; justify-content:space-between; margin-bottom:5px;"><strong style="font-size:14px;">${r.name}</strong> <span style="font-size:12px; font-weight:600; color:var(--primary);">${pct}%</span></div><div style="height:6px; background:#eee; border-radius:3px; overflow:hidden;"><div style="width:${pct}%; height:100%; background:var(--primary);"></div></div></div>`;
+                    hList.innerHTML += `<div style="margin-bottom:15px;"><div style="display:flex; justify-content:space-between; margin-bottom:5px;"><strong style="font-size:14px; color:var(--text-main);">${r.name}</strong> <span style="font-size:12px; font-weight:600; color:var(--primary);">${pct}%</span></div><div style="height:6px; background:#eee; border-radius:3px; overflow:hidden;"><div style="width:${pct}%; height:100%; background:var(--primary);"></div></div></div>`;
                 });
             },
             closeProfile: () => app.screen('view-app'),
@@ -933,11 +935,11 @@
                 let content = '';
                 if(workoutData) {
                     content = `<div style="background:#f5f5f5; padding:15px; border-radius:10px; margin-bottom:15px;">
-                        <h4 style="margin:0 0 5px 0;">${workoutData.title}</h4>
-                        <p style="margin:0; font-size:13px; color:#666;">${workoutData.desc}</p>
+                        <h4 style="margin:0 0 5px 0; color:var(--text-main);">${workoutData.title}</h4>
+                        <p style="margin:0; font-size:13px; color:var(--text-sec);">${workoutData.desc}</p>
                         ${workoutData.done ? '<strong style="color:var(--success); font-size:12px;">Concluído</strong>' : '<span style="color:var(--orange); font-size:12px;">Pendente</span>'}
                     </div>`;
-                } else { content = `<p style="color:#999; text-align:center; margin-bottom:15px;">Sem treino registrado para este dia.</p>`; }
+                } else { content = `<p style="color:var(--text-sec); text-align:center; margin-bottom:15px;">Sem treino registrado para este dia.</p>`; }
                 document.getElementById('day-det-content').innerHTML = content;
                 const notes = currentUser.notes || {};
                 document.getElementById('day-det-note').value = notes[dateStr] || '';
@@ -959,16 +961,14 @@
                 app.renderCalendar(); 
                 app.renderTodayCard(); 
                 app.loadQuote(); 
-                app.loadHomeNews(); // NEW: Load latest news for home page
+                app.loadHomeNews(); 
             },
             
             loadHomeNews: () => {
-                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', C_POSTS), (snap) => { // Use C_POSTS or C_NEWS based on requirement? User said "Latest News" from News Page. The News Page uses C_NEWS.
-                     // Switching to C_NEWS as requested "publicação feita na pagina News"
-                     // Wait, in previous code News used C_NEWS. So I use C_NEWS.
+                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', C_POSTS), (snap) => {
+                     // Placeholder
                 });
 
-                // Let's use the C_NEWS logic similar to loadNews but limit to 1
                  onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', C_NEWS), (snap) => {
                     const news = []; 
                     snap.forEach(d => news.push(d.data())); 
@@ -978,13 +978,13 @@
                     if(news.length > 0) {
                         const n = news[0];
                         container.innerHTML = `
-                            <h3 style="font-size: 16px; margin: 0 0 15px;">Última Novidade</h3>
+                            <h3 style="font-size: 16px; margin: 0 0 15px; color:var(--text-main);">Última Novidade</h3>
                             <div class="card news-card" style="margin-bottom:0;">
                                 ${n.img ? `<img src="${n.img}" class="news-img" style="height:150px;">` : ''}
                                 <div class="news-content" style="padding:15px;">
                                     <div class="news-date" style="font-size:10px;">${new Date(n.created).toLocaleDateString()}</div>
                                     <h3 class="news-title" style="font-size:16px;">${n.title}</h3>
-                                    <div class="news-body" style="font-size:13px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${n.body}</div>
+                                    <div class="news-body" style="font-size:13px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color:var(--text-main);">${n.body}</div>
                                 </div>
                             </div>
                         `;
@@ -1008,17 +1008,14 @@
                 const todayStr = new Date().toISOString().split('T')[0];
                 let target = specificWorkout;
                 
-                // 1. Se não foi clicado, busca treino AGENDADO para hoje
                 if (!target) {
                     target = activeRace.workouts.find(w => w.scheduledDate === todayStr);
                 }
                 
-                // 2. Se não tem agendado, busca algum CONCLUÍDO hoje
                 if (!target) {
                     target = activeRace.workouts.find(w => w.done && w.completedAt === todayStr);
                 }
 
-                // 3. Fallback: Próximo pendente (sem data ou data futura)
                 if (!target) {
                     target = activeRace.workouts.find(w => !w.done && (!w.scheduledDate || w.scheduledDate >= todayStr));
                 }
@@ -1031,7 +1028,6 @@
                 const raceDate = activeRace.date ? new Date(activeRace.date).toLocaleDateString() : 'Sem data';
                 let cardHtml = '';
                 
-                // Safe strings with escape
                 const safeTitle = target ? app.escape(target.title) : '';
                 const safeVideo = target && target.video ? app.escape(target.video) : '';
                 
@@ -1044,19 +1040,19 @@
                         dateDisplay = `<span style="font-size:12px; color:rgba(255,255,255,0.7); margin-left:8px; font-weight:400;">${dParts[2]}/${dParts[1]}</span>`;
                     }
 
-                    cardHtml = `<div class="card" style="background: linear-gradient(135deg, #dbffae 0%, #aaccef 100%); color: #333333; border: none; padding:30px;">
+                    cardHtml = `<div class="card" style="background: linear-gradient(135deg, var(--bg) 0%, var(--secondary) 100%); color: var(--text-main); border: none; padding:30px;">
                         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:25px;">
                             <div>
-                                <h2 style="margin:0; font-size:24px; line-height:1.2;">${target.title} ${dateDisplay}</h2>
-                                <p style="opacity:0.9; font-size:15px; margin-top:8px; font-weight:400;">${target.desc}</p>
+                                <h2 style="margin:0; font-size:24px; line-height:1.2; color:var(--text-main);">${target.title} ${dateDisplay}</h2>
+                                <p style="opacity:0.9; font-size:15px; margin-top:8px; font-weight:400; color:var(--text-main);">${target.desc}</p>
                             </div>
-                            <div style="background:rgba(255,255,255,0.2); width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center;">
-                                <i class="fa-solid fa-person-running" style="font-size:24px;"></i>
+                            <div style="background:rgba(255,255,255,0.4); width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center;">
+                                <i class="fa-solid fa-person-running" style="font-size:24px; color:var(--text-main);"></i>
                             </div>
                         </div>
                         <div style="display:flex; gap:15px;">
                             ${doneBtn}
-                            ${safeVideo ? `<button onclick="app.playVideo('${safeVideo}')" class="btn" style="background:rgba(255,255,255,0.2); color:white; padding:0 20px; width:auto; display:flex; gap:8px;"><i class="fa-solid fa-play"></i> Vídeo</button>` : ''}
+                            ${safeVideo ? `<button onclick="app.playVideo('${safeVideo}')" class="btn" style="background:rgba(255,255,255,0.4); color:var(--text-main); padding:0 20px; width:auto; display:flex; gap:8px;"><i class="fa-solid fa-play"></i> Vídeo</button>` : ''}
                         </div>
                     </div>`;
                 } else {
@@ -1093,7 +1089,6 @@
             },
             playVideo: (url) => {
                 let embed = url;
-                // GitHub Raw Treatment
                 if (url.includes('github.com') && url.includes('/blob/')) {
                     embed = url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
                     document.getElementById('video-container').innerHTML = `<video src="${embed}" controls autoplay style="width:100%; height:100%;"></video>`;
@@ -1112,17 +1107,16 @@
                 const activeRace = (currentUser.races && currentUser.races.length) ? currentUser.races[currentUser.races.length-1] : null;
                 const list = document.getElementById('workouts-list');
                 
-                // NEW: Workouts Left Card
                 if(!activeRace) { list.innerHTML = ''; return; }
                 const pendingCount = activeRace.workouts.filter(w => !w.done).length;
                 
                 list.innerHTML = `
-                <div class="card" style="background:var(--primary); color:white; margin-bottom:25px; padding:25px; display:flex; align-items:center; justify-content:space-between;">
+                <div class="card" style="background:var(--primary); color:#FFF; margin-bottom:25px; padding:25px; display:flex; align-items:center; justify-content:space-between;">
                     <div>
-                        <h2 style="margin:0; font-size:36px; color:#333;">${pendingCount}</h2>
-                        <p style="margin:0; opacity:0.8; font-size:14px; color:#333;">Treinos Restantes</p>
+                        <h2 style="margin:0; font-size:36px; color:#FFF;">${pendingCount}</h2>
+                        <p style="margin:0; opacity:0.9; font-size:14px; color:#FFF;">Treinos Restantes</p>
                     </div>
-                    <i class="fa-solid fa-list-check" style="font-size:40px; opacity:0.3; color:#333;"></i>
+                    <i class="fa-solid fa-list-check" style="font-size:40px; opacity:0.5; color:#FFF;"></i>
                 </div>
                 `;
 
@@ -1143,7 +1137,7 @@
                             <h4 style="margin:0; font-size:16px;">${w.title} ${dateBadge}</h4>
                             <p style="margin:0; font-size:13px; color:var(--text-sec); margin-top:4px;">${w.desc}</p>
                         </div>
-                        ${safeVideo ? `<button onclick="app.playVideo('${safeVideo}')" style="border:1px solid var(--secondary-blue); background:transparent; color:var(--secondary-blue); padding: 6px 12px; border-radius: 20px; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:12px; font-weight:600;"><i class="fa-solid fa-play"></i> Vídeo</button>` : ''}
+                        ${safeVideo ? `<button onclick="app.playVideo('${safeVideo}')" style="border:1px solid var(--secondary); background:transparent; color:var(--text-main); padding: 6px 12px; border-radius: 20px; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:12px; font-weight:600;"><i class="fa-solid fa-play" style="color:var(--primary);"></i> Vídeo</button>` : ''}
                     </div>`;
                 });
             },
@@ -1165,13 +1159,13 @@
                             <div style="padding:20px; display:flex; align-items:center; gap:12px; border-bottom:1px solid #f5f5f5;">
                                 <div style="width:40px; height:40px; border-radius:50%; background:#EEE; overflow:hidden;">${p.avatar ? `<img src="${p.avatar}" style="width:100%;height:100%;">` : ''}</div>
                                 <div>
-                                    <strong style="font-size:15px; display:block;">${p.userName}</strong>
-                                    <span style="font-size:11px; color:#999;">${new Date(p.created).toLocaleDateString()}</span>
+                                    <strong style="font-size:15px; display:block; color:var(--text-main);">${p.userName}</strong>
+                                    <span style="font-size:11px; color:var(--text-sec);">${new Date(p.created).toLocaleDateString()}</span>
                                 </div>
                                 ${deleteBtn}
                             </div>
                             ${imgUrl ? `<img src="${imgUrl}" style="width:100%; max-height:400px; object-fit:cover;">` : ''}
-                            <div style="padding:20px;"><p style="margin:0; font-size:15px; line-height:1.5;">${p.text}</p></div>
+                            <div style="padding:20px;"><p style="margin:0; font-size:15px; line-height:1.5; color:var(--text-main);">${p.text}</p></div>
                         </div>`;
                     });
                 });
@@ -1207,7 +1201,7 @@
                         const r = {id: d.id, ...d.data()};
                         allRecipes.push(r);
                         const rImg = r.img || r.image || 'https://via.placeholder.com/300x200?text=No+Image';
-                        l.innerHTML += `<div class="recipe-card" onclick="app.openRecipeDetail('${r.id}')"><div class="recipe-img" style="background-image:url('${rImg}')"></div><div style="padding:15px;"><strong style="font-size:16px;">${r.title}</strong><div class="recipe-meta" style="margin-top:5px; color:var(--primary);">${r.kcal} kcal | ${r.time} min</div></div></div>`;
+                        l.innerHTML += `<div class="recipe-card" onclick="app.openRecipeDetail('${r.id}')"><div class="recipe-img" style="background-image:url('${rImg}')"></div><div style="padding:15px;"><strong style="font-size:16px; color:var(--text-main);">${r.title}</strong><div class="recipe-meta" style="margin-top:5px; color:var(--primary);">${r.kcal} kcal | ${r.time} min</div></div></div>`;
                     });
                 });
             },
@@ -1241,7 +1235,7 @@
                             <div class="news-content">
                                 <div class="news-date">${new Date(n.created).toLocaleDateString()}</div>
                                 <h3 class="news-title">${n.title}</h3>
-                                <div class="news-body" style="font-size:15px; line-height:1.6;">${n.body}</div>
+                                <div class="news-body" style="font-size:15px; line-height:1.6; color:var(--text-main);">${n.body}</div>
                             </div>
                         </div>`; 
                     });
@@ -1567,7 +1561,7 @@
                                 workoutsHtml += `
                                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee; padding:8px 0;">
                                     <div style="flex:1;">
-                                        <span style="font-size:13px; font-weight:600;">${w.title}</span><br>
+                                        <span style="font-size:13px; font-weight:600; color:var(--text-main);">${w.title}</span><br>
                                         <span style="font-size:11px; color:#666;">${w.desc}</span>
                                         ${safeVideo ? '<i class="fa-solid fa-video" style="font-size:10px; margin-left:5px; color:blue;"></i>' : ''}
                                     </div>
@@ -1591,7 +1585,7 @@
                         html += `
                         <div class="card" style="padding:10px; margin-bottom:10px;">
                             <div class="adm-row-header" onclick="app.admToggleTemplate('${tId}')">
-                                <span style="font-weight:600;">${t.name}</span>
+                                <span style="font-weight:600; color:var(--text-main);">${t.name}</span>
                                 <div>
                                     <span style="font-size:11px; color:#888; margin-right:10px;">${t.workouts.length} treinos</span>
                                     <i class="fa-solid fa-chevron-down" style="font-size:12px; opacity:0.5;"></i>
