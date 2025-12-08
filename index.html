@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -17,30 +17,33 @@
     <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Importando Bodoni Moda (para substituir Bodoni FLF) e Playfair Display (para simular TAN Pearl) -->
+    <!-- Importando Bodoni Moda e Playfair Display -->
     <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,700;1,6..96,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            /* NOVA PALETA */
-            --primary: #84afdb; /* Azul solicitado */
-            --bg: #FFFFFF;      /* Branco predominante */
-            --surface: #F9F9F9; /* Surface um pouco mais claro para combinar */
-            --text-main: #333333; /* Cinza escuro para contraste suave (melhor que preto puro com Bodoni) */
+            /* NOVA PALETA DESCONTRAÍDA v2.1 */
+            --bg: #dbffae;         /* Fundo Verde Principal */
+            
+            --primary: #ff8a41;    /* Laranja (Ação/Botões) */
+            --secondary: #aaccef;  /* Azul (Detalhes) */
+            
+            --surface: #FFFFFF;    /* Branco (Cards/Menu) */
+            --text-main: #333333; 
             --text-sec: #8E8E93;
             
-            --radius: 16px;
+            --radius: 20px;        /* Arredondamento maior para estilo descontraído */
             
-            /* NOVAS FONTES */
+            /* FONTES */
             --font-main: 'Bodoni Moda', serif; 
             --font-logo: 'Playfair Display', serif;
             
             --success: #34C759;
             --red: #FF3B30;
             --orange: #FF9500;
-            --border: #E5E5EA;
-            --shadow: 0 4px 20px rgba(132, 175, 219, 0.15); /* Sombra azulada suave */
+            --border: #f0f0f0;     /* Borda mais suave */
+            --shadow: 0 8px 25px rgba(0,0,0,0.06); /* Sombra suave para destacar do verde */
             --nav-height: 80px;
         }
 
@@ -50,7 +53,7 @@
             margin: 0; 
             padding: 0; 
             font-family: var(--font-main); 
-            background-color: var(--bg); 
+            background-color: var(--bg); /* FUNDO VERDE APLICADO */
             color: var(--text-main); 
             width: 100vw;
             height: 100vh;
@@ -58,7 +61,6 @@
             overflow: hidden; 
             display: flex; 
             flex-direction: column; 
-            font-size: 16px; /* Bodoni precisa ser um pouco maior para leitura */
         }
         
         h1, h2, h3, h4, strong { font-weight: 700; letter-spacing: -0.5px; }
@@ -67,8 +69,8 @@
         .brand-logo {
             font-family: var(--font-logo);
             font-weight: 700;
-            font-size: 24px;
-            color: var(--primary);
+            font-size: 26px;
+            color: var(--text-main); 
             letter-spacing: -1px;
         }
 
@@ -79,7 +81,7 @@
             left: 0; 
             width: 100%; 
             height: 100%; 
-            background-color: var(--bg); 
+            background-color: var(--bg); /* FUNDO VERDE */
             display: none; 
             flex-direction: column; 
             z-index: 10; 
@@ -103,6 +105,7 @@
             overflow: hidden; 
             display: flex;
             flex-direction: column;
+            background: #FAFAFA; /* Admin mantém fundo claro para legibilidade */
         }
 
         /* HEADER PRINCIPAL DO APP */
@@ -112,7 +115,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255,255,255,0.95); /* Mais transparente */
+            background: transparent; /* Transparente para mostrar o verde */
             position: sticky;
             top: 0;
             z-index: 50;
@@ -129,80 +132,82 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .input-group { margin-bottom: 20px; width: 100%; }
-        .label { display: block; font-size: 11px; font-weight: 700; color: var(--primary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
-        .input { width: 100%; padding: 18px; border-radius: var(--radius); border: 1px solid var(--border); background-color: #FAFAFA; font-size: 16px; color: var(--text-main); outline: none; font-family: var(--font-main); transition: 0.2s; -webkit-appearance: none; }
-        .input:focus { border-color: var(--primary); background: #FFF; box-shadow: 0 0 0 3px rgba(132, 175, 219, 0.2); }
+        .label { display: block; font-size: 11px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .input { width: 100%; padding: 18px; border-radius: var(--radius); border: 2px solid transparent; background-color: #FFF; font-size: 16px; color: var(--text-main); outline: none; font-family: var(--font-main); transition: 0.2s; -webkit-appearance: none; box-shadow: var(--shadow); }
+        .input:focus { border-color: var(--secondary); }
         
-        .btn { width: 100%; padding: 18px; border-radius: var(--radius); border: none; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: var(--font-main); transition: 0.2s; -webkit-user-select: none; letter-spacing: 0.5px; }
-        .btn-primary { background-color: var(--primary); color: #FFFFFF; box-shadow: 0 8px 20px -4px rgba(132, 175, 219, 0.5); }
+        /* Botões */
+        .btn { width: 100%; padding: 18px; border-radius: var(--radius); border: none; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; font-family: var(--font-main); transition: 0.2s; -webkit-user-select: none; letter-spacing: 0.5px; }
+        .btn-primary { background-color: var(--primary); color: #FFF; box-shadow: 0 5px 15px rgba(255, 138, 65, 0.4); }
         .btn-primary:active { transform: scale(0.98); }
         .btn-text { background: none; color: var(--text-sec); font-size: 14px; padding: 10px; }
         .btn-danger { background-color: #FFF0F0; color: var(--red); }
-        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
+        .btn-outline { background: transparent; border: 2px solid var(--text-main); color: var(--text-main); }
         
         /* CALENDÁRIO */
         .calendar-wrapper { padding: 0 20px 20px; }
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .calendar-title { font-weight: 700; font-size: 20px; text-transform: capitalize; color: var(--primary); }
+        .calendar-title { font-weight: 700; font-size: 24px; text-transform: capitalize; color: var(--text-main); }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; width: 100%; }
-        .cal-head-day { font-size: 10px; color: var(--text-sec); text-align: center; font-weight: 700; padding-bottom: 5px; text-transform: uppercase; }
-        .cal-cell { aspect-ratio: 1/1; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; color: var(--text-main); position: relative; cursor: pointer; border: 1px solid transparent; background: #FFF; }
-        .cal-cell.today { border-color: var(--primary); color: var(--primary); font-weight: 800; background: rgba(132, 175, 219, 0.1); }
-        .cal-cell.other-month { opacity: 0.3; }
+        .cal-head-day { font-size: 10px; color: #555; text-align: center; font-weight: 700; padding-bottom: 5px; text-transform: uppercase; }
+        .cal-cell { aspect-ratio: 1/1; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; color: var(--text-main); position: relative; cursor: pointer; border: 1px solid transparent; background: #FFF; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .cal-cell.today { border: 2px solid var(--primary); color: var(--primary); font-weight: 800; }
+        .cal-cell.other-month { opacity: 0.4; background: rgba(255,255,255,0.5); }
         .cal-dot { width: 5px; height: 5px; border-radius: 50%; margin-top: 3px; }
         .cal-cell.has-workout .cal-dot { background: var(--text-sec); }
         .cal-cell.done .cal-dot { background: var(--success); }
-        .cal-cell.done { background: rgba(52, 199, 89, 0.08); color: var(--success); border-color: transparent; }
-        .cal-note-indicator { position: absolute; top: 3px; right: 3px; width: 5px; height: 5px; background: var(--orange); border-radius: 50%; }
+        .cal-cell.done { background: #E8F5E9; color: var(--success); }
+        .cal-note-indicator { position: absolute; top: 3px; right: 3px; width: 5px; height: 5px; background: var(--secondary); border-radius: 50%; }
 
         /* CARDS */
-        .card { background: #FFF; border-radius: var(--radius); padding: 25px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 20px; }
+        .card { background: var(--surface); border-radius: var(--radius); padding: 25px; border: none; box-shadow: var(--shadow); margin-bottom: 20px; }
         
         /* RECIPE CARD */
-        .recipe-card { display: flex; flex-direction: column; overflow: hidden; background: #FFF; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); cursor: pointer; transition: transform 0.2s; }
+        .recipe-card { display: flex; flex-direction: column; overflow: hidden; background: #FFF; border-radius: var(--radius); border: none; box-shadow: var(--shadow); cursor: pointer; transition: transform 0.2s; }
         .recipe-card:active { transform: scale(0.98); }
         .recipe-img { width: 100%; height: 180px; background-size: cover; background-position: center; margin-bottom: 15px; background-color: #F0F0F0; }
-        .recipe-meta { font-size: 11px; color: var(--text-sec); text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
+        .recipe-meta { font-size: 11px; color: var(--primary); text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
         
         /* NEWS CARD */
-        .news-card { overflow: hidden; padding: 0; display: flex; flex-direction: column; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .news-card { overflow: hidden; padding: 0; display: flex; flex-direction: column; border: none; box-shadow: var(--shadow); border-radius: var(--radius); background: #FFF; margin-bottom: 20px; }
         .news-img { width: 100%; height: 220px; object-fit: cover; background: #EEE; }
         .news-content { padding: 25px; }
-        .news-date { font-size: 11px; color: var(--primary); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; }
-        .news-title { font-size: 22px; font-weight: 700; margin: 0 0 10px 0; line-height: 1.2; font-family: var(--font-logo); } /* Usando a fonte display para títulos de news */
+        .news-date { font-size: 11px; color: var(--secondary); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; }
+        .news-title { font-size: 18px; font-weight: 700; margin: 0 0 10px 0; line-height: 1.2; font-family: var(--font-logo); }
 
-        /* NAV BAR */
+        /* NAV BAR (Branca para destacar do fundo verde) */
         .nav-bar { 
             position: fixed; 
-            bottom: 0; 
-            left: 0; 
-            width: 100%; 
-            height: var(--nav-height);
-            background: rgba(255,255,255,0.95); 
-            backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px); 
-            border-top: 1px solid var(--border); 
+            bottom: 20px; 
+            left: 20px; 
+            right: 20px;
+            width: calc(100% - 40px);
+            height: 70px;
+            background: #FFFFFF; 
+            border-radius: 35px;
             display: flex; 
             justify-content: space-around; 
-            padding: 10px 10px max(20px, env(safe-area-inset-bottom)); 
+            align-items: center;
+            padding: 0 10px;
             z-index: 300; 
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.03);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; background: none; border: none; color: #BBB; cursor: pointer; }
-        .nav-item i { font-size: 22px; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .nav-item span { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; }
+        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; background: none; border: none; color: #CCC; cursor: pointer; }
+        .nav-item i { font-size: 24px; transition: 0.3s; margin-bottom: 2px; }
+        .nav-item span { font-size: 9px; font-weight: 700; letter-spacing: 0.5px; display: none; } /* Ocultar texto para visual mais limpo */
         .nav-item.active { color: var(--primary); }
-        .nav-item.active i { transform: translateY(-3px); }
+        .nav-item.active i { transform: scale(1.1); }
+        .nav-item.active span { display: block; } /* Mostrar texto só no ativo se quiser, ou manter oculto */
 
         .hidden { display: none !important; }
         .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-50px); background: #333; color: #FFF; padding: 12px 24px; border-radius: 50px; font-size: 13px; opacity: 0; transition: 0.3s; z-index: 5000; pointer-events: none; text-align: center; min-width: 200px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         
-        .header-avatar { width: 42px; height: 42px; border-radius: 50%; overflow: hidden; background: var(--surface); cursor: pointer; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--primary); }
+        .header-avatar { width: 42px; height: 42px; border-radius: 50%; overflow: hidden; background: #FFF; cursor: pointer; border: 2px solid var(--text-main); display: flex; align-items: center; justify-content: center; font-weight: 600; color: #333; box-shadow: var(--shadow); }
 
-        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.6); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
         .modal-overlay.active { display: flex; animation: fadeIn 0.2s; }
-        .modal-card { width: 90%; max-width: 400px; background: #FFF; border-radius: 30px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; border: 1px solid var(--border); }
+        .modal-card { width: 90%; max-width: 400px; background: #FFF; border-radius: 30px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); max-height: 90vh; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; border: 1px solid rgba(0,0,0,0.05); }
         
         /* ADMIN TABS FIXAS */
         .admin-header { background: #FFF; color: #333; padding: 20px; padding-top: max(20px, env(safe-area-inset-top)); flex-shrink: 0; border-bottom: 1px solid #EEE; }
@@ -211,8 +216,23 @@
         .admin-tab-btn { flex:1; min-width: 80px; padding:15px; border:none; background:none; cursor:pointer; font-size:12px; font-weight:600; color:#888; border-bottom: 2px solid transparent; white-space: nowrap; }
         .admin-tab-btn.active { color: var(--primary); border-color: var(--primary); }
         
-        .progress-container { width: 100%; background-color: rgba(132, 175, 219, 0.2); border-radius: 10px; height: 6px; margin-top: 15px; overflow: hidden; }
-        .progress-bar { height: 100%; background-color: var(--success); transition: width 0.3s; }
+        /* BARRA DE PROGRESSO CHAMATIVA */
+        .progress-container { 
+            width: 100%; 
+            background-color: rgba(0,0,0,0.05); 
+            border-radius: 12px; 
+            height: 14px; 
+            margin-top: 20px; 
+            overflow: hidden; 
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .progress-bar { 
+            height: 100%; 
+            background: linear-gradient(90deg, var(--primary) 0%, #ff6b6b 100%); 
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(255, 138, 65, 0.4); 
+        }
 
         /* CHECKBOX CUSTOM */
         .check-toggle { width: 22px; height: 22px; accent-color: var(--primary); cursor: pointer; }
@@ -232,66 +252,58 @@
 
     <!-- 0. LANDING -->
     <div id="view-landing" class="screen active" style="align-items: center; justify-content: center; padding: 40px; text-align: center;">
-        <h1 class="brand-logo" style="font-size: 56px; margin-bottom: 30px;">.nuts</h1>
-        <p style="color: var(--text-sec); letter-spacing: 2px; text-transform: uppercase; font-size: 12px; margin-top: 10px;">Your Journey Starts Here</p>
-        <div style="width: 100%; margin-top: 60px;">
-            <button onclick="app.goToRegister()" class="btn btn-primary" style="margin-bottom: 15px;">Começar Agora</button>
-            <button onclick="app.goToLogin()" class="btn btn-text">Já tenho conta</button>
+        <h1 class="brand-logo" style="font-size: 80px; margin-bottom: 30px; color: #333;">.nuts</h1>
+        <p style="color: #555; letter-spacing: 2px; text-transform: uppercase; font-size: 12px; margin-top: 10px; font-weight: 600;">Your Journey Starts Here</p>
+        <div style="width: 100%; margin-top: 80px;">
+            <button onclick="app.goToRegister()" class="btn btn-primary" style="margin-bottom: 15px; background: #FFF; color: #333;">Começar Agora</button>
+            <button onclick="app.goToLogin()" class="btn btn-text" style="color: #333;">Já tenho conta</button>
         </div>
     </div>
 
     <!-- 1. LOGIN -->
     <div id="view-login" class="screen" style="justify-content: center; padding: 40px;">
         <button onclick="app.goToLanding()" style="position:absolute; top:50px; left:20px; border:none; background:none; font-size:24px; color:var(--text-main);"><i class="fa-solid fa-arrow-left"></i></button>
-        <button onclick="app.showAdminAuth()" style="position:absolute; top:50px; right:20px; border:none; background:none; color:var(--text-sec); z-index: 50; padding: 10px;"><i class="fa-solid fa-lock"></i></button>
-        
-        <h1 class="brand-logo" style="font-size: 42px; margin-bottom: 50px; text-align:center;">.nuts</h1>
-        
+        <button onclick="app.showAdminAuth()" style="position:absolute; top:50px; right:20px; border:none; background:none; color:var(--text-main); z-index: 50; padding: 10px;"><i class="fa-solid fa-lock"></i></button>
+        <h1 class="serif" style="font-size: 32px; margin-bottom: 40px; text-align:center;">Entrar</h1>
         <form onsubmit="app.handleLogin(event)">
-            <div class="input-group">
-                <label class="label">Email</label>
-                <input type="email" id="log-email" class="input" required>
-            </div>
-            <div class="input-group">
-                <label class="label">Senha</label>
-                <input type="password" id="log-pass" class="input" required>
-            </div>
-            <button type="submit" class="btn btn-primary" style="margin-top: 30px;">Entrar</button>
+            <div class="input-group"><label class="label">Email</label><input type="email" id="log-email" class="input" required></div>
+            <div class="input-group"><label class="label">Senha</label><input type="password" id="log-pass" class="input" required></div>
+            <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Entrar</button>
         </form>
-        <p onclick="app.forgotPassword()" style="text-align: center; color: var(--text-sec); font-size: 13px; margin-top: 30px; cursor: pointer; text-decoration: underline;">Esqueci minha senha</p>
+        <p onclick="app.forgotPassword()" style="text-align: center; color: #555; font-size: 13px; margin-top: 20px; cursor: pointer; text-decoration: underline;">Esqueci minha senha</p>
     </div>
 
     <!-- 2. CADASTRO -->
     <div id="view-register" class="screen" style="justify-content: center; padding: 40px;">
-        <button onclick="app.goToLanding()" style="position:absolute; top:50px; left:20px; border:none; background:none; font-size:24px; color:var(--text-main);"><i class="fa-solid fa-arrow-left"></i></button>
-        
-        <h1 class="brand-logo" style="font-size: 42px; margin-bottom: 50px; text-align:center;">.Nuts</h1>
-        
+        <button onclick="app.goToLanding()" style="position:absolute; top:50px; left:20px; border:none; background:none; font-size:18px;"><i class="fa-solid fa-arrow-left"></i></button>
+        <h1 class="serif" style="font-size: 32px; margin-bottom: 40px; text-align:center;">Criar Conta</h1>
         <form onsubmit="app.handleRegister(event)">
             <div class="input-group"><label class="label">Nome</label><input type="text" id="reg-name" class="input" required></div>
             <div class="input-group"><label class="label">Email</label><input type="email" id="reg-email" class="input" required></div>
             <div class="input-group"><label class="label">Senha</label><input type="password" id="reg-pass" class="input" required></div>
-            <button type="submit" class="btn btn-primary" style="margin-top: 30px;">Cadastrar</button>
+            <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Cadastrar</button>
         </form>
     </div>
 
     <!-- 3. PENDENTE -->
     <div id="view-pending" class="screen" style="align-items: center; justify-content: center; padding: 40px; text-align: center;">
-        <i class="fa-regular fa-clock" style="font-size: 60px; color: var(--primary); margin-bottom: 30px;"></i>
-        <h2>Aprovação Pendente</h2>
-        <p style="color: var(--text-sec); font-size: 16px; margin-top:10px;">Seu treinador precisa liberar seu acesso.</p>
-        <button onclick="app.logout()" class="btn btn-outline" style="margin-top: 50px;">Sair</button>
+        <div style="background:#FFF; padding:40px; border-radius:30px; box-shadow:var(--shadow);">
+            <i class="fa-regular fa-clock" style="font-size: 50px; color: var(--primary); margin-bottom: 20px;"></i>
+            <h2>Aprovação Pendente</h2>
+            <p style="color: var(--text-sec); font-size: 14px;">Seu treinador precisa liberar seu acesso.</p>
+            <button onclick="app.logout()" class="btn btn-outline" style="margin-top: 30px;">Sair</button>
+        </div>
     </div>
 
     <!-- 4. APP PRINCIPAL -->
     <div id="view-app" class="screen">
-        <!-- Header Corrigido -->
+        <!-- Header -->
         <div class="app-header">
             <div class="header-avatar" onclick="app.openProfile()">
                 <img id="header-avatar-img" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
                 <span id="header-avatar-txt">U</span>
             </div>
-            <span class="brand-logo" style="font-size: 22px;">.Nuts</span>
+            <span class="brand-logo" style="font-size: 24px;">.nuts</span>
             <div style="width: 40px;"></div>
         </div>
 
@@ -300,28 +312,31 @@
             <div id="tab-home" class="tab-content">
                 <div class="calendar-wrapper">
                     <div class="calendar-header">
-                        <button onclick="app.changeMonth(-1)" style="border:none; background:none; padding:10px; cursor:pointer;"><i class="fa-solid fa-chevron-left" style="color:var(--primary)"></i></button>
+                        <button onclick="app.changeMonth(-1)" style="border:none; background:none; padding:10px; cursor:pointer;"><i class="fa-solid fa-chevron-left"></i></button>
                         <span id="cal-month-title" class="calendar-title">Mês</span>
-                        <button onclick="app.changeMonth(1)" style="border:none; background:none; padding:10px; cursor:pointer;"><i class="fa-solid fa-chevron-right" style="color:var(--primary)"></i></button>
+                        <button onclick="app.changeMonth(1)" style="border:none; background:none; padding:10px; cursor:pointer;"><i class="fa-solid fa-chevron-right"></i></button>
                     </div>
-                    <div class="calendar-grid" style="margin-bottom: 10px;">
+                    <div class="calendar-grid" style="margin-bottom: 5px;">
                         <div class="cal-head-day">D</div><div class="cal-head-day">S</div><div class="cal-head-day">T</div><div class="cal-head-day">Q</div><div class="cal-head-day">Q</div><div class="cal-head-day">S</div><div class="cal-head-day">S</div>
                     </div>
                     <div id="calendar-days" class="calendar-grid"></div>
                 </div>
+                <div style="padding: 20px; text-align: center;">
+                    <i class="fa-solid fa-quote-left" style="color: #888; font-size: 24px;"></i>
+                    <p id="daily-quote" class="serif" style="font-style: italic; font-size: 18px; margin: 15px 0;">Carregando...</p>
+                </div>
                 <div style="padding: 0 20px;">
-                    <h3 style="font-size: 18px; margin: 10px 0 20px;">Treino de Hoje</h3>
+                    <h3 style="font-size: 18px; margin: 10px 0 15px;">Treino de Hoje</h3>
                     <div id="today-workout-card"></div>
+                    <!-- LOCAL ONDE A NOTÍCIA SERÁ INSERIDA -->
+                    <div id="home-latest-news" style="margin-top: 30px;"></div>
                 </div>
-                <div style="padding: 30px 20px; text-align: center;">
-                    <i class="fa-solid fa-quote-left" style="color: #EEE; font-size: 32px;"></i>
-                    <p id="daily-quote" class="serif" style="font-style: italic; font-size: 20px; margin: 15px 0; line-height: 1.4;">Carregando...</p>
-                </div>
+                
             </div>
 
             <!-- TREINOS -->
             <div id="tab-workouts" class="tab-content hidden" style="padding: 0 20px;">
-                <h2 style="margin: 20px 0 30px;">Meu Plano</h2>
+                <h2 style="margin: 20px 0;">Meu Plano</h2>
                 <div id="workouts-list"></div>
             </div>
 
@@ -329,31 +344,31 @@
             <div id="tab-social" class="tab-content hidden" style="padding: 0 20px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin: 20px 0;">
                     <h2 style="margin:0;">Comunidade</h2>
-                    <button onclick="app.openCreatePost()" class="btn-primary" style="width: auto; padding: 10px 20px; border-radius: 30px; font-size: 13px; border:none; cursor:pointer;"><i class="fa-solid fa-plus"></i> Novo Post</button>
+                    <button onclick="app.openCreatePost()" class="btn-primary" style="width: auto; padding: 8px 16px; border-radius: 20px; font-size: 12px; border:none; cursor:pointer;"><i class="fa-solid fa-plus"></i> Novo</button>
                 </div>
                 <div id="social-feed"></div>
             </div>
 
             <!-- RECEITAS -->
             <div id="tab-recipes" class="tab-content hidden" style="padding: 0 20px;">
-                <h2 style="margin: 20px 0 30px;">Receitas</h2>
+                <h2 style="margin: 20px 0;">Receitas</h2>
                 <div id="recipes-list" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;"></div>
             </div>
 
             <!-- NOVIDADES -->
             <div id="tab-news" class="tab-content hidden" style="padding: 0 20px;">
-                <h2 style="margin: 20px 0 30px;">Novidades</h2>
+                <h2 style="margin: 20px 0;">Novidades</h2>
                 <div id="news-feed"></div>
             </div>
         </div>
 
-        <!-- MENU (REORDENADO) -->
+        <!-- MENU FLUTUANTE ARREDONDADO -->
         <div class="nav-bar">
-            <button class="nav-item" onclick="app.nav('social')" data-tab="social"><i class="fa-solid fa-users"></i><span>Social</span></button>
-            <button class="nav-item" onclick="app.nav('workouts')" data-tab="workouts"><i class="fa-solid fa-person-running"></i><span>Treinos</span></button>
-            <button class="nav-item active" onclick="app.nav('home')" data-tab="home"><i class="fa-solid fa-house"></i><span>Home</span></button>
-            <button class="nav-item" onclick="app.nav('recipes')" data-tab="recipes"><i class="fa-solid fa-utensils"></i><span>Receitas</span></button>
-            <button class="nav-item" onclick="app.nav('news')" data-tab="news"><i class="fa-solid fa-bullhorn"></i><span>News</span></button>
+            <button class="nav-item" onclick="app.nav('social')" data-tab="social"><i class="fa-solid fa-users"></i></button>
+            <button class="nav-item" onclick="app.nav('workouts')" data-tab="workouts"><i class="fa-solid fa-person-running"></i></button>
+            <button class="nav-item active" onclick="app.nav('home')" data-tab="home"><i class="fa-solid fa-house"></i></button>
+            <button class="nav-item" onclick="app.nav('recipes')" data-tab="recipes"><i class="fa-solid fa-utensils"></i></button>
+            <button class="nav-item" onclick="app.nav('news')" data-tab="news"><i class="fa-solid fa-bullhorn"></i></button>
         </div>
     </div>
 
@@ -367,59 +382,59 @@
             <button onclick="app.logout()" style="border:none; background:none; color:var(--red); font-weight:600; cursor:pointer;">Sair</button>
         </div>
         <div style="padding: 20px; text-align: center;">
-            <div style="width: 120px; height: 120px; border-radius: 50%; background: #EEE; margin: 0 auto 20px; overflow: hidden; position: relative; cursor:pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.1);" onclick="document.getElementById('profile-upload').click()">
+            <div style="width: 120px; height: 120px; border-radius: 50%; background: #FFF; margin: 0 auto 20px; overflow: hidden; position: relative; cursor:pointer; border: 4px solid #FFF; box-shadow: var(--shadow);" onclick="document.getElementById('profile-upload').click()">
                 <img id="profile-img-big" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
-                <div style="position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.5); color: white; font-size: 11px; padding: 6px; font-weight:700;">ALTERAR</div>
+                <div style="position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.5); color: white; font-size: 10px; padding: 4px;">ALTERAR</div>
             </div>
             <input type="file" id="profile-upload" hidden accept="image/*" onchange="app.uploadAvatar(this)">
-            <h2 id="profile-name-big" style="margin:0; font-size: 28px;">Nome</h2>
+            <h2 id="profile-name-big" style="margin:0; font-size:28px;">Nome</h2>
             <p id="profile-email-big" style="color: var(--text-sec); font-size: 16px;">email</p>
             
             <button onclick="app.showAddRaceModal()" class="btn btn-primary" style="margin-top: 30px;">+ NOVO OBJETIVO</button>
 
             <div class="card" style="margin-top: 40px; text-align: left;">
-                <h4 style="margin-top:0; color:var(--primary);">Histórico</h4>
+                <h4 style="margin-top:0;">Histórico</h4>
                 <div id="profile-history"></div>
             </div>
         </div>
     </div>
 
-    <!-- DETALHE DA RECEITA -->
+    <!-- DETALHE DA RECEITA (MODIFICADO: detail-view em vez de full-screen) -->
     <div id="view-recipe-detail" class="screen detail-view">
-        <button onclick="app.closeRecipeDetail()" style="position:absolute; top:40px; left:20px; z-index:10; background:white; border:none; width:45px; height:45px; border-radius:50%; box-shadow:0 5px 20px rgba(0,0,0,0.15); cursor:pointer; display:flex; align-items:center; justify-content:center;"><i class="fa-solid fa-arrow-left"></i></button>
+        <button onclick="app.closeRecipeDetail()" style="position:absolute; top:40px; left:20px; z-index:10; background:white; border:none; width:45px; height:45px; border-radius:50%; box-shadow:0 5px 15px rgba(0,0,0,0.1); cursor:pointer; display:flex; justify-content:center; align-items:center;"><i class="fa-solid fa-arrow-left"></i></button>
         <div id="rec-det-img" style="width:100%; height:350px; background:grey; background-size:cover; background-position:center; background-color: #EEE;"></div>
-        <div style="background:var(--bg); border-radius:30px 30px 0 0; margin-top:-40px; padding:30px; position:relative; min-height:500px; box-shadow: 0 -10px 40px rgba(0,0,0,0.05);">
-            <h1 id="rec-det-title" class="serif" style="margin:0 0 10px 0; font-size: 32px;">Titulo</h1>
-            <p id="rec-det-meta" style="color:var(--text-sec); margin-bottom:30px; font-weight:600;">0 kcal</p>
-            <div style="display:flex; gap:15px; margin-bottom:30px;">
-                <div style="background:var(--surface); padding:15px; border-radius:15px; flex:1; text-align:center;"><strong id="rec-det-p" style="font-size:20px;">0</strong><br><small style="text-transform:uppercase; font-size:10px; color:#888;">Prot</small></div>
-                <div style="background:var(--surface); padding:15px; border-radius:15px; flex:1; text-align:center;"><strong id="rec-det-c" style="font-size:20px;">0</strong><br><small style="text-transform:uppercase; font-size:10px; color:#888;">Carb</small></div>
-                <div style="background:var(--surface); padding:15px; border-radius:15px; flex:1; text-align:center;"><strong id="rec-det-f" style="font-size:20px;">0</strong><br><small style="text-transform:uppercase; font-size:10px; color:#888;">Gord</small></div>
+        <div style="background:var(--bg); border-radius:30px 30px 0 0; margin-top:-40px; padding:30px; position:relative; min-height:500px;">
+            <h1 id="rec-det-title" class="serif" style="margin:0 0 10px 0;">Titulo</h1>
+            <p id="rec-det-meta" style="color:var(--text-sec); margin-bottom:20px;">0 kcal</p>
+            <div style="display:flex; gap:10px; margin-bottom:20px;">
+                <div style="background:#FFF; padding:15px; border-radius:15px; flex:1; text-align:center;"><strong id="rec-det-p" style="font-size:18px;">0</strong><br><small>Prot</small></div>
+                <div style="background:#FFF; padding:15px; border-radius:15px; flex:1; text-align:center;"><strong id="rec-det-c" style="font-size:18px;">0</strong><br><small>Carb</small></div>
+                <div style="background:#FFF; padding:15px; border-radius:15px; flex:1; text-align:center;"><strong id="rec-det-f" style="font-size:18px;">0</strong><br><small>Gord</small></div>
             </div>
-            <h3 style="color:var(--primary); margin-bottom:15px;">Ingredientes</h3>
-            <ul id="rec-det-ing" style="padding-left:20px; color:var(--text-main); margin-bottom:30px; line-height:1.6;"></ul>
-            <h3 style="color:var(--primary); margin-bottom:15px;">Modo de Preparo</h3>
-            <div id="rec-det-steps" style="color:var(--text-main); line-height:1.8;"></div>
+            <h3>Ingredientes</h3>
+            <ul id="rec-det-ing" style="padding-left:20px; color:var(--text-main);"></ul>
+            <h3>Modo de Preparo</h3>
+            <div id="rec-det-steps" style="color:var(--text-main); line-height:1.6;"></div>
         </div>
     </div>
 
     <!-- MODAIS DE CRIAÇÃO/INTERAÇÃO -->
     <div id="view-create-post" class="screen full-screen">
         <div style="padding: 15px 20px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-top:max(15px, env(safe-area-inset-top));">
-            <button onclick="app.closeCreatePost()" class="btn-text" style="padding:10px; cursor:pointer; font-weight:600;">Cancelar</button>
+            <button onclick="app.closeCreatePost()" class="btn-text" style="padding:10px; font-weight:600;">Cancelar</button>
             <strong style="font-size:18px;">Criar Post</strong>
             <button onclick="app.submitPost()" style="border:none; background:var(--primary); color:white; padding: 8px 20px; border-radius: 20px; font-weight:600; cursor:pointer;">Postar</button>
         </div>
-        <textarea id="post-text" style="width:100%; height:200px; border:none; padding:25px; font-family:var(--font-main); font-size:20px; outline:none; resize:none;" placeholder="No que você está pensando?"></textarea>
+        <textarea id="post-text" style="width:100%; height:200px; border:none; padding:25px; font-family:var(--font-main); font-size:18px; outline:none; resize:none; background:transparent;" placeholder="No que você está pensando?"></textarea>
         <div style="padding: 20px;">
-            <div id="post-img-preview" style="width:100%; height:250px; background:#f0f0f0; border-radius:20px; display:none; background-size:cover; background-position:center; margin-bottom:20px;"></div>
-            <button onclick="document.getElementById('post-file').click()" class="btn btn-outline" style="border-radius:30px;"><i class="fa-solid fa-camera"></i>&nbsp; Adicionar Foto</button>
+            <div id="post-img-preview" style="width:100%; height:200px; background:#fff; border-radius:20px; display:none; background-size:cover; background-position:center; margin-bottom:20px;"></div>
+            <button onclick="document.getElementById('post-file').click()" class="btn btn-outline" style="border-radius:30px; background:#fff;"><i class="fa-solid fa-camera"></i>&nbsp; Adicionar Foto</button>
             <input type="file" id="post-file" hidden accept="image/*" onchange="app.previewPostImg(this)">
         </div>
     </div>
 
     <div id="modal-video" class="modal-overlay">
-        <div style="width: 100%; max-width: 800px; aspect-ratio: 16/9; background: #000; position: relative; border-radius:15px; overflow:hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+        <div style="width: 100%; max-width: 800px; aspect-ratio: 16/9; background: #000; position: relative; border-radius:20px; overflow:hidden;">
             <button onclick="document.getElementById('modal-video').classList.remove('active'); document.getElementById('video-container').innerHTML='';" style="position: absolute; top: 15px; right: 15px; color: white; background: rgba(0,0,0,0.5); width:35px; height:35px; border-radius:50%; border: none; font-size: 18px; cursor:pointer; z-index:10;">✕</button>
             <div id="video-container" style="width:100%; height:100%;"></div>
         </div>
@@ -428,7 +443,7 @@
     <!-- MODAL DETALHE DO DIA (CALENDÁRIO) -->
     <div id="modal-day-detail" class="modal-overlay">
         <div class="modal-card">
-            <h3 id="day-det-title" style="color:var(--primary);">Detalhes do Dia</h3>
+            <h3 id="day-det-title">Detalhes do Dia</h3>
             <div id="day-det-content"></div>
             <textarea id="day-det-note" class="input" placeholder="Anotações / Feedback do treino..." style="height:120px; resize:none; margin-top:15px;"></textarea>
             <div style="display:flex; gap:10px; margin-top:20px;">
@@ -512,10 +527,10 @@
     <!-- MODAIS DE NEGÓCIO -->
     <div id="modal-admin-auth" class="modal-overlay">
         <div class="modal-card" style="text-align: center;">
-            <h3 style="margin-bottom:20px;">Acesso Treinador</h3>
-            <input type="password" id="admin-pass-input" class="input" placeholder="Senha" style="text-align: center; margin-bottom: 25px;">
+            <h3>Acesso Treinador</h3>
+            <input type="password" id="admin-pass-input" class="input" placeholder="Senha" style="text-align: center; margin: 20px 0;">
             <div style="display: flex; gap: 10px;">
-                <button onclick="document.getElementById('modal-admin-auth').classList.remove('active')" class="btn btn-outline">Cancelar</button>
+                <button onclick="document.getElementById('modal-admin-auth').classList.remove('active')" class="btn" style="background:#EEE; color:#333;">Cancelar</button>
                 <button onclick="app.checkAdminAuth()" class="btn btn-primary">Entrar</button>
             </div>
         </div>
@@ -524,8 +539,8 @@
     <div id="modal-add-race" class="modal-overlay">
         <div class="modal-card">
             <h3>Novo Objetivo</h3>
-            <input id="new-race-name" class="input" placeholder="Nome (Ex: Maratona)" style="margin-bottom:15px;">
-            <input type="date" id="new-race-date" class="input" style="margin-bottom:15px;">
+            <input id="new-race-name" class="input" placeholder="Nome (Ex: Maratona)" style="margin-bottom:10px;">
+            <input type="date" id="new-race-date" class="input" style="margin-bottom:10px;">
             <button onclick="app.addStudentRace()" class="btn btn-primary">Criar</button>
             <button onclick="document.getElementById('modal-add-race').classList.remove('active')" class="btn btn-text">Cancelar</button>
         </div>
@@ -534,9 +549,9 @@
     <!-- PAINEL ADMIN COMPLETO (FIXED HEADER) -->
     <div id="view-admin" class="screen full-screen">
         <div class="admin-header">
-            <div style="display: flex; justify-content: space-between; align-items:center;">
-                <span class="brand-logo" style="font-size: 20px;">.Nuts <small style="font-family: var(--font-main); font-style:normal; font-weight:400; color:#888;">Admin</small></span>
-                <button onclick="app.closeAdmin()" style="color: #333; background: none; border: none; cursor:pointer; font-weight:600;">Sair</button>
+            <div style="display: flex; justify-content: space-between;">
+                <span>ADMIN</span>
+                <button onclick="app.closeAdmin()" style="color: #333; background: none; border: none; cursor:pointer;">Sair</button>
             </div>
         </div>
         
@@ -551,28 +566,29 @@
         <div class="admin-content-scroll">
             <!-- Tab Usuários -->
             <div id="adm-content-users" style="padding: 20px;">
-                <h3 style="color:var(--primary);">Gerenciar Alunos</h3>
+                <h3 style="color:var(--text-main);">Gerenciar Alunos</h3>
                 <div id="adm-users-list"></div>
             </div>
             
             <!-- Tab Templates (Modelos) -->
             <div id="adm-content-templates" class="hidden" style="padding: 20px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                    <h3 style="color:var(--primary); margin:0;">Modelos</h3>
-                    <button onclick="app.admAddTemplateInline()" class="btn-primary" style="width:auto; padding:8px 15px; font-size:12px; border-radius:20px;">+ Novo</button>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h3>Modelos de Treino</h3>
+                    <button onclick="app.admAddTemplateInline()" class="btn-primary" style="padding:5px 15px; font-size:12px; border-radius:20px;">+ Novo</button>
                 </div>
+                <p style="color:#888; font-size:12px; margin-bottom:20px;">Gerencie seus modelos de treino.</p>
                 <div id="adm-templates-list"></div>
             </div>
             
             <!-- Tab Notícias -->
             <div id="adm-content-news" class="hidden" style="padding: 20px;">
-                <h3 style="color:var(--primary);">Publicar Novidade</h3>
+                <h3>Publicar Novidade</h3>
                 <div class="card">
                     <input id="news-title" class="input" placeholder="Título" style="margin-bottom:10px;">
                     <textarea id="news-body" class="input" placeholder="Texto..." style="margin-bottom:10px; height:100px; resize:none;"></textarea>
-                    <button onclick="document.getElementById('news-file').click()" class="btn btn-outline" style="margin-bottom:10px;"><i class="fa-solid fa-camera"></i>&nbsp; Foto</button>
+                    <button onclick="document.getElementById('news-file').click()" class="btn" style="border:1px solid #CCC; margin-bottom:10px;">Foto</button>
                     <input type="file" id="news-file" hidden onchange="app.handleNewsImg(this)">
-                    <img id="news-preview" style="width:100%; height:150px; object-fit:cover; display:none; margin-bottom:15px; border-radius:10px;">
+                    <img id="news-preview" style="width:100%; height:100px; object-fit:cover; display:none; margin-bottom:10px;">
                     <button onclick="app.postNews()" class="btn btn-primary">PUBLICAR</button>
                 </div>
                 <div id="adm-news-history"></div>
@@ -580,14 +596,14 @@
 
             <!-- Tab Receitas -->
             <div id="adm-content-recipes" class="hidden" style="padding: 20px;">
-                <h3 style="color:var(--primary);">Adicionar Receita</h3>
+                <h3>Adicionar Receita</h3>
                 <div class="card">
                     <input id="adm-rec-title" class="input" placeholder="Título" style="margin-bottom:10px;">
-                    <div style="display:flex; gap:10px; margin-bottom:10px;">
+                    <div style="display:flex; gap:5px; margin-bottom:10px;">
                         <input id="adm-rec-kcal" class="input" placeholder="Kcal" type="number">
                         <input id="adm-rec-time" class="input" placeholder="Min" type="number">
                     </div>
-                    <div style="display:flex; gap:10px; margin-bottom:10px;">
+                    <div style="display:flex; gap:5px; margin-bottom:10px;">
                         <input id="adm-rec-p" class="input" placeholder="P (g)" type="number">
                         <input id="adm-rec-c" class="input" placeholder="C (g)" type="number">
                         <input id="adm-rec-f" class="input" placeholder="G (g)" type="number">
@@ -595,9 +611,9 @@
                     <textarea id="adm-rec-ing" class="input" placeholder="Ingredientes (um por linha)" style="height:80px; margin-bottom:10px; resize:none;"></textarea>
                     <textarea id="adm-rec-steps" class="input" placeholder="Passos (um por linha)" style="height:80px; margin-bottom:10px; resize:none;"></textarea>
                     
-                    <button onclick="document.getElementById('adm-rec-file').click()" class="btn btn-outline" style="margin-bottom:10px;"><i class="fa-solid fa-camera"></i>&nbsp; Foto da Receita</button>
+                    <button onclick="document.getElementById('adm-rec-file').click()" class="btn" style="border:1px solid #CCC; margin-bottom:10px;">Foto da Receita</button>
                     <input type="file" id="adm-rec-file" hidden onchange="app.handleRecImg(this)">
-                    <img id="adm-rec-preview" style="width:100%; height:150px; object-fit:cover; display:none; margin-bottom:15px; border-radius:10px;">
+                    <img id="adm-rec-preview" style="width:100%; height:100px; object-fit:cover; display:none; margin-bottom:10px;">
                     
                     <button onclick="app.postRecipe()" class="btn btn-primary">SALVAR RECEITA</button>
                 </div>
@@ -606,9 +622,9 @@
 
             <!-- Tab Frases -->
             <div id="adm-content-quotes" class="hidden" style="padding: 20px;">
-                <h3 style="color:var(--primary);">Frases Motivacionais</h3>
+                <h3>Frases Motivacionais</h3>
                 <div class="card">
-                    <textarea id="adm-quote-text" class="input" placeholder="Digite a frase..." style="margin-bottom:15px; resize:none; height:100px;"></textarea>
+                    <textarea id="adm-quote-text" class="input" placeholder="Digite a frase..." style="margin-bottom:10px; resize:none;"></textarea>
                     <button onclick="app.postQuote()" class="btn btn-primary">ADICIONAR</button>
                 </div>
                 <div id="adm-quotes-list"></div>
@@ -619,22 +635,22 @@
     <!-- Detalhe Usuário Admin -->
     <div id="adm-user-detail" class="modal-overlay">
         <div class="modal-card">
-            <h3 id="adm-u-name" style="color:var(--primary);">Nome</h3>
+            <h3 id="adm-u-name">Nome</h3>
             <p id="adm-u-email" style="color:#888; margin-bottom: 20px;">email</p>
-            <label style="display:flex; align-items:center; gap:10px; margin-bottom:20px; font-weight:600;">
-                <input type="checkbox" id="adm-u-active" class="check-toggle"> Acesso Liberado
+            <label style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+                <input type="checkbox" id="adm-u-active"> Acesso Liberado
             </label>
             <hr style="width:100%; border:0; border-top:1px solid #EEE;">
-            <h4 style="margin-top:15px;">Objetivos/Treinos</h4>
+            <h4>Objetivos/Treinos</h4>
             <div id="adm-u-races"></div>
-            <button onclick="app.admAddRace()" class="btn btn-outline" style="margin-top:15px;">+ Adicionar Objetivo</button>
+            <button onclick="app.admAddRace()" class="btn" style="margin-top:10px; border:1px dashed #999;">+ Adicionar Objetivo</button>
             
-            <div style="margin-top: 25px; display: flex; gap: 10px;">
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
                 <button onclick="app.admSaveUser()" class="btn btn-primary" style="flex:1;">Salvar</button>
-                <button onclick="document.getElementById('adm-user-detail').classList.remove('active')" class="btn btn-outline" style="flex:1;">Fechar</button>
+                <button onclick="document.getElementById('adm-user-detail').classList.remove('active')" class="btn" style="flex:1;">Fechar</button>
             </div>
             <!-- Botão de Excluir -->
-            <button onclick="app.admDeleteUser()" class="btn btn-danger" style="margin-top:15px; background:transparent; border:1px solid #ffcccc; color:var(--red);">Excluir Aluno</button>
+            <button onclick="app.admDeleteUser()" class="btn btn-danger" style="margin-top:10px; background:transparent; border:1px solid var(--red); color:var(--red);">Excluir Aluno</button>
         </div>
     </div>
 
@@ -884,18 +900,13 @@
                     let dotHtml = '';
                     let workoutData = null;
                     
-                    // LÓGICA CORRIGIDA DE PRIORIDADE NO CALENDÁRIO:
-                    // 1. Treino com Data Agendada (Prioridade Máxima)
                     const scheduled = workouts.find(w => w.scheduledDate === dateStr);
-                    
-                    // 2. Treino Concluído nesta data (se não houver agendado ou se for o mesmo)
                     const doneHere = workouts.find(w => w.done && w.completedAt === dateStr);
                     
                     if (scheduled) {
                          cellClass += ' has-workout'; 
                          dotHtml += `<div class="cal-dot"></div>`;
                          workoutData = scheduled;
-                         // Se estiver feito, marca visualmente
                          if(scheduled.done) cellClass += ' done';
                     }
                     else if(doneHere) { 
@@ -904,12 +915,6 @@
                         workoutData = doneHere; 
                     } 
                     
-                    // 3. Projeção (somente se não houver data agendada)
-                    // A projeção antiga pode ser confusa com datas agendadas, então vamos mantê-la apenas para treinos SEM data agendada.
-                    else if (dateObj >= new Date().setHours(0,0,0,0)) {
-                         // Aqui poderíamos manter a projeção simples se desejar, mas datas fixas são melhores.
-                    }
-
                     if(notes[dateStr]) { dotHtml += `<div class="cal-note-indicator"></div>`; }
                     
                     const el = document.createElement('div');
@@ -950,7 +955,45 @@
                 app.renderCalendar();
             },
 
-            renderHome: () => { app.renderCalendar(); app.renderTodayCard(); app.loadQuote(); },
+            renderHome: () => { 
+                app.renderCalendar(); 
+                app.renderTodayCard(); 
+                app.loadQuote(); 
+                app.loadHomeNews(); // NEW: Load latest news for home page
+            },
+            
+            loadHomeNews: () => {
+                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', C_POSTS), (snap) => { // Use C_POSTS or C_NEWS based on requirement? User said "Latest News" from News Page. The News Page uses C_NEWS.
+                     // Switching to C_NEWS as requested "publicação feita na pagina News"
+                     // Wait, in previous code News used C_NEWS. So I use C_NEWS.
+                });
+
+                // Let's use the C_NEWS logic similar to loadNews but limit to 1
+                 onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', C_NEWS), (snap) => {
+                    const news = []; 
+                    snap.forEach(d => news.push(d.data())); 
+                    news.sort((a,b) => b.created - a.created);
+                    
+                    const container = document.getElementById('home-latest-news');
+                    if(news.length > 0) {
+                        const n = news[0];
+                        container.innerHTML = `
+                            <h3 style="font-size: 16px; margin: 0 0 15px;">Última Novidade</h3>
+                            <div class="card news-card" style="margin-bottom:0;">
+                                ${n.img ? `<img src="${n.img}" class="news-img" style="height:150px;">` : ''}
+                                <div class="news-content" style="padding:15px;">
+                                    <div class="news-date" style="font-size:10px;">${new Date(n.created).toLocaleDateString()}</div>
+                                    <h3 class="news-title" style="font-size:16px;">${n.title}</h3>
+                                    <div class="news-body" style="font-size:13px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${n.body}</div>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        container.innerHTML = '';
+                    }
+                });
+            },
+
             renderTodayCard: (specificWorkout = null) => {
                 const activeRace = (currentUser.races && currentUser.races.length) ? currentUser.races[currentUser.races.length-1] : null;
                 if(!activeRace || activeRace.workouts.length === 0) { 
@@ -995,14 +1038,13 @@
                 if(target) {
                     const doneBtn = target.done ? `<button class="btn" style="background:rgba(255,255,255,0.2); color:#FFF; flex:1; cursor:default;" disabled><i class="fa-solid fa-check"></i> Feito</button>` : `<button onclick="app.finishWorkout('${safeTitle}')" class="btn" style="background:#FFF; color:var(--text-main); flex:1;">Concluir</button>`;
                     
-                    // Formatar data se houver - CORREÇÃO VISUAL: Remover fundo e usar cor branca com opacidade
                     let dateDisplay = "";
                     if(target.scheduledDate) {
                         const dParts = target.scheduledDate.split('-');
                         dateDisplay = `<span style="font-size:12px; color:rgba(255,255,255,0.7); margin-left:8px; font-weight:400;">${dParts[2]}/${dParts[1]}</span>`;
                     }
 
-                    cardHtml = `<div class="card" style="background: linear-gradient(135deg, #84afdb 0%, #6b9ac9 100%); color: white; border: none; padding:30px;">
+                    cardHtml = `<div class="card" style="background: linear-gradient(135deg, #dbffae 0%, #aaccef 100%); color: #333333; border: none; padding:30px;">
                         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:25px;">
                             <div>
                                 <h2 style="margin:0; font-size:24px; line-height:1.2;">${target.title} ${dateDisplay}</h2>
@@ -1069,14 +1111,26 @@
             renderWorkoutsList: () => {
                 const activeRace = (currentUser.races && currentUser.races.length) ? currentUser.races[currentUser.races.length-1] : null;
                 const list = document.getElementById('workouts-list');
-                list.innerHTML = '';
-                if(!activeRace) return;
+                
+                // NEW: Workouts Left Card
+                if(!activeRace) { list.innerHTML = ''; return; }
+                const pendingCount = activeRace.workouts.filter(w => !w.done).length;
+                
+                list.innerHTML = `
+                <div class="card" style="background:var(--primary); color:white; margin-bottom:25px; padding:25px; display:flex; align-items:center; justify-content:space-between;">
+                    <div>
+                        <h2 style="margin:0; font-size:36px; color:#333;">${pendingCount}</h2>
+                        <p style="margin:0; opacity:0.8; font-size:14px; color:#333;">Treinos Restantes</p>
+                    </div>
+                    <i class="fa-solid fa-list-check" style="font-size:40px; opacity:0.3; color:#333;"></i>
+                </div>
+                `;
+
                 activeRace.workouts.forEach((w, i) => {
                     const color = w.done ? 'var(--success)' : '#E0E0E0';
                     const icon = w.done ? 'fa-circle-check' : 'fa-circle';
                     const safeVideo = w.video ? app.escape(w.video) : '';
                     
-                    // Exibir data se agendada
                     let dateBadge = '';
                     if(w.scheduledDate) {
                          const dParts = w.scheduledDate.split('-');
@@ -1089,7 +1143,7 @@
                             <h4 style="margin:0; font-size:16px;">${w.title} ${dateBadge}</h4>
                             <p style="margin:0; font-size:13px; color:var(--text-sec); margin-top:4px;">${w.desc}</p>
                         </div>
-                        ${safeVideo ? `<button onclick="app.playVideo('${safeVideo}')" style="border:1px solid var(--primary); background:transparent; color:var(--primary); padding: 6px 12px; border-radius: 20px; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:12px; font-weight:600;"><i class="fa-solid fa-play"></i> Vídeo</button>` : ''}
+                        ${safeVideo ? `<button onclick="app.playVideo('${safeVideo}')" style="border:1px solid var(--secondary-blue); background:transparent; color:var(--secondary-blue); padding: 6px 12px; border-radius: 20px; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:12px; font-weight:600;"><i class="fa-solid fa-play"></i> Vídeo</button>` : ''}
                     </div>`;
                 });
             },
